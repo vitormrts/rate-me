@@ -2,6 +2,7 @@ import { Button } from "../../buttons";
 import * as S from "./Feature.style";
 
 const Feature = ({
+  onSignUpClick,
   title,
   description,
   cta,
@@ -16,7 +17,7 @@ const Feature = ({
           <S.Title dangerouslySetInnerHTML={{ __html: title }} />
           <S.Description dangerouslySetInnerHTML={{ __html: description }} />
           <S.ButtonAdapter>
-            <Button text={cta} />
+            <Button text={cta} onClick={onSignUpClick} />
           </S.ButtonAdapter>
         </S.TextContent>
         <S.ImageAdapter>

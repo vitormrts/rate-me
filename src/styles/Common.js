@@ -13,4 +13,5 @@ export const DefaultContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
+  padding: 0 15px;
 `;

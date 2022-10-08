@@ -1,15 +1,15 @@
 import { Button, OutlinedButton } from "../../buttons";
 import * as S from "./HeroBanner.style";
 
-const HeroBanner = () => {
+const HeroBanner = ({ onSignUpClick, onLoginClick }) => {
   return (
     <S.Wrapper>
       <S.Container>
         <S.Header>
           <S.Logo>Rate Me</S.Logo>
           <S.ButtonGroup>
-            <Button text="Sign Up" />
-            <OutlinedButton text="Login" />
+            <Button text="Sign Up" onClick={onSignUpClick} />
+            <OutlinedButton text="Login" onClick={onLoginClick} />
           </S.ButtonGroup>
         </S.Header>
         <S.TextContent>
@@ -19,7 +19,7 @@ const HeroBanner = () => {
             rate them, and they hate you.
           </S.Subtitle>
           <S.ButtonAdapter>
-            <Button text="Sign up now" />
+            <Button text="Sign up now" onClick={onSignUpClick} />
           </S.ButtonAdapter>
         </S.TextContent>
       </S.Container>
