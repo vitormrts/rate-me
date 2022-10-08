@@ -5,7 +5,9 @@ export const Button = styled.button`
     background-color: ${theme.colors.primary.main};
     color: ${theme.colors.white};
     min-width: 170px;
-    padding: 15px 30px;
+    padding: 16px 32px;
     border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
   `}
 `;

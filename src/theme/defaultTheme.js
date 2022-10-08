@@ -10,6 +10,11 @@ const defaultTheme = {
     primary: {
       main: "#2864FF",
     },
+    gray: {
+      dark: "#253853",
+      variant: "#9B9B9B",
+      light: "#F8F8F8",
+    },
     white: "#fff",
   },
   font: {

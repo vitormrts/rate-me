@@ -5,6 +5,8 @@ export const Wrapper = styled(DefaultWrapper)`
   background-image: url("/assets/home/hero-banner.png");
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 `;
 
 export const Container = styled(DefaultContainer)``;
@@ -20,6 +22,7 @@ export const Header = styled.header`
 export const Logo = styled.h3`
   ${({ theme }) => css`
     color: ${theme.colors.white};
+    font-weight: ${theme.font.weights.bold};
   `}
 `;
 
@@ -30,7 +33,15 @@ export const ButtonGroup = styled.div`
   gap: 16px;
 `;
 
-export const TextContent = styled.div``;
+export const ButtonAdapter = styled.div`
+  max-width: 284px;
+  width: 100%;
+`;
+
+export const TextContent = styled.div`
+  margin: auto 0;
+  max-width: 700px;
+`;
 
 export const Title = styled.h1`
   ${({ theme }) => css`
@@ -41,5 +52,6 @@ export const Title = styled.h1`
 export const Subtitle = styled.h3`
   ${({ theme }) => css`
     color: ${theme.colors.white};
+    margin: 24px 0 40px;
   `}
 `;

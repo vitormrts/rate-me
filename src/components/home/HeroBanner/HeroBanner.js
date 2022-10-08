@@ -1,7 +1,7 @@
 import { Button, OutlinedButton } from "../../buttons";
 import * as S from "./HeroBanner.style";
 
-const HeroBanner = ({ title }) => {
+const HeroBanner = () => {
   return (
     <S.Wrapper>
       <S.Container>
@@ -18,7 +18,9 @@ const HeroBanner = ({ title }) => {
             Evaluate your students through exams. The equation is simple: you
             rate them, and they hate you.
           </S.Subtitle>
-          <Button text="Sign up now" />
+          <S.ButtonAdapter>
+            <Button text="Sign up now" />
+          </S.ButtonAdapter>
         </S.TextContent>
       </S.Container>
     </S.Wrapper>

@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     }
     h1 {
       font-size: ${theme.font.sizes.xxxl};
-      line-height: 80px;
+      line-height: 75px;
       font-weight: ${theme.font.weights.bold};
     }
     h2 {
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     }
     h3 {
       font-size: ${theme.font.sizes.xl};
-      font-weight: ${theme.font.weights.semiBold};
+      font-weight: ${theme.font.weights.regular};
       line-height: 36px;
     }
     p,
@@ -41,6 +41,10 @@ const GlobalStyle = createGlobalStyle`
     }
     strong {
       font-weight: ${theme.font.weights.bold};
+    }
+    br {
+      display: block;
+      content: "";
     }
   `}
 `;
