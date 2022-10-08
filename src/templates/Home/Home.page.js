@@ -1,9 +1,10 @@
+import { HeroBanner } from "../../components/home";
 import * as S from "./Home.style";
 
 const Home = () => {
   return (
     <>
-      <S.Title>Titulo</S.Title>
+      <HeroBanner />
     </>
   );
 };

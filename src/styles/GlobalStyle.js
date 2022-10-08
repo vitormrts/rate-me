@@ -33,6 +33,11 @@ const GlobalStyle = createGlobalStyle`
     }
     button {
       font-size: ${theme.font.sizes.xxs};
+      background: none;
+      border: none;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: ${theme.font.weights.bold};
     }
     strong {
       font-weight: ${theme.font.weights.bold};

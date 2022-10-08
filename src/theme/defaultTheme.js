@@ -10,6 +10,7 @@ const defaultTheme = {
     primary: {
       main: "#2864FF",
     },
+    white: "#fff",
   },
   font: {
     sizes: {
