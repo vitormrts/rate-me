@@ -1,4 +1,4 @@
-import { HomePage, SignUpPage } from "../templates";
+import { HomePage, LoginPage, SignUpPage } from "../templates";
 
 import { createBrowserRouter } from "react-router-dom";
 
@@ -10,6 +10,10 @@ const routes = createBrowserRouter([
   {
     path: "sign-up",
     element: <SignUpPage />,
+  },
+  {
+    path: "login",
+    element: <LoginPage />,
   },
 ]);
 
