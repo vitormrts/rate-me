@@ -12,6 +12,7 @@ const defaultTheme = {
     },
     gray: {
       dark: "#253853",
+      main: "#596070",
       variant: "#9B9B9B",
       light: "#F8F8F8",
     },

@@ -1,9 +1,11 @@
-const SignUp = () => {
+import { Base, SignUpForm } from "../../components/auth";
+
+const SignUpPage = () => {
   return (
-    <>
-      <h1>afskafsk</h1>
-    </>
+    <Base title="Sign Up" subtitle="First create your account">
+      <SignUpForm />
+    </Base>
   );
 };
 
-export default SignUp;
+export default SignUpPage;
