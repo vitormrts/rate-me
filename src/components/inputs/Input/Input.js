@@ -1,16 +1,35 @@
+import { useCallback } from "react";
 import * as S from "./Input.style";
 
 const Input = ({
   label = "Label",
   placeholder = "Placeholder",
   type = "text",
-  onClick,
+  name,
+  value,
+  onChange,
+  error,
 }) => {
+  const handleOnChange = useCallback(
+    (event) => {
+      onChange && onChange(name, event.target.value);
+    },
+    [onChange]
+  );
+
   return (
     <S.Wrapper>
-      <S.Label onClick={onClick}>
+      <S.Label>
         {label}
-        <S.Input placeholder={placeholder} type={type} />
+        <S.Input
+          error={error}
+          name={name}
+          placeholder={placeholder}
+          type={type}
+          value={value}
+          onChange={handleOnChange}
+        />
+        <S.Error>{error}</S.Error>
       </S.Label>
     </S.Wrapper>
   );

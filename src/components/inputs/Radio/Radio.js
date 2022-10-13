@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import * as S from "./Radio.style";
 
-const Radio = ({ checked = false, label = "Label", onChange }) => {
+const Radio = ({ name, checked = false, label = "Label", onChange, value }) => {
   const handleOnChange = useCallback(() => {
-    onChange && onChange(checked);
-  }, [onChange, checked]);
+    onChange && onChange(name, value);
+  }, [onChange]);
 
   return (
     <S.Wrapper>

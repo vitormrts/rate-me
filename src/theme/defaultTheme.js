@@ -17,6 +17,9 @@ const defaultTheme = {
       light: "#F8F8F8",
     },
     white: "#fff",
+    indicators: {
+      error: "#FF2E2E",
+    },
   },
   font: {
     sizes: {
