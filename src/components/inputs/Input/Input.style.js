@@ -13,6 +13,7 @@ export const Label = styled.label`
   ${({ theme }) => css`
     color: ${theme.colors.gray.main};
     width: 100%;
+    min-height: 90px;
   `}
 `;
 
@@ -39,5 +40,9 @@ export const Input = styled.input`
 export const Error = styled.span`
   ${({ theme }) => css`
     color: ${theme.colors.indicators.error};
+    min-height: 16px;
+    display: inline-block;
+    width: 100%;
+    line-height: 16px;
   `}
 `;

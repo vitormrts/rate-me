@@ -4,7 +4,7 @@ import { css } from "styled-components";
 export const Form = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
   flex-direction: column;
   width: 100%;

@@ -28,5 +28,8 @@ export const Input = styled.input`
 export const Error = styled.span`
   ${({ theme }) => css`
     color: ${theme.colors.indicators.error};
+    min-height: 16px;
+    display: inline-block;
+    line-height: 16px;
   `}
 `;
