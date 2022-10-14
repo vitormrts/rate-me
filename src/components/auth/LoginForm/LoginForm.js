@@ -4,33 +4,39 @@ import * as S from "./LoginForm.style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ errorMessages, onSubmit, onSuccess }) => {
   const initialState = {
     username: "",
     password: "",
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const validate = (formErrors) => {
     const isValid = Object.keys(formErrors).every((key) => !formErrors[key]);
     return isValid;
   };
 
+  const checkEmpty = (value) => {
+    if (!value) {
+      return errorMessages.input.empty;
+    }
+  };
+
   const handleOnClick = () => {
     const data = { ...formData };
     const formErrors = {
-      username: !data.username,
-      password: !data.password,
+      username: checkEmpty(data.username),
+      password: checkEmpty(data.password),
     };
+    setErrors(formErrors);
     const isValid = validate(formErrors);
     if (isValid) {
-      onSubmit(data);
-      setFormData(initialState);
+      const { success } = onSubmit(data);
+      success && onSuccess();
       return;
     }
-    setErrors(formErrors);
   };
 
   const onChange = (key, value) => {
@@ -44,6 +50,7 @@ const LoginForm = ({ onSubmit }) => {
           label="Username"
           name="username"
           onChange={onChange}
+          error={errors.username}
           placeholder="example"
           type="text"
           value={formData.username}
@@ -52,6 +59,7 @@ const LoginForm = ({ onSubmit }) => {
           label="Password"
           name="password"
           onChange={onChange}
+          error={errors.password}
           placeholder="******************"
           type="password"
           value={formData.password}

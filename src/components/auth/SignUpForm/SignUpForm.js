@@ -4,7 +4,7 @@ import * as S from "./SignUpForm.style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const SignUpForm = ({ onSubmit }) => {
+const SignUpForm = ({ errorMessages, onSubmit, onSuccess }) => {
   const initialState = {
     fullName: "",
     username: "",
@@ -15,30 +15,50 @@ const SignUpForm = ({ onSubmit }) => {
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const validate = (formErrors) => {
     const isValid = Object.keys(formErrors).every((key) => !formErrors[key]);
     return isValid;
   };
 
+  const checkEmpty = (value) => {
+    if (!value) {
+      return errorMessages.input.empty;
+    }
+  };
+
+  const checkConfirmPassword = (password, confirmPassword) => {
+    const isEmpty = checkEmpty(confirmPassword);
+    if (isEmpty) return isEmpty;
+    console.log(password);
+    console.log(confirmPassword);
+    if (password !== confirmPassword) {
+      console.log("oi");
+      return errorMessages.input.passwordsDontMatch;
+    }
+  };
+
   const handleOnClick = () => {
     const data = { ...formData };
     const formErrors = {
-      fullName: !data.fullName,
-      username: !data.username,
-      email: !data.email,
-      password: !data.password || data.password !== data.confirmPassword,
+      fullName: checkEmpty(data.fullName),
+      username: checkEmpty(data.username),
+      email: checkEmpty(data.email),
+      password: checkEmpty(data.password),
+      confirmPassword: checkConfirmPassword(
+        data.password,
+        data.confirmPassword
+      ),
       role: !data.role,
     };
+    setErrors(formErrors);
     const isValid = validate(formErrors);
-    console.log(formErrors);
     if (isValid) {
-      onSubmit(data);
-      setFormData(initialState);
+      const { success } = onSubmit(data);
+      success && onSuccess();
       return;
     }
-    setErrors(formErrors);
   };
 
   const onChange = (key, value) => {
@@ -55,6 +75,7 @@ const SignUpForm = ({ onSubmit }) => {
           placeholder="Example"
           type="text"
           value={formData.fullName}
+          error={errors.fullName}
         />
         <Input
           label="Username"
@@ -63,6 +84,7 @@ const SignUpForm = ({ onSubmit }) => {
           placeholder="example"
           value={formData.username}
           type="text"
+          error={errors.username}
         />
         <Input
           label="Email"
@@ -71,6 +93,7 @@ const SignUpForm = ({ onSubmit }) => {
           placeholder="example@example.com"
           type="email"
           value={formData.email}
+          error={errors.email}
         />
         <Input
           label="Password"
@@ -79,6 +102,7 @@ const SignUpForm = ({ onSubmit }) => {
           placeholder="******************"
           type="password"
           value={formData.password}
+          error={errors.password || errors.confirmPassword}
         />
         <Input
           label="Confirm password"
@@ -87,6 +111,7 @@ const SignUpForm = ({ onSubmit }) => {
           placeholder="******************"
           type="password"
           value={formData.confirmPassword}
+          error={errors.confirmPassword}
         />
         <Radio
           checked={formData.role === "teacher"}
@@ -94,6 +119,7 @@ const SignUpForm = ({ onSubmit }) => {
           onChange={onChange}
           value="teacher"
           label="I'm a teacher"
+          error={errors.role}
         />
         <Radio
           checked={formData.role === "student"}
@@ -101,6 +127,7 @@ const SignUpForm = ({ onSubmit }) => {
           onChange={onChange}
           value="student"
           label="I'm a student"
+          error={errors.role}
         />
         <S.ButtonAdapter>
           <Button onClick={handleOnClick} text="Sign up" />

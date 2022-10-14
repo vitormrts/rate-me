@@ -7,22 +7,32 @@ const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState();
 
   const login = ({ username, password }) => {
-    const matchUser = fake.users.find((user) => user.username === username);
-    if (matchUser?.password === password) {
-      setUser(matchUser);
-      return;
+    try {
+      const matchUser = fake.users.find((user) => user.username === username);
+      if (matchUser.password === password) {
+        setUser(matchUser);
+        return { success: true };
+      }
+      throw Error();
+    } catch (error) {
+      return { success: false };
     }
   };
 
   const signUp = ({ fullName, username, email, password, role }) => {
-    const newUser = {
-      fullName,
-      username,
-      email,
-      password,
-      role,
-    };
-    fake.users.push(newUser);
+    try {
+      const newUser = {
+        fullName,
+        username,
+        email,
+        password,
+        role,
+      };
+      fake.users.push(newUser);
+      return { success: true };
+    } catch (error) {
+      return { success: false };
+    }
   };
 
   const memoized = useMemo(
