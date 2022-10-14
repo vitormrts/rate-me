@@ -24,3 +24,9 @@ export const Input = styled.input`
   width: 16px;
   height: 16px;
 `;
+
+export const Error = styled.span`
+  ${({ theme }) => css`
+    color: ${theme.colors.indicators.error};
+  `}
+`;

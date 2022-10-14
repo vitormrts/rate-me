@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { Base, SignUpForm } from "../../components/auth";
 import content from "../../content";
-import { useAuth } from "../../hooks";
+import { useAuth, useToast } from "../../hooks";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const { dispatchToast } = useToast();
   const { signUp } = useAuth();
 
-  const goToLogin = () => navigate("/login");
+  const goToLogin = () => {
+    dispatchToast("User registered successfully", "SUCCESS");
+    navigate("/login");
+  };
 
   return (
     <Base title="Sign Up" subtitle="First create your account">

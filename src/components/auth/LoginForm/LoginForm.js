@@ -4,7 +4,7 @@ import * as S from "./LoginForm.style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const LoginForm = ({ errorMessages, onSubmit, onSuccess }) => {
+const LoginForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
   const initialState = {
     username: "",
     password: "",
@@ -34,7 +34,7 @@ const LoginForm = ({ errorMessages, onSubmit, onSuccess }) => {
     const isValid = validate(formErrors);
     if (isValid) {
       const { success } = onSubmit(data);
-      success && onSuccess();
+      success ? onSuccess() : onError();
       return;
     }
   };

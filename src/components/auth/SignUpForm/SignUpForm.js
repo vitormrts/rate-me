@@ -47,7 +47,7 @@ const SignUpForm = ({ errorMessages, onSubmit, onSuccess }) => {
         data.password,
         data.confirmPassword
       ),
-      role: !data.role,
+      role: checkEmpty(data.role),
     };
     setErrors(formErrors);
     const isValid = validate(formErrors);
