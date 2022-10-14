@@ -9,5 +9,9 @@ export const Button = styled.button`
     border-radius: 4px;
     width: 100%;
     cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      filter: brightness(0.8);
+    }
   `}
 `;

@@ -1,5 +1,5 @@
 import { createContext, useMemo, useState } from "react";
-import fake from "../../data/fake";
+import { fake, generateUniqueId } from "../devUtils";
 
 export const AuthContext = createContext();
 
@@ -22,11 +22,13 @@ const AuthContextProvider = ({ children }) => {
   const signUp = ({ fullName, username, email, password, role }) => {
     try {
       const newUser = {
+        id: generateUniqueId(),
         fullName,
         username,
         email,
         password,
         role,
+        classrooms: [],
       };
       fake.users.push(newUser);
       return { success: true };

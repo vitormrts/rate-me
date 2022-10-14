@@ -8,5 +8,9 @@ export const OutlinedButton = styled.button`
     min-width: 170px;
     padding: 15px 30px;
     border-radius: 4px;
+    transition: 0.2s;
+    &:hover {
+      filter: brightness(0.8);
+    }
   `}
 `;

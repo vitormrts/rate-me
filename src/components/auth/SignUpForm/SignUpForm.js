@@ -31,10 +31,7 @@ const SignUpForm = ({ errorMessages, onSubmit, onSuccess }) => {
   const checkConfirmPassword = (password, confirmPassword) => {
     const isEmpty = checkEmpty(confirmPassword);
     if (isEmpty) return isEmpty;
-    console.log(password);
-    console.log(confirmPassword);
     if (password !== confirmPassword) {
-      console.log("oi");
       return errorMessages.input.passwordsDontMatch;
     }
   };

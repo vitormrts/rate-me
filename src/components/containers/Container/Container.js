@@ -6,7 +6,11 @@ const Container = ({ children, title = "Title", Button }) => {
       <S.Content>
         <S.TitleGroup>
           <S.Title>{title}</S.Title>
-          {Button && <Button />}
+          {Button && (
+            <S.ButtonAdapter>
+              <Button />
+            </S.ButtonAdapter>
+          )}
         </S.TitleGroup>
         <S.Children>{children}</S.Children>
       </S.Content>

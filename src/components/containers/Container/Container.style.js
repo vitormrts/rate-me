@@ -18,6 +18,10 @@ export const Title = styled.h2`
   `}
 `;
 
+export const ButtonAdapter = styled.div`
+  max-width: 200px;
+`;
+
 export const Content = styled(DefaultContainer)`
   display: flex;
   align-items: center;
