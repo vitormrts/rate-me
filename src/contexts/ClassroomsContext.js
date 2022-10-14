@@ -1,12 +1,12 @@
 import { createContext, useEffect, useMemo, useState } from "react";
-import { fake, generateUniqueId } from "../devUtils";
+import { generateUniqueId } from "../devUtils";
 import { useAuth } from "../hooks";
 
 export const ClassroomsContext = createContext();
 
 const ClassroomsContextProvider = ({ children }) => {
   const { user } = useAuth();
-  const [classrooms, setClassrooms] = useState([]);
+  const [myClassrooms, setMyClassrooms] = useState([]);
 
   const addClassroom = ({ name, description }) => {
     try {
@@ -15,8 +15,7 @@ const ClassroomsContextProvider = ({ children }) => {
         name,
         description,
       };
-      fake.classrooms.push(newClassroom);
-      user.classrooms.push(newClassroom);
+      setMyClassrooms([...myClassrooms, newClassroom]);
       return { success: true };
     } catch (error) {
       return { success: false };
@@ -27,15 +26,15 @@ const ClassroomsContextProvider = ({ children }) => {
     if (!user) {
       return;
     }
-    setClassrooms(user.classrooms);
+    setMyClassrooms(user.classrooms);
   }, [user]);
 
   const memoized = useMemo(
     () => ({
       addClassroom,
-      classrooms,
+      myClassrooms,
     }),
-    [addClassroom, classrooms]
+    [addClassroom, myClassrooms]
   );
 
   return (

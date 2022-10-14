@@ -34,7 +34,6 @@ const AddClassroomModal = ({ errorMessages, onSubmit, onSuccess }) => {
     if (isValid) {
       const { success } = onSubmit(data);
       success && onSuccess();
-      console.log(success);
       return;
     }
   };

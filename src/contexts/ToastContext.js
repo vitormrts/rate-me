@@ -5,8 +5,6 @@ export const ToastContext = createContext();
 
 const ToastContextProvider = ({ children }) => {
   const dispatchToast = (message, status) => {
-    console.log(message);
-    console.log(status);
     const props = {
       position: "top-right",
       autoClose: 5000,

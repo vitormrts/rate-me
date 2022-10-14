@@ -1,14 +1,16 @@
 import { createContext, useMemo, useState } from "react";
 import { fake, generateUniqueId } from "../devUtils";
+import { usePersistedState } from "../hooks";
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
+  const [users, setUsers] = usePersistedState("users", fake.users); // NOTE: mocked
   const [user, setUser] = useState();
 
   const login = ({ username, password }) => {
     try {
-      const matchUser = fake.users.find((user) => user.username === username);
+      const matchUser = users.find((user) => user.username === username);
       if (matchUser.password === password) {
         setUser(matchUser);
         return { success: true };
@@ -30,7 +32,7 @@ const AuthContextProvider = ({ children }) => {
         role,
         classrooms: [],
       };
-      fake.users.push(newUser);
+      setUsers([...users, newUser]);
       return { success: true };
     } catch (error) {
       return { success: false };

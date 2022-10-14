@@ -7,7 +7,7 @@ import { useAuth, useClassrooms, useModal } from "../../hooks";
 const ClassroomsPage = () => {
   const { open } = useModal();
   const { user } = useAuth();
-  const { classrooms } = useClassrooms();
+  const { myClassrooms } = useClassrooms();
 
   const CreateClassroomButton = () => {
     const showButton = isTeacher(user.role);
@@ -22,7 +22,7 @@ const ClassroomsPage = () => {
   return (
     <>
       <Container title="My classrooms" Button={CreateClassroomButton}>
-        <Grid classrooms={classrooms} />
+        <Grid classrooms={myClassrooms} />
       </Container>
     </>
   );
