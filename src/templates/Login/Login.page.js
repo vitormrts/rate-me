@@ -7,14 +7,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const goToMatches = () => navigate("/matches");
+  const goToClassrooms = () => navigate("/classrooms");
 
   return (
     <Base title="Login" subtitle="Enter your email and password">
       <LoginForm
         errorMessages={content.errors}
         onSubmit={login}
-        onSuccess={goToMatches}
+        onSuccess={goToClassrooms}
       />
     </Base>
   );

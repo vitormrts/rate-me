@@ -14,12 +14,22 @@ const teacher = {
   role: "teacher",
 };
 
+const classroom = {
+  id: 1234521,
+  name: "Sala 1",
+  description: "Esta é a sala 1. Uma sala apenas de exemplo",
+};
+
 const users = [student, teacher];
+
+const classrooms = Array(5).fill(classroom);
 
 const fake = {
   student,
   teacher,
   users,
+  classroom,
+  classrooms,
 };
 
 export default fake;

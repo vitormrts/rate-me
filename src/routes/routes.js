@@ -1,4 +1,4 @@
-import { HomePage, LoginPage, SignUpPage } from "../templates";
+import { ClassroomPage, HomePage, LoginPage, SignUpPage } from "../templates";
 
 import { createBrowserRouter } from "react-router-dom";
 
@@ -14,6 +14,10 @@ const routes = createBrowserRouter([
   {
     path: "login",
     element: <LoginPage />,
+  },
+  {
+    path: "classrooms",
+    element: <ClassroomPage />,
   },
 ]);
 

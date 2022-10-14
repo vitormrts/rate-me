@@ -9,6 +9,7 @@ const defaultTheme = {
   colors: {
     primary: {
       main: "#2864FF",
+      light: "#EFF6FF",
     },
     gray: {
       dark: "#253853",
