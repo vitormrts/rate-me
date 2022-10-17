@@ -1,4 +1,5 @@
 import { createContext, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { fake, generateUniqueId } from "../devUtils";
 import { usePersistedState } from "../hooks";
 
@@ -13,10 +14,12 @@ const AuthContextProvider = ({ children }) => {
       const matchUser = users.find((user) => user.username === username);
       if (matchUser.password === password) {
         setUser(matchUser);
+        toast.success("User logged in successfully");
         return { success: true };
       }
       throw Error();
     } catch (error) {
+      toast.error("Incorrect username or password");
       return { success: false };
     }
   };
@@ -33,8 +36,10 @@ const AuthContextProvider = ({ children }) => {
         classrooms: [],
       };
       setUsers([...users, newUser]);
+      toast.success("User registered successfully");
       return { success: true };
     } catch (error) {
+      toast.success("An error occurred when create user");
       return { success: false };
     }
   };

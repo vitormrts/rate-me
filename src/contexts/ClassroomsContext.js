@@ -1,4 +1,5 @@
 import { createContext, useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { generateUniqueId } from "../devUtils";
 import { useAuth } from "../hooks";
 
@@ -16,8 +17,10 @@ const ClassroomsContextProvider = ({ children }) => {
         description,
       };
       setMyClassrooms([...myClassrooms, newClassroom]);
+      toast.success("Classroom created successfully");
       return { success: true };
     } catch (error) {
+      toast.error("There was an error creating the room");
       return { success: false };
     }
   };

@@ -1,35 +1,11 @@
-import { ToastContainer, toast } from "react-toastify";
-import { createContext, useMemo } from "react";
+import { ToastContainer } from "react-toastify";
+import { createContext } from "react";
 
 export const ToastContext = createContext();
 
 const ToastContextProvider = ({ children }) => {
-  const dispatchToast = (message, status) => {
-    const props = {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    };
-
-    const toasts = {
-      INFO: toast.info,
-      SUCCESS: toast.success,
-      WARN: toast.warn,
-      ERROR: toast.error,
-    };
-    const targetToast = toasts[status];
-    targetToast ? targetToast(message, props) : toast(message, props);
-  };
-
-  const memoized = useMemo(() => ({ dispatchToast }), [dispatchToast]);
-
   return (
-    <ToastContext.Provider value={memoized}>
+    <ToastContext.Provider>
       <ToastContainer
         position="top-right"
         autoClose={3000}

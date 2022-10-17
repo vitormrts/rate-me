@@ -35,7 +35,6 @@ const LoginForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
     if (isValid) {
       const { success } = onSubmit(data);
       success ? onSuccess() : onError();
-      return;
     }
   };
 

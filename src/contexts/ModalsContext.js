@@ -1,12 +1,11 @@
 import { createContext, useMemo, useState } from "react";
 import { AddClassroomModal, Modal } from "../components/modals";
 import content from "../content";
-import { useClassrooms, useToast } from "../hooks";
+import { useClassrooms } from "../hooks";
 
 export const ModalsContext = createContext();
 
 const ModalsContextProvider = ({ children }) => {
-  const { dispatchToast } = useToast();
   const { addClassroom } = useClassrooms();
   const [isOpen, setIsOpen] = useState(false);
   const [modal, setModal] = useState("");
@@ -16,17 +15,12 @@ const ModalsContextProvider = ({ children }) => {
     setIsOpen(false);
   };
 
-  const onAddClassroomSuccess = () => {
-    close();
-    dispatchToast("Classroom created", "SUCCESS");
-  };
-
   const modals = {
     ADD_CLASSROOM: (
       <AddClassroomModal
         errorMessages={content.errors}
         onSubmit={addClassroom}
-        onSuccess={onAddClassroomSuccess}
+        onSuccess={close}
       />
     ),
   };
