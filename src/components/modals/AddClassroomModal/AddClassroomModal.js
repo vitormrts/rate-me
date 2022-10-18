@@ -2,8 +2,13 @@ import * as S from "./AddClassroomModal.style";
 import { Input } from "../../inputs";
 import { Button } from "../../buttons";
 import { useState } from "react";
+import { useClassrooms } from "../../../hooks";
+import { toast } from "react-toastify";
+import content from "../../../content";
 
-const AddClassroomModal = ({ errorMessages, onSubmit, onSuccess }) => {
+const AddClassroomModal = ({ close }) => {
+  const { addClassroom } = useClassrooms();
+
   const initialState = {
     name: "",
     description: "",
@@ -12,6 +17,15 @@ const AddClassroomModal = ({ errorMessages, onSubmit, onSuccess }) => {
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});
 
+  const onSuccess = () => {
+    toast.success("Classroom created successfully");
+    close();
+  };
+
+  const onError = () => {
+    toast.error("There was an error creating the room");
+  };
+
   const validate = (formErrors) => {
     const isValid = Object.keys(formErrors).every((key) => !formErrors[key]);
     return isValid;
@@ -19,7 +33,7 @@ const AddClassroomModal = ({ errorMessages, onSubmit, onSuccess }) => {
 
   const checkEmpty = (value) => {
     if (!value) {
-      return errorMessages.input.empty;
+      return content.errors.input.empty;
     }
   };
 
@@ -32,9 +46,10 @@ const AddClassroomModal = ({ errorMessages, onSubmit, onSuccess }) => {
     setErrors(formErrors);
     const isValid = validate(formErrors);
     if (isValid) {
-      const { success } = onSubmit(data);
-      success && onSuccess();
-      return;
+      (async () => {
+        const success = await addClassroom(data);
+        success ? onSuccess() : onError();
+      })();
     }
   };
 

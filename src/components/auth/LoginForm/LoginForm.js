@@ -33,8 +33,10 @@ const LoginForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
     setErrors(formErrors);
     const isValid = validate(formErrors);
     if (isValid) {
-      const { success } = onSubmit(data);
-      success ? onSuccess() : onError();
+      (async () => {
+        const { success } = await onSubmit(data);
+        success ? onSuccess() : onError();
+      })();
     }
   };
 

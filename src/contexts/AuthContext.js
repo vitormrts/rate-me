@@ -1,47 +1,51 @@
 import { createContext, useMemo, useState } from "react";
-import { toast } from "react-toastify";
-import { fake, generateUniqueId } from "../devUtils";
-import { usePersistedState } from "../hooks";
+import { generateUniqueId } from "../devUtils";
+import { api } from "../services";
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
-  const [users, setUsers] = usePersistedState("users", fake.users); // NOTE: mocked
   const [user, setUser] = useState();
 
-  const login = ({ username, password }) => {
-    try {
-      const matchUser = users.find((user) => user.username === username);
-      if (matchUser.password === password) {
-        setUser(matchUser);
-        toast.success("User logged in successfully");
-        return { success: true };
+  const login = async ({ username, password }) => {
+    const fetchLogin = async () => {
+      try {
+        const response = await api.get({ url: "users" });
+        const { data } = response;
+        const matchUser = data.find((user) => user.username === username);
+        if (matchUser.password === password) {
+          setUser(matchUser);
+          return { success: true };
+        }
+        throw Error();
+      } catch (error) {
+        return { success: false };
       }
-      throw Error();
-    } catch (error) {
-      toast.error("Incorrect username or password");
-      return { success: false };
-    }
+    };
+    const status = await fetchLogin();
+    return status;
   };
 
-  const signUp = ({ fullName, username, email, password, role }) => {
-    try {
-      const newUser = {
-        id: generateUniqueId(),
-        fullName,
-        username,
-        email,
-        password,
-        role,
-        classrooms: [],
-      };
-      setUsers([...users, newUser]);
-      toast.success("User registered successfully");
-      return { success: true };
-    } catch (error) {
-      toast.success("An error occurred when create user");
-      return { success: false };
-    }
+  const signUp = async ({ fullName, username, email, password, role }) => {
+    const fetchSignUp = async () => {
+      try {
+        const newUser = {
+          id: generateUniqueId(),
+          fullName,
+          username,
+          email,
+          password,
+          role,
+          classrooms: [],
+        };
+        await api.post({ url: "users", data: newUser });
+        return { success: true };
+      } catch (error) {
+        return { success: false };
+      }
+    };
+    const status = await fetchSignUp();
+    return status;
   };
 
   const memoized = useMemo(

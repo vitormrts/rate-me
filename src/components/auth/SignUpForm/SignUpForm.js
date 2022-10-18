@@ -4,7 +4,7 @@ import * as S from "./SignUpForm.style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const SignUpForm = ({ errorMessages, onSubmit, onSuccess }) => {
+const SignUpForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
   const initialState = {
     fullName: "",
     username: "",
@@ -52,9 +52,10 @@ const SignUpForm = ({ errorMessages, onSubmit, onSuccess }) => {
     setErrors(formErrors);
     const isValid = validate(formErrors);
     if (isValid) {
-      const { success } = onSubmit(data);
-      success && onSuccess();
-      return;
+      (async () => {
+        const { success } = await onSubmit(data);
+        success ? onSuccess() : onError();
+      })();
     }
   };
 

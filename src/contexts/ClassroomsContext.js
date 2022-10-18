@@ -1,36 +1,39 @@
 import { createContext, useEffect, useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import { generateUniqueId } from "../devUtils";
-import { useAuth } from "../hooks";
+import { api } from "../services";
 
 export const ClassroomsContext = createContext();
 
 const ClassroomsContextProvider = ({ children }) => {
-  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [myClassrooms, setMyClassrooms] = useState([]);
 
-  const addClassroom = ({ name, description }) => {
-    try {
-      const newClassroom = {
-        id: generateUniqueId(),
-        name,
-        description,
-      };
-      setMyClassrooms([...myClassrooms, newClassroom]);
-      toast.success("Classroom created successfully");
-      return { success: true };
-    } catch (error) {
-      toast.error("There was an error creating the room");
-      return { success: false };
-    }
+  const addClassroom = async ({ name, description }) => {
+    setLoading(true);
+    const addClassroomFetch = async () => {
+      try {
+        const newClassroom = {
+          id: generateUniqueId(),
+          name,
+          description,
+        };
+        await api.post({ url: "classrooms", data: newClassroom });
+        return { success: true };
+      } catch (error) {
+        return { success: false };
+      }
+    };
+    const status = await addClassroomFetch();
+    setLoading(false);
+    return status;
   };
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
-    setMyClassrooms(user.classrooms);
-  }, [user]);
+    (async () => {
+      const response = await api.get({ url: "classrooms" });
+      setMyClassrooms(response.data);
+    })();
+  }, [loading]);
 
   const memoized = useMemo(
     () => ({
