@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
-import { DefaultWrapper, DefaultContainer } from "../../../styles/Common";
+import { DefaultContainer } from "../../../styles/Common";
 
-export const Wrapper = styled(DefaultWrapper)`
+export const Wrapper = styled.div`
   ${({ theme, backgroundGray }) => css`
+    width: 100%;
     background-color: ${backgroundGray
       ? theme.colors.gray.light
       : theme.colors.white};

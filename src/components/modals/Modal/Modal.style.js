@@ -11,6 +11,7 @@ export const Overlay = styled.div`
     align-items: center;
     justify-content: center;
     transition: 0.2s;
+    z-index: 100;
     ${open &&
     css`
       opacity: 1;

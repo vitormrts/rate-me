@@ -1,24 +1,29 @@
-import { ClassroomPage, HomePage, LoginPage, SignUpPage } from "../templates";
+import {
+  ExamsPage,
+  ClassroomsPage,
+  HomePage,
+  LoginPage,
+  SignUpPage,
+  StudentsPage,
+  DashboardPage,
+} from "../templates";
 
-import { createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "sign-up",
-    element: <SignUpPage />,
-  },
-  {
-    path: "login",
-    element: <LoginPage />,
-  },
-  {
-    path: "classrooms",
-    element: <ClassroomPage />,
-  },
-]);
+const Router = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route path="sign-up" element={<SignUpPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="classrooms" element={<ClassroomsPage />} />
+        <Route path="exams" element={<ExamsPage />} />
+        <Route path="students" element={<StudentsPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default routes;
+export default Router;

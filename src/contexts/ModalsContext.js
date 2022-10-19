@@ -1,5 +1,5 @@
 import { createContext, useMemo, useState } from "react";
-import { AddClassroomModal, Modal } from "../components/modals";
+import { AddClassroomModal, ConfirmModal, Modal } from "../components/modals";
 
 export const ModalsContext = createContext();
 
@@ -14,6 +14,7 @@ const ModalsContextProvider = ({ children }) => {
 
   const modals = {
     ADD_CLASSROOM: <AddClassroomModal close={close} />,
+    CONFIRM: <ConfirmModal close={close} />,
   };
 
   const open = (name) => {

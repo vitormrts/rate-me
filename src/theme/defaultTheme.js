@@ -20,6 +20,7 @@ const defaultTheme = {
     white: "#fff",
     indicators: {
       error: "#FF2E2E",
+      success: "#3AD56B",
     },
   },
   font: {

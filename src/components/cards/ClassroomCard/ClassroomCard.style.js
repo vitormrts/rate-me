@@ -25,3 +25,21 @@ export const Description = styled.p`
     color: ${theme.colors.gray.variant};
   `}
 `;
+
+export const Info = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+`;
+export const Field = styled.p`
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    color: ${theme.colors.gray.dark};
+    strong {
+      color: ${theme.colors.gray.dark};
+    }
+  `}
+`;

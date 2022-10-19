@@ -84,6 +84,32 @@
       "id": "l9dgbuxrpsr6i2ot6d",
       "name": "Vender en línea",
       "description": "sf"
+    },
+    {
+      "id": "l9e72c1pvdddu4he5qn",
+      "name": "fsaafs",
+      "description": "safafs"
+    },
+    {
+      "id": "l9e72obcsw959h6qr8m",
+      "name": "fsaafs",
+      "description": "fasafs"
+    },
+    {
+      "id": "l9e72qfpiwiyq396lml",
+      "name": "asfafs",
+      "description": "asfasf"
+    },
+    {
+      "id": "l9e72u3eb8r53e5nz7j",
+      "name": "fasafs",
+      "description": "fasfas"
+    }
+  ],
+  "exams": [
+    {
+      "name": "First exam",
+      "limitTime": "20"
     }
   ]
 }

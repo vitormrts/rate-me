@@ -6,10 +6,12 @@ export const Wrapper = styled(DefaultWrapper)`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
 `;
 
-export const Container = styled(DefaultContainer)``;
+export const Container = styled(DefaultContainer)`
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
 
 export const Header = styled.header`
   margin-top: 32px;

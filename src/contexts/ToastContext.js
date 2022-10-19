@@ -5,7 +5,7 @@ export const ToastContext = createContext();
 
 const ToastContextProvider = ({ children }) => {
   return (
-    <ToastContext.Provider>
+    <ToastContext.Provider value={{}}>
       <ToastContainer
         position="top-right"
         autoClose={3000}

@@ -6,7 +6,7 @@ export const ClassroomsContext = createContext();
 
 const ClassroomsContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [myClassrooms, setMyClassrooms] = useState([]);
+  const [classrooms, setClassrooms] = useState([]);
 
   const addClassroom = async ({ name, description }) => {
     setLoading(true);
@@ -31,16 +31,16 @@ const ClassroomsContextProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       const response = await api.get({ url: "classrooms" });
-      setMyClassrooms(response.data);
+      setClassrooms(response.data);
     })();
   }, [loading]);
 
   const memoized = useMemo(
     () => ({
       addClassroom,
-      myClassrooms,
+      classrooms,
     }),
-    [addClassroom, myClassrooms]
+    [addClassroom, classrooms]
   );
 
   return (

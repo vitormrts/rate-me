@@ -4,6 +4,10 @@ import * as S from "./ClassroomCard.style";
 const ClassroomCard = ({
   name = "Lorem ipsum",
   description = "Sit amet cursus sit amet dictum sit amet justo donec enim diam vulputate ut pharetra sit amet aliquam id diam",
+  students,
+  exams,
+  openExams,
+  closedExams,
   onClick,
 }) => {
   const handleOnClick = useCallback(() => {
@@ -13,6 +17,20 @@ const ClassroomCard = ({
   return (
     <S.Wrapper onClick={handleOnClick}>
       <S.Name>{name}</S.Name>
+      <S.Info>
+        <S.Field>
+          <strong>Students:</strong> {students}
+        </S.Field>
+        <S.Field>
+          <strong>Total exams:</strong> {exams}
+        </S.Field>
+        <S.Field>
+          <strong>Open exams:</strong> {openExams}
+        </S.Field>
+        <S.Field>
+          <strong>Closed exams:</strong> {closedExams}
+        </S.Field>
+      </S.Info>
       <S.Description>{description}</S.Description>
     </S.Wrapper>
   );

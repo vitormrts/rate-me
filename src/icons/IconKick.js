@@ -1,0 +1,19 @@
+const IconKick = ({ color = "#2864FF" }) => (
+  <svg
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1"
+    fill="none"
+    stroke={color}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.5"
+  >
+    <circle cy="8" cx="8" r="6.25" />
+    <line x1="4.25" x2="12.25" y1="11.75" y2="3.75" />
+  </svg>
+);
+
+export default IconKick;

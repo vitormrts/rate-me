@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
       font-family: "Roboto", "sans-serif";
     }
+    body {
+      background-color: ${theme.colors.gray.light};
+    }
     h1 {
       font-size: ${theme.font.sizes.xxxl};
       line-height: 75px;
