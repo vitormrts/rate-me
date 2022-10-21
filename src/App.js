@@ -4,7 +4,6 @@ import {
   AuthContextProvider,
   ClassroomsContextProvider,
   ModalsContextProvider,
-  SideBarContextProvider,
   ToastContextProvider,
 } from "./contexts";
 import GlobalStyle from "./styles/GlobalStyle";

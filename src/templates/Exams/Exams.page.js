@@ -7,16 +7,24 @@ import { StatusTag } from "../../components/tags";
 import { ShuffleRounded, DeleteRounded } from "@mui/icons-material";
 import { DefaultContainer, DefaultWrapper } from "../../styles/Common";
 import { useNavigate } from "react-router-dom";
+import { ConfirmModal } from "../../components/modals";
+import { toast } from "react-toastify";
 
 const ExamsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const isTeacher = isTeacherRole(user?.role);
+  const isTeacher = isTeacherRole(user?.role) || true;
 
-  const onDeleteClick = (id) => console.log("delete click ", id);
+  const onConfirmExamDelete = (id) => {
+    console.log("Remove exam ", id);
+    toast.success("Successfully deleted exam");
+  };
 
-  const onShuffleQuestionsClick = (id) => console.log("shuffle questions ", id);
+  const onShuffleQuestionsClick = (id) => {
+    console.log("Shuffle exam questions", id);
+    toast.success("Successfully shuffled exam questions");
+  };
 
   const onCreateExamClick = () => navigate("/exams/new");
 
@@ -78,14 +86,15 @@ const ExamsPage = () => {
           show: isTeacher,
         },
         {
-          onClick: (id) => onDeleteClick(id),
-          Component: ({ onClick }) => (
-            <IconButton
-              key="delete"
-              title="Delete"
-              Icon={DeleteRounded}
-              onClick={onClick}
-            />
+          onConfirm: (id) => onConfirmExamDelete(id),
+          Component: ({ onConfirm }) => (
+            <ConfirmModal
+              onConfirm={onConfirm}
+              text="Are you sure you want to delete this exam?"
+              description="By deleting this exam you will lose all data related to it."
+            >
+              <IconButton key="delete" title="Delete" Icon={DeleteRounded} />
+            </ConfirmModal>
           ),
           show: isTeacher,
         },

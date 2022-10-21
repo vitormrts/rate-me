@@ -12,7 +12,6 @@ const Group = ({ id, children, title = "Title", Button }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   const toggleSideBar = (open) => (event) => {
-    console.log(open);
     if (
       event &&
       event.type === "keydown" &&

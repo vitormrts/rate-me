@@ -20,9 +20,13 @@ const Table = ({ columns, data }) => {
         <TableCell key={column.key}>
           {column.actions &&
             column.actions.map(
-              ({ Component, onClick, show }) =>
+              ({ Component, show, onClick, onConfirm }) =>
                 show && (
-                  <Component key={column.key} onClick={() => onClick(row.id)} />
+                  <Component
+                    key={column.key}
+                    onClick={() => onClick(row.id)}
+                    onConfirm={() => onConfirm(row.id)}
+                  />
                 )
             )}
           {!column.actions && row[column.key]}

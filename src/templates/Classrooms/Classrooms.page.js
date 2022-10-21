@@ -3,19 +3,19 @@ import { Button, IconButton } from "../../components/buttons";
 import { copyToClipboard, isTeacherRole } from "../../utils";
 import { useAuth, useModal } from "../../hooks";
 import { Table } from "../../components/tables";
-import { EditRounded, DeleteRounded, PersonAdd } from "@mui/icons-material";
+import { DeleteRounded, EditRounded, PersonAdd } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { DefaultContainer, DefaultWrapper } from "../../styles/Common";
+import { ConfirmModal } from "../../components/modals";
 
 const ClassroomsPage = () => {
   const { open } = useModal();
   const { user } = useAuth();
 
-  const isTeacher = isTeacherRole(user?.role);
+  const isTeacher = isTeacherRole(user?.role) || true;
 
   const CreateClassroomButton = () => {
-    const showButton = isTeacherRole(user?.role);
-    if (!showButton) {
+    if (!isTeacher) {
       return;
     }
     return (
@@ -32,7 +32,10 @@ const ClassroomsPage = () => {
 
   const onEditButtonClick = (id) => console.log("edit ", id);
 
-  const onDeleteButtonClick = (id) => console.log("delete ", id);
+  const onConfirmClassroomDelete = (id) => {
+    console.log("Remove classroom ", id);
+    toast.success("Classroom removed successfully");
+  };
 
   const data = Array(20).fill({
     id: "1",
@@ -86,16 +89,18 @@ const ClassroomsPage = () => {
               onClick={onClick}
             />
           ),
+          show: isTeacher,
         },
         {
-          onClick: (id) => onDeleteButtonClick(id),
-          Component: ({ onClick }) => (
-            <IconButton
-              key="delete"
-              title="Delete"
-              Icon={DeleteRounded}
-              onClick={onClick}
-            />
+          onConfirm: (id) => onConfirmClassroomDelete(id),
+          Component: ({ onConfirm }) => (
+            <ConfirmModal
+              onConfirm={onConfirm}
+              text="Are you sure you want to delete this room?"
+              description="By deleting this room you will lose the exams and students related to it."
+            >
+              <IconButton key="delete" title="Delete" Icon={DeleteRounded} />
+            </ConfirmModal>
           ),
           show: isTeacher,
         },
