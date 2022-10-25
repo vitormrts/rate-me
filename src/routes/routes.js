@@ -1,11 +1,17 @@
 import {
   ExamsPage,
   ClassroomsPage,
+  ListClassroomsPage,
+  NewClassroomPage,
   HomePage,
   LoginPage,
   SignUpPage,
   StudentsPage,
   DashboardPage,
+  ListExamsPage,
+  NewExamPage,
+  EditClassroom,
+  ListStudentsPage,
 } from "../templates";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -15,12 +21,24 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route index element={<HomePage />} />
-        <Route path="sign-up" element={<SignUpPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="classrooms" element={<ClassroomsPage />} />
-        <Route path="exams" element={<ExamsPage />} />
-        <Route path="students" element={<StudentsPage />} />
-        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="auth">
+          <Route path="signup" element={<SignUpPage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
+        <Route path="dashboard" element={<DashboardPage />}>
+          <Route path="classrooms" element={<ClassroomsPage />}>
+            <Route path="new" element={<NewClassroomPage />} />
+            <Route path="list" element={<ListClassroomsPage />} />
+            <Route path=":id/edit" element={<EditClassroom />} />
+          </Route>
+          <Route path="exams" element={<ExamsPage />}>
+            <Route path="new" element={<NewExamPage />} />
+            <Route path="list" element={<ListExamsPage />} />
+          </Route>
+          <Route path="students" element={<StudentsPage />}>
+            <Route path="list" element={<ListStudentsPage />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

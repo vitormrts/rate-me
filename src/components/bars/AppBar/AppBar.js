@@ -2,17 +2,23 @@ import * as React from "react";
 import {
   AppBar as AppBarMui,
   Box,
-  Toolbar,
   Typography,
   IconButton,
 } from "@mui/material";
 import { MenuRounded } from "@mui/icons-material";
+import { Container } from "@mui/system";
 
 const AppBar = ({ onToggle }) => {
   return (
     <Box sx={{ width: "100vw", position: "fixed", top: 0 }}>
       <AppBarMui position="static">
-        <Toolbar>
+        <Container
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            minHeight: 64,
+          }}
+        >
           <IconButton
             size="large"
             edge="start"
@@ -26,7 +32,7 @@ const AppBar = ({ onToggle }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Rate Me
           </Typography>
-        </Toolbar>
+        </Container>
       </AppBarMui>
     </Box>
   );

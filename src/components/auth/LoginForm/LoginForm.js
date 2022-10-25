@@ -74,7 +74,7 @@ const LoginForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
       </S.Form>
       <S.AlreadyHaveAccountLabel>
         Dont have an account?
-        <Link to="/sign-up">Sign up</Link>
+        <Link to="/auth/signup">Sign up</Link>
       </S.AlreadyHaveAccountLabel>
     </>
   );

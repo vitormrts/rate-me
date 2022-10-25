@@ -10,7 +10,7 @@ const LoginPage = () => {
 
   const onSuccess = () => {
     toast.success("User logged in successfully");
-    navigate("/classrooms");
+    navigate("/dashboard/classrooms/list");
   };
 
   const onError = () => {

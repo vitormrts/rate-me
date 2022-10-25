@@ -15,11 +15,11 @@ const App = () => (
     <GlobalStyle />
     <ToastContextProvider>
       <AuthContextProvider>
-        <ModalsContextProvider>
-          <Router>
-            <ClassroomsContextProvider />
-          </Router>
-        </ModalsContextProvider>
+        {/* <ModalsContextProvider> */}
+        <Router>
+          <ClassroomsContextProvider />
+        </Router>
+        {/* </ModalsContextProvider> */}
       </AuthContextProvider>
     </ToastContextProvider>
   </ThemeProvider>

@@ -10,9 +10,8 @@ export const Container = styled(DefaultContainer)`
     flex-direction: column;
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.06);
     background-color: ${theme.colors.white};
-    max-height: 680px;
+    height: 680px;
     padding: 16px;
-    height: 100%;
     max-width: unset;
     width: 100%;
   `}

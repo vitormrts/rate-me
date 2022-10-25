@@ -5,9 +5,9 @@ import { Feature, HeroBanner } from "../../components/home";
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const onSignUpClick = () => navigate("sign-up");
+  const onSignUpClick = () => navigate("/auth/signup");
 
-  const onLoginClick = () => navigate("login");
+  const onLoginClick = () => navigate("/auth/login");
 
   return (
     <>

@@ -10,7 +10,7 @@ const SignUpPage = () => {
 
   const onSuccess = () => {
     toast.success("User registered successfully");
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   const onError = () => {
