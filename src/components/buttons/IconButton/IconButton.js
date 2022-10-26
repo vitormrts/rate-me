@@ -1,13 +1,13 @@
 import { Tooltip, IconButton as IconButtonMui } from "@mui/material";
 import { useCallback } from "react";
 
-const IconButton = ({ title, Icon, onClick }) => {
+const IconButton = ({ title, Icon, onClick, ...props }) => {
   const handleOnClick = useCallback(() => {
     onClick && onClick();
   }, [onClick]);
 
   return (
-    <Tooltip title={title}>
+    <Tooltip title={title} {...props}>
       <IconButtonMui onClick={handleOnClick}>
         <Icon />
       </IconButtonMui>
