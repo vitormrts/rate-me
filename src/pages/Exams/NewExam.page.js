@@ -1,4 +1,11 @@
-import { Button, ButtonGroup, Divider, TextField } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  FormGroup,
+  Grid,
+  TextField,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +16,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { QuestionCard } from "../../components/cards";
 import { useState } from "react";
+import { Box } from "@mui/system";
 
 const NewExamPage = () => {
   const [questionsIndexes, setQuestionsIndexes] = useState([]);
@@ -72,7 +80,6 @@ const NewExamPage = () => {
     setQuestionCounter((prevCounter) => prevCounter - 1);
   };
 
-  // console.log(errors);
   const questionsMap = questionsIndexes.map((index) => {
     return (
       <QuestionCard
@@ -107,6 +114,7 @@ const NewExamPage = () => {
                 variant="standard"
                 error={errors[name]}
                 helperText={errors[name]?.message}
+                fullWidth
               />
             )}
           />
@@ -117,24 +125,35 @@ const NewExamPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onCreateExam)}>
-      <TextField
-        label="Exam name"
-        variant="standard"
-        error={errors.name}
-        helperText={errors.name?.message}
-        {...register("name")}
-      />
-      <TextField
-        label="Time limit (minutes)"
-        variant="standard"
-        error={errors.timeLimit}
-        helperText={errors.timeLimit?.message}
-        multiline
-        {...register("timeLimit")}
-      />
-      <DateComponent name="initialDate" label="Initial Date" />
-      <DateComponent name="finalDate" label="Final Date" />
-      <Divider sx={{ margin: "8px 0 40px" }} />
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            label="Exam name"
+            variant="standard"
+            error={errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+            {...register("name")}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            label="Time limit (minutes)"
+            variant="standard"
+            error={errors.timeLimit}
+            helperText={errors.timeLimit?.message}
+            fullWidth
+            {...register("timeLimit")}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <DateComponent name="initialDate" label="Initial Date" />
+        </Grid>
+        <Grid item xs={6}>
+          <DateComponent name="finalDate" label="Final Date" />
+        </Grid>
+      </Grid>
+      <Divider sx={{ margin: "40px 0" }} />
       {questionsMap}
       <ButtonGroup variant="contained" fullWidth sx={{ gap: "16px" }}>
         <Button variant="outlined" onClick={onAddQuestionClick}>

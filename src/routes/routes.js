@@ -12,6 +12,7 @@ import {
   NewExamPage,
   EditClassroom,
   ListStudentsPage,
+  ViewExamPage,
 } from "../pages";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -34,6 +35,7 @@ const Router = () => {
           <Route path="exams" element={<ExamsPage />}>
             <Route path="new" element={<NewExamPage />} />
             <Route path="list" element={<ListExamsPage />} />
+            <Route path=":id" element={<ViewExamPage />} />
           </Route>
           <Route path="students" element={<StudentsPage />}>
             <Route path="list" element={<ListStudentsPage />} />

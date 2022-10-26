@@ -8,6 +8,7 @@ export { default as ListExamsPage } from "./Exams/ListExams.page";
 export { default as LoginPage } from "./Auth/Login.page";
 export { default as NewClassroomPage } from "./Classrooms/NewClassroom.page";
 export { default as NewExamPage } from "./Exams/NewExam.page";
+export { default as ViewExamPage } from "./Exams/ViewExam.page";
 export { default as SignUpPage } from "./Auth/SignUp.page";
 export { default as StudentsPage } from "./Students/Students.page";
 export { default as ListStudentsPage } from "./Students/ListStudents.page";

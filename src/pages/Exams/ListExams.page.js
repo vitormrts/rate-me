@@ -3,14 +3,26 @@ import { isTeacherRole } from "../../utils";
 import { useAuth } from "../../hooks";
 import { Table } from "../../components/tables";
 import { StatusTag } from "../../components/tags";
-import { ShuffleRounded, DeleteRounded } from "@mui/icons-material";
+import {
+  ShuffleRounded,
+  DeleteRounded,
+  RemoveRedEyeRounded,
+  PersonRounded,
+} from "@mui/icons-material";
 import { ConfirmModal } from "../../components/modals";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ListExamsPage = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const isTeacher = isTeacherRole(user?.role) || true;
+
+  const onExamPerformanceClick = (id) =>
+    navigate(`/dashboard/exams/${id}/performance/`);
+
+  const onViewExamClick = (id) => navigate(`/dashboard/exams/${id}`);
 
   const onConfirmExamDelete = (id) => {
     console.log("Remove exam ", id);
@@ -62,6 +74,30 @@ const ListExamsPage = () => {
     {
       name: "Actions",
       actions: [
+        {
+          onClick: (id) => onViewExamClick(id),
+          Component: ({ onClick }) => (
+            <IconButton
+              key="view"
+              title="View exam questions"
+              Icon={RemoveRedEyeRounded}
+              onClick={onClick}
+            />
+          ),
+          show: isTeacher,
+        },
+        {
+          onClick: (id) => onExamPerformanceClick(id),
+          Component: ({ onClick }) => (
+            <IconButton
+              key="view"
+              title="View and evaluate students performance"
+              Icon={PersonRounded}
+              onClick={onClick}
+            />
+          ),
+          show: isTeacher,
+        },
         {
           onClick: (id) => onShuffleQuestionsClick(id),
           Component: ({ onClick }) => (

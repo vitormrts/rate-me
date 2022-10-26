@@ -49,7 +49,7 @@ const DashboardPage = () => {
     <DefaultWrapper>
       <SideBar items={items} onToggle={toggleSideBar} isOpen={sideBarOpen} />
       <AppBar onToggle={toggleSideBar} />
-      <Container sx={{ maxWidth: 1120 }}>
+      <Container>
         <Outlet />
       </Container>
     </DefaultWrapper>

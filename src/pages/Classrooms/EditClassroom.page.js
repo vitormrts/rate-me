@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -37,26 +37,36 @@ const EditClassroomPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onCreateClassroom)}>
-      <TextField
-        label="Name"
-        variant="standard"
-        error={errors.name}
-        helperText={errors.name?.message}
-        defaultValue={classroom.name}
-        {...register("name")}
-      />
-      <TextField
-        label="Description"
-        variant="standard"
-        error={errors.description}
-        helperText={errors.description?.message}
-        defaultValue={classroom.description}
-        multiline
-        {...register("description")}
-      />
-      <Button type="submit" variant="contained">
-        Edit
-      </Button>
+      <Grid container spacing={2}>
+        <Grid item sm={4}>
+          <TextField
+            label="Name"
+            variant="standard"
+            error={errors.name}
+            helperText={errors.name?.message}
+            defaultValue={classroom.name}
+            fullWidth
+            {...register("name")}
+          />
+        </Grid>
+        <Grid item sm={8}>
+          <TextField
+            label="Description"
+            variant="standard"
+            error={errors.description}
+            helperText={errors.description?.message}
+            defaultValue={classroom.description}
+            multiline
+            fullWidth
+            {...register("description")}
+          />
+        </Grid>
+        <Grid item sm={4}>
+          <Button type="submit" variant="contained" fullWidth>
+            Edit
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   );
 };

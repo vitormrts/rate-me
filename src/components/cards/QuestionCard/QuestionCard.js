@@ -79,7 +79,7 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
         </Box>
         {isClosedQuestion && (
           <Box mt={2}>
-            <FormControl>
+            <FormControl fullWidth>
               <FormLabel>Options</FormLabel>
               <Alternatives
                 alternatives={["1", "2", "3", "4"]}
