@@ -1,17 +1,38 @@
-import axios from "axios";
+import * as firestore from "firebase/firestore";
+import { db } from "./firebase";
 
-const instance = axios.create({
-  baseURL: "http://localhost:3333",
-});
+const getById = async ({ collection, id }) => {
+  const collectionDoc = firestore.doc(db, collection, id);
+  const collectionSnap = await firestore.getDoc(collectionDoc);
+  return collectionSnap.data();
+};
 
-const get = ({ url, headers }) => instance.get(url, { headers });
+const getAll = async ({ collection }) => {
+  const collectionDocs = await firestore.getDocs(
+    firestore.collection(db, collection)
+  );
+  const data = collectionDocs.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+};
 
-const post = ({ url, headers, data }) => instance.post(url, data, { headers });
+const put = async ({ collection, id, data }) => {
+  const doc = firestore.doc(db, collection, id);
+  await firestore.updateDoc(doc, data);
+};
+
+const remove = async ({ collection, id }) => {
+  const doc = firestore.doc(db, collection, id);
+  await firestore.deleteDoc(doc);
+};
 
 const api = {
-  get,
-  instance,
-  post,
+  getById,
+  getAll,
+  put,
+  remove,
 };
 
 export default api;

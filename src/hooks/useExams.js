@@ -1,22 +1,26 @@
-import {
-  addDoc,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { collectionsRef, db } from "../services/firebase";
+import api from "../services/api";
+import { collectionsRef } from "../services/firebase";
 
 const useExams = (examId) => {
   const [exam, setExam] = useState({});
   const [allExams, setAllExams] = useState([]);
 
   const createExam = async (data) => {
-    const { name, classroom, timeLimit, initialDate, finalDate, questions } =
-      data;
+    const {
+      name,
+      classroom: classroomId,
+      timeLimit,
+      initialDate,
+      finalDate,
+      questions,
+    } = data;
     try {
+      const classroom = await api.getById({
+        collection: "classrooms",
+        id: classroomId,
+      });
       const formattedQuestions = questions.map((question) => {
         const optionalFields = question.type === "closed" && {
           alternatives: question.alternatives,
@@ -30,7 +34,7 @@ const useExams = (examId) => {
       });
       const newExam = {
         name,
-        classroom,
+        classroom: classroom.name,
         timeLimit,
         initialDate,
         finalDate,
@@ -47,8 +51,11 @@ const useExams = (examId) => {
 
   const updateExam = async (data, id) => {
     try {
-      const examDoc = doc(db, "exams", id);
-      await updateDoc(examDoc, data);
+      await api.put({
+        collection: "exams",
+        id,
+        data,
+      });
       return {
         success: true,
         message: "Exam edited successfully",
@@ -63,8 +70,7 @@ const useExams = (examId) => {
 
   const deleteExam = async (id) => {
     try {
-      const examDoc = doc(db, "exams", id);
-      await deleteDoc(examDoc);
+      await api.remove({ collection: "exams", id });
       return {
         success: true,
         message: "Exam successfully deleted",
@@ -77,9 +83,17 @@ const useExams = (examId) => {
     }
   };
 
+  const deleteRelatedExams = async (name) => {
+    const exams = query(collectionsRef.exams, where("classroom", "==", name));
+    const querySnapshot = await getDocs(exams);
+    querySnapshot.forEach(async (doc) => {
+      deleteExam(doc.id);
+    });
+  };
+
   const shuffleExamQuestions = async (id) => {
     try {
-      const targetExam = await getExam(id);
+      const targetExam = await api.getById({ collection: "exams", id });
       const shuffledQuestions = targetExam.questions.sort(
         () => Math.random() - 0.5
       );
@@ -96,21 +110,9 @@ const useExams = (examId) => {
     }
   };
 
-  const getExam = async (id) => {
-    const examDoc = doc(db, "exams", id);
-    const examSnap = await getDoc(examDoc);
-    return examSnap.data();
-  };
-
-  const getAllExams = async () => {
-    const data = await getDocs(collectionsRef.exams);
-    const exams = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    return exams;
-  };
-
   useEffect(() => {
     (async () => {
-      const exams = await getAllExams();
+      const exams = await api.getAll({ collection: "exams" });
       setAllExams(exams);
     })();
   }, []);
@@ -118,7 +120,7 @@ const useExams = (examId) => {
   useEffect(() => {
     if (!examId) return;
     (async () => {
-      const exam = await getExam(examId);
+      const exam = await api.getById({ collection: "exams", id: examId });
       setExam(exam);
     })();
   }, []);
@@ -126,12 +128,11 @@ const useExams = (examId) => {
   return {
     allExams,
     exam,
-    getAllExams,
-    getExam,
     createExam,
     deleteExam,
     updateExam,
     shuffleExamQuestions,
+    deleteRelatedExams,
   };
 };
 

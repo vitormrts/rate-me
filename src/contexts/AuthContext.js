@@ -11,7 +11,7 @@ const AuthContextProvider = ({ children }) => {
   const login = async ({ username, password }) => {
     const fetchLogin = async () => {
       try {
-        const response = await api.get({ url: "users" });
+        const response = await api.getById({ collection: "users" });
         const { data } = response;
         const matchUser = data.find((user) => user.username === username);
         if (matchUser.password === password) {

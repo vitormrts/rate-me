@@ -1,19 +1,9 @@
-import {
-  addDoc,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { addDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { collectionsRef, db } from "../services/firebase";
-import useExams from "./useExams";
+import { api } from "../services";
+import { collectionsRef } from "../services/firebase";
 
 const useClassrooms = (classroomId) => {
-  const { deleteExam } = useExams();
   const [classroom, setClassroom] = useState();
   const [allClassrooms, setAllClassrooms] = useState([]);
 
@@ -41,8 +31,21 @@ const useClassrooms = (classroomId) => {
 
   const updateClassroom = async (data, id) => {
     try {
-      const classroomDoc = doc(db, "classrooms", id);
-      await updateDoc(classroomDoc, data);
+      const relatedExams = await getRelatedExams(id);
+      relatedExams.forEach(async (snapShot) => {
+        await api.put({
+          collection: "exams",
+          data: { classroom: data.name },
+          id: snapShot.id,
+        });
+      });
+
+      await api.put({
+        collection: "classrooms",
+        data,
+        id,
+      });
+
       return {
         success: true,
         message: "Classroom edited successfully",
@@ -57,20 +60,13 @@ const useClassrooms = (classroomId) => {
 
   const deleteClassroom = async (id) => {
     try {
-      const deleteRelatedExams = async () => {
-        const { name } = await getClassroom(id);
-        const exams = query(
-          collectionsRef.exams,
-          where("classroom", "==", name)
-        );
-        const querySnapshot = await getDocs(exams);
-        querySnapshot.forEach(async (doc) => {
-          deleteExam(doc.id);
-        });
-      };
-      deleteRelatedExams();
-      const classroomDoc = doc(db, "classrooms", id);
-      await deleteDoc(classroomDoc);
+      const relatedExams = await getRelatedExams(id);
+      relatedExams.forEach(async (snapShot) => {
+        await api.remove({ collection: "exams", id: snapShot.id });
+      });
+
+      await api.remove({ collection: "classrooms", id });
+
       return {
         success: true,
         message: "Classroom successfully deleted",
@@ -83,24 +79,9 @@ const useClassrooms = (classroomId) => {
     }
   };
 
-  const getAllClassrooms = async () => {
-    const data = await getDocs(collectionsRef.classrooms);
-    const classrooms = data.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return classrooms;
-  };
-
-  const getClassroom = async (id) => {
-    const classroomDoc = doc(db, "classrooms", id);
-    const classroomSnap = await getDoc(classroomDoc);
-    return classroomSnap.data();
-  };
-
   useEffect(() => {
     (async () => {
-      const classrooms = await getAllClassrooms();
+      const classrooms = await api.getAll({ collection: "classrooms" });
       setAllClassrooms(classrooms);
     })();
   }, []);
@@ -108,18 +89,33 @@ const useClassrooms = (classroomId) => {
   useEffect(() => {
     if (!classroomId) return;
     (async () => {
-      const classroom = await getClassroom(classroomId);
+      const classroom = await api.getById({
+        collection: "classrooms",
+        id: classroomId,
+      });
       setClassroom(classroom);
     })();
   }, []);
+
+  const getRelatedExams = async (id) => {
+    const classroom = await api.getById({
+      collection: "classrooms",
+      id,
+    });
+    const exams = query(
+      collectionsRef.exams,
+      where("classroom", "==", classroom.name)
+    );
+    const querySnapshot = await getDocs(exams);
+    console.log(querySnapshot);
+    return querySnapshot;
+  };
 
   return {
     allClassrooms,
     classroom,
     createClassroom,
     deleteClassroom,
-    getAllClassrooms,
-    getClassroom,
     updateClassroom,
   };
 };

@@ -182,8 +182,8 @@ const NewExamPage = () => {
                     }}
                     variant="standard"
                   >
-                    {allClassrooms.map(({ name }) => (
-                      <MenuItem key={name} value={name}>
+                    {allClassrooms.map(({ id, name }) => (
+                      <MenuItem key={id} value={id}>
                         {name}
                       </MenuItem>
                     ))}
