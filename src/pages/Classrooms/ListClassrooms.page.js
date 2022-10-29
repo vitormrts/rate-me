@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import { ConfirmModal } from "../../components/modals";
 import { IconButton } from "../../components/buttons";
 import { copyToClipboard, isTeacherRole } from "../../utils";
-import { useAuth } from "../../hooks";
+import { useAuth, useClassrooms } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 const ListClassroomsPage = () => {
+  const { allClassrooms, deleteClassroom } = useClassrooms();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -23,26 +24,17 @@ const ListClassroomsPage = () => {
   const onEditButtonClick = (id) =>
     navigate(`/dashboard/classrooms/${id}/edit`);
 
-  const onConfirmClassroomDelete = (id) => {
-    console.log("Remove classroom ", id);
-    toast.success("Classroom removed successfully");
+  const onConfirmClassroomDelete = async (id) => {
+    const { success, message } = await deleteClassroom(id);
+    if (success) {
+      toast.success(message);
+      navigate(0);
+      return;
+    }
+    toast.error(message);
   };
 
-  const data = Array(20).fill({
-    id: "1",
-    name: "Sala exemplo",
-    description: "Essa é uma sala de exemplo",
-    students: 10,
-    exams: 5,
-    openExams: 3,
-    closedExams: 2,
-  });
-
   const columns = [
-    {
-      name: "#",
-      key: "id",
-    },
     {
       name: "Name",
       key: "name",
@@ -110,7 +102,7 @@ const ListClassroomsPage = () => {
       ],
     },
   ];
-  return <Table columns={columns} data={data} />;
+  return <Table columns={columns} data={allClassrooms} />;
 };
 
 export default ListClassroomsPage;

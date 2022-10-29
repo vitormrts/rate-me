@@ -2,8 +2,11 @@ import {
   Button,
   ButtonGroup,
   Divider,
-  FormGroup,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -16,9 +19,11 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { QuestionCard } from "../../components/cards";
 import { useState } from "react";
-import { Box } from "@mui/system";
+import { useClassrooms, useExams } from "../../hooks";
 
 const NewExamPage = () => {
+  const { allClassrooms } = useClassrooms();
+  const { createExam } = useExams();
   const [questionsIndexes, setQuestionsIndexes] = useState([]);
   const [questionCounter, setQuestionCounter] = useState(0);
   const navigate = useNavigate();
@@ -26,6 +31,7 @@ const NewExamPage = () => {
 
   const schema = yup.object().shape({
     name: yup.string().required(inputErrors.empty),
+    classroom: yup.string().required(inputErrors.empty),
     timeLimit: yup
       .number()
       .typeError(inputErrors.mustBeNumber)
@@ -38,19 +44,23 @@ const NewExamPage = () => {
       .date()
       .typeError(inputErrors.mustBeDate)
       .required(inputErrors.empty),
-    questions: yup.array().of(
-      yup.object().shape({
-        statement: yup.string().required(inputErrors.empty),
-        type: yup.string().required(inputErrors.empty),
-        answer: yup.string(),
-        alternatives: yup.array().when("type", {
-          is: "closed",
-          then: yup
-            .array()
-            .of(yup.string().nullable().required(inputErrors.empty)),
-        }),
-      })
-    ),
+    questions: yup
+      .array()
+      .of(
+        yup.object().shape({
+          statement: yup.string().required(inputErrors.empty),
+          type: yup.string().required(inputErrors.empty),
+          answer: yup.string().defined(),
+          alternatives: yup.array().when("type", {
+            is: "closed",
+            then: yup
+              .array()
+              .of(yup.string().nullable().required(inputErrors.empty))
+              .defined(),
+          }),
+        })
+      )
+      .required(inputErrors.empty),
   });
 
   const {
@@ -58,14 +68,28 @@ const NewExamPage = () => {
     handleSubmit,
     formState: { errors },
     control,
+    getValues,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onCreateExam = (data) => {
-    console.log(data);
-    toast.success("Exam created successfully");
-    // navigate("/dashboard/exams/list");
+  const onSubmitClick = () => {
+    if (allClassrooms.length === 0) {
+      toast.info("You don't have any rooms created. Create one first.");
+    }
+    if (!getValues("questions")) {
+      toast.error("You need create questions.");
+    }
+  };
+
+  const onCreateExam = async (data) => {
+    const { success, error } = await createExam(data);
+    if (success) {
+      toast.success("Exam created successfully");
+      navigate("/dashboard/exams/list");
+      return;
+    }
+    toast.error(error);
   };
 
   const onAddQuestionClick = () => {
@@ -137,6 +161,39 @@ const NewExamPage = () => {
           />
         </Grid>
         <Grid item xs={6}>
+          <InputLabel
+            error={errors.classroom}
+            helperText={errors.classrom?.message}
+          >
+            Classroom
+          </InputLabel>
+          <FormControl fullWidth>
+            <Controller
+              name="classroom"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Select
+                    value={field.value}
+                    error={errors.classroom}
+                    helperText={errors.classrom?.message}
+                    onChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    variant="standard"
+                  >
+                    {allClassrooms.map(({ name }) => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                );
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
           <TextField
             label="Time limit (minutes)"
             variant="standard"
@@ -159,7 +216,7 @@ const NewExamPage = () => {
         <Button variant="outlined" onClick={onAddQuestionClick}>
           + Add question
         </Button>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" onClick={onSubmitClick}>
           Submit
         </Button>
       </ButtonGroup>

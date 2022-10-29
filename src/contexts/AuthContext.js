@@ -1,6 +1,7 @@
+import { addDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
-import { generateUniqueId } from "../devUtils";
 import { api } from "../services";
+import { collectionsRef } from "../services/firebase";
 
 export const AuthContext = createContext();
 
@@ -27,25 +28,20 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const signUp = async ({ fullName, username, email, password, role }) => {
-    const fetchSignUp = async () => {
-      try {
-        const newUser = {
-          id: generateUniqueId(),
-          fullName,
-          username,
-          email,
-          password,
-          role,
-          classrooms: [],
-        };
-        await api.post({ url: "users", data: newUser });
-        return { success: true };
-      } catch (error) {
-        return { success: false };
-      }
-    };
-    const status = await fetchSignUp();
-    return status;
+    try {
+      const newUser = {
+        fullName,
+        username,
+        email,
+        password,
+        role,
+        classrooms: [],
+      };
+      await addDoc(collectionsRef.users, newUser);
+      return { success: true };
+    } catch (error) {
+      return { success: false };
+    }
   };
 
   const memoized = useMemo(

@@ -1,6 +1,6 @@
 import { IconButton } from "../../components/buttons";
 import { isTeacherRole } from "../../utils";
-import { useAuth } from "../../hooks";
+import { useAuth, useExams } from "../../hooks";
 import { Table } from "../../components/tables";
 import { StatusTag } from "../../components/tags";
 import {
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const ListExamsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { allExams, deleteExam, shuffleExamQuestions } = useExams();
 
   const isTeacher = isTeacherRole(user?.role) || true;
 
@@ -24,21 +25,22 @@ const ListExamsPage = () => {
 
   const onViewExamClick = (id) => navigate(`/dashboard/exams/${id}`);
 
-  const onConfirmExamDelete = (id) => {
-    console.log("Remove exam ", id);
-    toast.success("Successfully deleted exam");
+  const onConfirmExamDelete = async (id) => {
+    const { success, message } = await deleteExam(id);
+    if (success) {
+      toast.success(message);
+      navigate(0);
+      return;
+    }
+    toast.error(message);
   };
 
-  const onShuffleQuestionsClick = (id) => {
-    console.log("Shuffle exam questions", id);
-    toast.success("Successfully shuffled exam questions");
+  const onShuffleQuestionsClick = async (id) => {
+    const { success, message } = await shuffleExamQuestions(id);
+    success ? toast.success(message) : toast.error(message);
   };
 
   const columns = [
-    {
-      name: "#",
-      key: "id",
-    },
     {
       name: "Name",
       key: "name",
@@ -51,21 +53,21 @@ const ListExamsPage = () => {
       name: "Time Limit",
       key: "timeLimit",
     },
+    // {
+    //   name: "Initial Date",
+    //   key: "initialDate",
+    // },
+    // {
+    //   name: "Final Date",
+    //   key: "finalDate",
+    // },
     {
-      name: "Initial Date",
-      key: "initialDate",
+      name: "Students Finished",
+      key: "studentsFinished",
     },
     {
-      name: "Final Date",
-      key: "finalDate",
-    },
-    {
-      name: "Finished",
-      key: "finished",
-    },
-    {
-      name: "Not finished",
-      key: "notFinished",
+      name: "Students not finished",
+      key: "studentsNotFinished",
     },
     {
       name: "Status",
@@ -127,46 +129,43 @@ const ListExamsPage = () => {
     },
   ];
 
-  const data = [
-    {
-      id: "1",
-      name: "first exam",
-      classroom: "Example classroom",
-      timeLimit: 20,
-      closed: true,
-      initialDate: "10/10/2022 2pm",
-      finalDate: "10/12/2022 2pm",
-      finished: 5,
-      notFinished: 10,
-      status: <StatusTag text="Finished" color="red" />,
-    },
-    {
-      id: "2",
-      name: "second exam",
-      classroom: "Example classroom",
-      timeLimit: 20,
-      closed: false,
-      initialDate: "10/10/2022 2pm",
-      finalDate: "10/12/2022 2pm",
-      finished: 10,
-      notFinished: 5,
-      status: <StatusTag text="In Progress" color="green" />,
-    },
-    {
-      id: "2",
-      name: "second exam",
-      classroom: "Example classroom",
-      timeLimit: 20,
-      closed: false,
-      initialDate: "10/10/2022 2pm",
-      finalDate: "10/12/2022 2pm",
-      finished: 10,
-      notFinished: 5,
-      status: <StatusTag text="Will Start" color="blue" />,
-    },
-  ];
+  // const data = [
+  //   {
+  //     name: "first exam",
+  //     classroom: "Example classroom",
+  //     timeLimit: 20,
+  //     closed: true,
+  //     initialDate: "10/10/2022 2pm",
+  //     finalDate: "10/12/2022 2pm",
+  //     finished: 5,
+  //     notFinished: 10,
+  //     status: <StatusTag text="Finished" color="red" />,
+  //   },
+  //   {
+  //     name: "second exam",
+  //     classroom: "Example classroom",
+  //     timeLimit: 20,
+  //     closed: false,
+  //     initialDate: "10/10/2022 2pm",
+  //     finalDate: "10/12/2022 2pm",
+  //     finished: 10,
+  //     notFinished: 5,
+  //     status: <StatusTag text="In Progress" color="green" />,
+  //   },
+  //   {
+  //     name: "second exam",
+  //     classroom: "Example classroom",
+  //     timeLimit: 20,
+  //     closed: false,
+  //     initialDate: "10/10/2022 2pm",
+  //     finalDate: "10/12/2022 2pm",
+  //     finished: 10,
+  //     notFinished: 5,
+  //     status: <StatusTag text="Will Start" color="blue" />,
+  //   },
+  // ];
 
-  return <Table columns={columns} data={data} />;
+  return <Table columns={columns} data={allExams} />;
 };
 
 export default ListExamsPage;
