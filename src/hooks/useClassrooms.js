@@ -1,45 +1,39 @@
-import { addDoc, getDocs, query, where } from "firebase/firestore";
+import { getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { api } from "../services";
 import { collectionsRef } from "../services/firebase";
+import { getFormattedClassroom } from "../utils";
 
 const useClassrooms = (classroomId) => {
   const [classroom, setClassroom] = useState();
   const [allClassrooms, setAllClassrooms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const createClassroom = async (data) => {
     const { name, description } = data;
     try {
       const newClassroom = {
         name,
-        description,
         teacherId: null,
-        students: 0,
-        exams: 0,
-        openExams: 0,
-        closedExams: 0,
+        description,
+        students: [],
+        exams: [],
       };
-      await addDoc(collectionsRef.classrooms, newClassroom);
-      return { success: true };
+      await api.post({ collection: "classrooms", data: newClassroom });
+      return {
+        success: true,
+        message: "Classroom created successfully",
+      };
     } catch (error) {
       return {
         success: false,
-        error: "There was an error create the classroom",
+        message: "There was an error create the classroom",
       };
     }
   };
 
   const updateClassroom = async (data, id) => {
     try {
-      const relatedExams = await getRelatedExams(id);
-      relatedExams.forEach(async (snapShot) => {
-        await api.put({
-          collection: "exams",
-          data: { classroom: data.name },
-          id: snapShot.id,
-        });
-      });
-
       await api.put({
         collection: "classrooms",
         data,
@@ -60,11 +54,15 @@ const useClassrooms = (classroomId) => {
 
   const deleteClassroom = async (id) => {
     try {
+      // Delete related exams to this classroom
       const relatedExams = await getRelatedExams(id);
       relatedExams.forEach(async (snapShot) => {
         await api.remove({ collection: "exams", id: snapShot.id });
       });
 
+      // Need implement: remove classroom from students
+
+      // Delete from classrooms
       await api.remove({ collection: "classrooms", id });
 
       return {
@@ -82,7 +80,11 @@ const useClassrooms = (classroomId) => {
   useEffect(() => {
     (async () => {
       const classrooms = await api.getAll({ collection: "classrooms" });
-      setAllClassrooms(classrooms);
+      const classroomsMap = classrooms.map((classroom) =>
+        getFormattedClassroom({ classroom })
+      );
+      setAllClassrooms(classroomsMap);
+      setLoading(false);
     })();
   }, []);
 
@@ -94,20 +96,13 @@ const useClassrooms = (classroomId) => {
         id: classroomId,
       });
       setClassroom(classroom);
+      setLoading(false);
     })();
   }, []);
 
   const getRelatedExams = async (id) => {
-    const classroom = await api.getById({
-      collection: "classrooms",
-      id,
-    });
-    const exams = query(
-      collectionsRef.exams,
-      where("classroom", "==", classroom.name)
-    );
+    const exams = query(collectionsRef.exams, where("classroom", "==", id));
     const querySnapshot = await getDocs(exams);
-    console.log(querySnapshot);
     return querySnapshot;
   };
 
@@ -117,6 +112,7 @@ const useClassrooms = (classroomId) => {
     createClassroom,
     deleteClassroom,
     updateClassroom,
+    loading,
   };
 };
 

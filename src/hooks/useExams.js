@@ -1,11 +1,11 @@
-import { addDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { collectionsRef } from "../services/firebase";
+import { getFormattedExam } from "../utils";
 
 const useExams = (examId) => {
   const [exam, setExam] = useState({});
   const [allExams, setAllExams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const createExam = async (data) => {
     const {
@@ -17,10 +17,6 @@ const useExams = (examId) => {
       questions,
     } = data;
     try {
-      const classroom = await api.getById({
-        collection: "classrooms",
-        id: classroomId,
-      });
       const formattedQuestions = questions.map((question) => {
         const optionalFields = question.type === "closed" && {
           alternatives: question.alternatives,
@@ -34,15 +30,25 @@ const useExams = (examId) => {
       });
       const newExam = {
         name,
-        classroom: classroom.name,
+        classroom: classroomId,
         timeLimit,
         initialDate,
         finalDate,
         questions: formattedQuestions,
-        studentsFinished: 0,
-        studentsNotFinished: 0,
       };
-      await addDoc(collectionsRef.exams, newExam);
+      const { id } = await api.post({ collection: "exams", data: newExam });
+
+      const classroom = await api.getById({
+        collection: "classrooms",
+        id: classroomId,
+      });
+
+      await api.put({
+        collection: "classrooms",
+        id: classroomId,
+        data: { exams: [...classroom.exams, id] },
+      });
+
       return { success: true };
     } catch (error) {
       return { success: false, error: "There was an error creating the exam" };
@@ -70,6 +76,22 @@ const useExams = (examId) => {
 
   const deleteExam = async (id) => {
     try {
+      const exam = await api.getById({ collection: "exams", id });
+
+      // Remove from classrooms
+      const targetClassroom = await api.getById({
+        collection: "classrooms",
+        id: exam.classroom,
+      });
+      await api.put({
+        collection: "classrooms",
+        id: exam.classroom,
+        data: {
+          exams: targetClassroom.exams.filter((exam) => exam !== id),
+        },
+      });
+
+      // Remove from exams
       await api.remove({ collection: "exams", id });
       return {
         success: true,
@@ -81,14 +103,6 @@ const useExams = (examId) => {
         message: "There was an error deleting the exam",
       };
     }
-  };
-
-  const deleteRelatedExams = async (name) => {
-    const exams = query(collectionsRef.exams, where("classroom", "==", name));
-    const querySnapshot = await getDocs(exams);
-    querySnapshot.forEach(async (doc) => {
-      deleteExam(doc.id);
-    });
   };
 
   const shuffleExamQuestions = async (id) => {
@@ -113,7 +127,9 @@ const useExams = (examId) => {
   useEffect(() => {
     (async () => {
       const exams = await api.getAll({ collection: "exams" });
-      setAllExams(exams);
+      const formattedExams = exams.map((exam) => getFormattedExam({ exam }));
+      setAllExams(await Promise.all(formattedExams));
+      setLoading(false);
     })();
   }, []);
 
@@ -122,17 +138,18 @@ const useExams = (examId) => {
     (async () => {
       const exam = await api.getById({ collection: "exams", id: examId });
       setExam(exam);
+      setLoading(false);
     })();
   }, []);
 
   return {
     allExams,
     exam,
+    loading,
     createExam,
     deleteExam,
     updateExam,
     shuffleExamQuestions,
-    deleteRelatedExams,
   };
 };
 

@@ -18,6 +18,14 @@ const getAll = async ({ collection }) => {
   return data;
 };
 
+const post = async ({ collection, data }) => {
+  const doc = await firestore.addDoc(
+    firestore.collection(db, collection),
+    data
+  );
+  return doc;
+};
+
 const put = async ({ collection, id, data }) => {
   const doc = firestore.doc(db, collection, id);
   await firestore.updateDoc(doc, data);
@@ -33,6 +41,7 @@ const api = {
   getAll,
   put,
   remove,
+  post,
 };
 
 export default api;

@@ -2,7 +2,6 @@ import { IconButton } from "../../components/buttons";
 import { isTeacherRole } from "../../utils";
 import { useAuth, useExams } from "../../hooks";
 import { Table } from "../../components/tables";
-import { StatusTag } from "../../components/tags";
 import {
   ShuffleRounded,
   DeleteRounded,
@@ -12,11 +11,12 @@ import {
 import { ConfirmModal } from "../../components/modals";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Empty } from "../../components/empty";
 
 const ListExamsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { allExams, deleteExam, shuffleExamQuestions } = useExams();
+  const { allExams, deleteExam, shuffleExamQuestions, loading } = useExams();
 
   const isTeacher = isTeacherRole(user?.role) || true;
 
@@ -50,24 +50,20 @@ const ListExamsPage = () => {
       key: "classroom",
     },
     {
-      name: "Time Limit",
+      name: "Time Limit (minutes)",
       key: "timeLimit",
     },
-    // {
-    //   name: "Initial Date",
-    //   key: "initialDate",
-    // },
-    // {
-    //   name: "Final Date",
-    //   key: "finalDate",
-    // },
     {
-      name: "Students Finished",
-      key: "studentsFinished",
+      name: "Questions",
+      key: "questions",
     },
     {
-      name: "Students not finished",
-      key: "studentsNotFinished",
+      name: "Initial Date",
+      key: "initialDate",
+    },
+    {
+      name: "Final Date",
+      key: "finalDate",
     },
     {
       name: "Status",
@@ -129,43 +125,20 @@ const ListExamsPage = () => {
     },
   ];
 
-  // const data = [
-  //   {
-  //     name: "first exam",
-  //     classroom: "Example classroom",
-  //     timeLimit: 20,
-  //     closed: true,
-  //     initialDate: "10/10/2022 2pm",
-  //     finalDate: "10/12/2022 2pm",
-  //     finished: 5,
-  //     notFinished: 10,
-  //     status: <StatusTag text="Finished" color="red" />,
-  //   },
-  //   {
-  //     name: "second exam",
-  //     classroom: "Example classroom",
-  //     timeLimit: 20,
-  //     closed: false,
-  //     initialDate: "10/10/2022 2pm",
-  //     finalDate: "10/12/2022 2pm",
-  //     finished: 10,
-  //     notFinished: 5,
-  //     status: <StatusTag text="In Progress" color="green" />,
-  //   },
-  //   {
-  //     name: "second exam",
-  //     classroom: "Example classroom",
-  //     timeLimit: 20,
-  //     closed: false,
-  //     initialDate: "10/10/2022 2pm",
-  //     finalDate: "10/12/2022 2pm",
-  //     finished: 10,
-  //     notFinished: 5,
-  //     status: <StatusTag text="Will Start" color="blue" />,
-  //   },
-  // ];
-
-  return <Table columns={columns} data={allExams} />;
+  return (
+    <>
+      {!loading && allExams.length > 0 && (
+        <Table columns={columns} data={allExams} />
+      )}
+      {!loading && allExams.length === 0 && (
+        <Empty
+          image="/assets/exams/empty.webp"
+          title="Oops! You have no exams created."
+          subTitle="If you wish to proceed, please create a exam."
+        />
+      )}
+    </>
+  );
 };
 
 export default ListExamsPage;

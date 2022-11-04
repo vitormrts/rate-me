@@ -6,9 +6,10 @@ import { IconButton } from "../../components/buttons";
 import { copyToClipboard, isTeacherRole } from "../../utils";
 import { useAuth, useClassrooms } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import { Empty } from "../../components/empty";
 
 const ListClassroomsPage = () => {
-  const { allClassrooms, deleteClassroom } = useClassrooms();
+  const { allClassrooms, deleteClassroom, loading } = useClassrooms();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -50,14 +51,6 @@ const ListClassroomsPage = () => {
     {
       name: "Exams",
       key: "exams",
-    },
-    {
-      name: "Exams Open",
-      key: "openExams",
-    },
-    {
-      name: "Exams Closed",
-      key: "closedExams",
     },
     {
       name: "Actions",
@@ -102,7 +95,20 @@ const ListClassroomsPage = () => {
       ],
     },
   ];
-  return <Table columns={columns} data={allClassrooms} />;
+  return (
+    <>
+      {!loading && allClassrooms.length > 0 && (
+        <Table columns={columns} data={allClassrooms} />
+      )}
+      {!loading && allClassrooms.length === 0 && (
+        <Empty
+          image="/assets/classroom/empty.jpg"
+          title="Oops! You have no classrooms created."
+          subTitle="If you wish to proceed, please create a classroom."
+        />
+      )}
+    </>
+  );
 };
 
 export default ListClassroomsPage;

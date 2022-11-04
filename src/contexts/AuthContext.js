@@ -1,7 +1,5 @@
-import { addDoc } from "firebase/firestore";
 import { createContext, useMemo, useState } from "react";
 import { api } from "../services";
-import { collectionsRef } from "../services/firebase";
 
 export const AuthContext = createContext();
 
@@ -37,7 +35,7 @@ const AuthContextProvider = ({ children }) => {
         role,
         classrooms: [],
       };
-      await addDoc(collectionsRef.users, newUser);
+      await api.post({ collection: "users", data: newUser });
       return { success: true };
     } catch (error) {
       return { success: false };

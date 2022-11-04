@@ -26,13 +26,13 @@ const NewClassroomPage = () => {
   });
 
   const onCreateClassroom = async (data) => {
-    const { success, error } = await createClassroom(data);
+    const { success, message } = await createClassroom(data);
     if (success) {
-      toast.success("Classroom created successfully");
+      toast.success(message);
       navigate("/dashboard/classrooms/list");
       return;
     }
-    toast.error(error);
+    toast.error(message);
   };
 
   return (
