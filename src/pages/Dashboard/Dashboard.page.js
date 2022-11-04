@@ -1,8 +1,4 @@
-import {
-  PeopleAltRounded,
-  QuizRounded,
-  SchoolRounded,
-} from "@mui/icons-material";
+import { QuizRounded, SchoolRounded } from "@mui/icons-material";
 import { Container } from "@mui/material";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
@@ -28,19 +24,13 @@ const DashboardPage = () => {
     {
       id: "classrooms",
       name: "Classrooms",
-      href: "/dashboard/classrooms/list",
+      href: "/dashboard/classrooms",
       Icon: SchoolRounded,
-    },
-    {
-      id: "students",
-      name: "Students",
-      href: "/dashboard/students/list",
-      Icon: PeopleAltRounded,
     },
     {
       id: "exams",
       name: "Exams",
-      href: "/dashboard/exams/list",
+      href: "/dashboard/exams",
       Icon: QuizRounded,
     },
   ];

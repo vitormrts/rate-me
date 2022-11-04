@@ -1,14 +1,11 @@
-export { default as ClassroomsPage } from "./Classrooms/Classrooms.page";
 export { default as DashboardPage } from "./Dashboard/Dashboard.page";
 export { default as EditClassroom } from "./Classrooms/EditClassroom.page";
-export { default as ExamsPage } from "./Exams/Exams.page";
 export { default as HomePage } from "./Home";
-export { default as ListClassroomsPage } from "./Classrooms/ListClassrooms.page";
-export { default as ListExamsPage } from "./Exams/ListExams.page";
+export { default as ClassroomsPage } from "./Classrooms/Classrooms.page";
+export { default as ExamsPage } from "./Exams/Exams.page";
 export { default as LoginPage } from "./Auth/Login.page";
 export { default as NewClassroomPage } from "./Classrooms/NewClassroom.page";
 export { default as NewExamPage } from "./Exams/NewExam.page";
 export { default as ViewExamPage } from "./Exams/ViewExam.page";
 export { default as SignUpPage } from "./Auth/SignUp.page";
-export { default as StudentsPage } from "./Students/Students.page";
-export { default as ListStudentsPage } from "./Students/ListStudents.page";
+export { default as StudentsPage } from "./Classrooms/Students.page";

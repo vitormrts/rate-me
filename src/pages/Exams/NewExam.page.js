@@ -20,6 +20,7 @@ import moment from "moment";
 import { QuestionCard } from "../../components/cards";
 import { useState } from "react";
 import { useClassrooms, useExams } from "../../hooks";
+import { Group } from "../../components/groups";
 
 const NewExamPage = () => {
   const { allClassrooms } = useClassrooms();
@@ -86,7 +87,7 @@ const NewExamPage = () => {
     const { success, error } = await createExam(data);
     if (success) {
       toast.success("Exam created successfully");
-      navigate("/dashboard/exams/list");
+      navigate("/dashboard/exams");
       return;
     }
     toast.error(error);
@@ -148,79 +149,81 @@ const NewExamPage = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit(onCreateExam)}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            label="Exam name"
-            variant="standard"
-            error={errors.name}
-            helperText={errors.name?.message}
-            fullWidth
-            {...register("name")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <InputLabel
-            error={errors.classroom}
-            helperText={errors.classrom?.message}
-          >
-            Classroom
-          </InputLabel>
-          <FormControl fullWidth>
-            <Controller
-              name="classroom"
-              control={control}
-              render={({ field }) => {
-                return (
-                  <Select
-                    value={field.value}
-                    error={errors.classroom}
-                    helperText={errors.classrom?.message}
-                    onChange={(value) => {
-                      field.onChange(value);
-                    }}
-                    variant="standard"
-                  >
-                    {allClassrooms.map(({ id, name }) => (
-                      <MenuItem key={id} value={id}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                );
-              }}
+    <Group title="Create exam">
+      <form onSubmit={handleSubmit(onCreateExam)}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Exam name"
+              variant="standard"
+              error={errors.name}
+              helperText={errors.name?.message}
+              fullWidth
+              {...register("name")}
             />
-          </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <InputLabel
+              error={errors.classroom}
+              helperText={errors.classrom?.message}
+            >
+              Classroom
+            </InputLabel>
+            <FormControl fullWidth>
+              <Controller
+                name="classroom"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <Select
+                      value={field.value}
+                      error={errors.classroom}
+                      helperText={errors.classrom?.message}
+                      onChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      variant="standard"
+                    >
+                      {allClassrooms.map(({ id, name }) => (
+                        <MenuItem key={id} value={id}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  );
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Time limit (minutes)"
+              variant="standard"
+              error={errors.timeLimit}
+              helperText={errors.timeLimit?.message}
+              fullWidth
+              {...register("timeLimit")}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <DateComponent name="initialDate" label="Initial Date" />
+          </Grid>
+          <Grid item xs={6}>
+            <DateComponent name="finalDate" label="Final Date" />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Time limit (minutes)"
-            variant="standard"
-            error={errors.timeLimit}
-            helperText={errors.timeLimit?.message}
-            fullWidth
-            {...register("timeLimit")}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <DateComponent name="initialDate" label="Initial Date" />
-        </Grid>
-        <Grid item xs={6}>
-          <DateComponent name="finalDate" label="Final Date" />
-        </Grid>
-      </Grid>
-      <Divider sx={{ margin: "40px 0" }} />
-      {questionsMap}
-      <ButtonGroup variant="contained" fullWidth sx={{ gap: "16px" }}>
-        <Button variant="outlined" onClick={onAddQuestionClick}>
-          + Add question
-        </Button>
-        <Button type="submit" variant="contained" onClick={onSubmitClick}>
-          Submit
-        </Button>
-      </ButtonGroup>
-    </form>
+        <Divider sx={{ margin: "40px 0" }} />
+        {questionsMap}
+        <ButtonGroup variant="contained" fullWidth sx={{ gap: "16px" }}>
+          <Button variant="outlined" onClick={onAddQuestionClick}>
+            + Add question
+          </Button>
+          <Button type="submit" variant="contained" onClick={onSubmitClick}>
+            Submit
+          </Button>
+        </ButtonGroup>
+      </form>
+    </Group>
   );
 };
 
