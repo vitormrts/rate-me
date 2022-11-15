@@ -1,38 +1,30 @@
-import {
-  Button,
-  ButtonGroup,
-  Divider,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, ButtonGroup, Divider, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import { QuestionCard } from "../../components/cards";
 import { useState } from "react";
 import { useClassrooms, useExams } from "../../hooks";
 import { Group } from "../../components/groups";
+import { AddRounded, HomeRounded, SchoolRounded } from "@mui/icons-material";
 
 const NewExamPage = () => {
-  const { allClassrooms } = useClassrooms();
-  const { createExam } = useExams();
   const [questionsIndexes, setQuestionsIndexes] = useState([]);
   const [questionCounter, setQuestionCounter] = useState(0);
+  const { classroomId } = useParams();
+  const { classroom } = useClassrooms(classroomId);
+  const { createExam } = useExams({ classroom });
   const navigate = useNavigate();
+
   const inputErrors = content.errors.input;
 
   const schema = yup.object().shape({
     name: yup.string().required(inputErrors.empty),
-    classroom: yup.string().required(inputErrors.empty),
     timeLimit: yup
       .number()
       .typeError(inputErrors.mustBeNumber)
@@ -75,9 +67,6 @@ const NewExamPage = () => {
   });
 
   const onSubmitClick = () => {
-    if (allClassrooms.length === 0) {
-      toast.info("You don't have any rooms created. Create one first.");
-    }
     if (!getValues("questions")) {
       toast.error("You need create questions.");
     }
@@ -87,7 +76,7 @@ const NewExamPage = () => {
     const { success, error } = await createExam(data);
     if (success) {
       toast.success("Exam created successfully");
-      navigate("/dashboard/exams");
+      navigate("/dashboard/classrooms/");
       return;
     }
     toast.error(error);
@@ -148,8 +137,24 @@ const NewExamPage = () => {
     />
   );
 
+  const breadcrumbs = [
+    {
+      text: "Classrooms",
+      Icon: HomeRounded,
+      href: "/dashboard/classrooms",
+    },
+    {
+      text: classroom?.name || "",
+      Icon: SchoolRounded,
+    },
+    {
+      text: "Create exam",
+      Icon: AddRounded,
+    },
+  ];
+
   return (
-    <Group title="Create exam">
+    <Group title="Create exam" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateExam)}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -161,39 +166,6 @@ const NewExamPage = () => {
               fullWidth
               {...register("name")}
             />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel
-              error={errors.classroom}
-              helperText={errors.classrom?.message}
-            >
-              Classroom
-            </InputLabel>
-            <FormControl fullWidth>
-              <Controller
-                name="classroom"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <Select
-                      value={field.value}
-                      error={errors.classroom}
-                      helperText={errors.classrom?.message}
-                      onChange={(value) => {
-                        field.onChange(value);
-                      }}
-                      variant="standard"
-                    >
-                      {allClassrooms.map(({ id, name }) => (
-                        <MenuItem key={id} value={id}>
-                          {name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  );
-                }}
-              />
-            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <TextField

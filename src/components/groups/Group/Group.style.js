@@ -5,7 +5,7 @@ import { DefaultContainer } from "../../../styles/Common";
 export const Container = styled(DefaultContainer)`
   ${({ theme }) => css`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.06);
@@ -21,6 +21,7 @@ export const TitleGroup = styled.div`
   ${({ theme }) => css`
     width: 100%;
     margin-bottom: 16px;
+    margin-top: 12px;
     padding-bottom: 24px;
     display: flex;
     align-items: center;

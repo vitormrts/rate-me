@@ -1,7 +1,5 @@
-import { getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { api } from "../services";
-import { collectionsRef } from "../services/firebase";
 import { getFormattedClassroom } from "../utils";
 
 const useClassrooms = (classroomId) => {
@@ -54,15 +52,6 @@ const useClassrooms = (classroomId) => {
 
   const deleteClassroom = async (id) => {
     try {
-      // Delete related exams to this classroom
-      const relatedExams = await getRelatedExams(id);
-      relatedExams.forEach(async (snapShot) => {
-        await api.remove({ collection: "exams", id: snapShot.id });
-      });
-
-      // Need implement: remove classroom from students
-
-      // Delete from classrooms
       await api.remove({ collection: "classrooms", id });
 
       return {
@@ -95,16 +84,10 @@ const useClassrooms = (classroomId) => {
         collection: "classrooms",
         id: classroomId,
       });
-      setClassroom(classroom);
+      setClassroom({ id: classroomId, ...classroom });
       setLoading(false);
     })();
   }, []);
-
-  const getRelatedExams = async (id) => {
-    const exams = query(collectionsRef.exams, where("classroom", "==", id));
-    const querySnapshot = await getDocs(exams);
-    return querySnapshot;
-  };
 
   return {
     allClassrooms,

@@ -1,8 +1,10 @@
 import * as S from "./Group.style";
+import Breadcrumbs from "../../breadcrumbs";
 
-const Group = ({ id, children, title = "Title", Button }) => {
+const Group = ({ id, children, title = "Title", breadcrumbs = [], Button }) => {
   return (
     <S.Container id={id}>
+      <Breadcrumbs items={breadcrumbs} />
       <S.TitleGroup>
         <S.Title>{title}</S.Title>
         {Button && (

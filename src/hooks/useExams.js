@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { getFormattedExam } from "../utils";
+import { v4 as uuid } from "uuid";
 
-const useExams = (examId) => {
+const useExams = ({ examId, classroom } = {}) => {
   const [exam, setExam] = useState({});
   const [allExams, setAllExams] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const createExam = async (data) => {
-    const {
-      name,
-      classroom: classroomId,
-      timeLimit,
-      initialDate,
-      finalDate,
-      questions,
-    } = data;
+    const { name, timeLimit, initialDate, finalDate, questions } = data;
     try {
       const formattedQuestions = questions.map((question) => {
         const optionalFields = question.type === "closed" && {
@@ -28,25 +22,20 @@ const useExams = (examId) => {
           ...optionalFields,
         };
       });
+
       const newExam = {
+        id: uuid(),
         name,
-        classroom: classroomId,
         timeLimit,
         initialDate,
         finalDate,
         questions: formattedQuestions,
       };
-      const { id } = await api.post({ collection: "exams", data: newExam });
-
-      const classroom = await api.getById({
-        collection: "classrooms",
-        id: classroomId,
-      });
 
       await api.put({
         collection: "classrooms",
-        id: classroomId,
-        data: { exams: [...classroom.exams, id] },
+        id: classroom.id,
+        data: { exams: [...classroom.exams, newExam] },
       });
 
       return { success: true };
@@ -58,8 +47,8 @@ const useExams = (examId) => {
   const updateExam = async (data, id) => {
     try {
       await api.put({
-        collection: "exams",
-        id,
+        collection: "classrooms",
+        id: classroom.id,
         data,
       });
       return {
@@ -76,23 +65,14 @@ const useExams = (examId) => {
 
   const deleteExam = async (id) => {
     try {
-      const exam = await api.getById({ collection: "exams", id });
-
-      // Remove from classrooms
-      const targetClassroom = await api.getById({
-        collection: "classrooms",
-        id: exam.classroom,
-      });
       await api.put({
         collection: "classrooms",
-        id: exam.classroom,
+        id: classroom.id,
         data: {
-          exams: targetClassroom.exams.filter((exam) => exam !== id),
+          exams: classroom.exams.filter((exam) => exam.id !== id),
         },
       });
 
-      // Remove from exams
-      await api.remove({ collection: "exams", id });
       return {
         success: true,
         message: "Exam successfully deleted",
@@ -126,18 +106,19 @@ const useExams = (examId) => {
 
   useEffect(() => {
     (async () => {
-      const exams = await api.getAll({ collection: "exams" });
-      const formattedExams = exams.map((exam) => getFormattedExam({ exam }));
-      setAllExams(await Promise.all(formattedExams));
+      const formattedExams = classroom.exams.map((exam) =>
+        getFormattedExam({ exam })
+      );
+      setAllExams(formattedExams);
       setLoading(false);
     })();
-  }, []);
+  }, [classroom]);
 
   useEffect(() => {
     if (!examId) return;
     (async () => {
       const exam = await api.getById({ collection: "exams", id: examId });
-      setExam(exam);
+      setExam({ id: examId, ...exam });
       setLoading(false);
     })();
   }, []);

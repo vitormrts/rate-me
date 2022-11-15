@@ -7,10 +7,11 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useClassrooms } from "../../hooks";
 import { Group } from "../../components/groups";
+import { EditRounded, HomeRounded, SchoolRounded } from "@mui/icons-material";
 
 const EditClassroomPage = () => {
-  const { id } = useParams();
-  const { updateClassroom, classroom } = useClassrooms(id);
+  const { classroomId } = useParams();
+  const { updateClassroom, classroom } = useClassrooms(classroomId);
   const navigate = useNavigate();
   const inputErrors = content.errors.input;
 
@@ -28,7 +29,7 @@ const EditClassroomPage = () => {
   });
 
   const onEditClassroom = async (data) => {
-    const { success, message } = await updateClassroom(data, id);
+    const { success, message } = await updateClassroom(data, classroomId);
     if (success) {
       toast.success(message);
       navigate("/dashboard/classrooms");
@@ -37,8 +38,24 @@ const EditClassroomPage = () => {
     toast.error(message);
   };
 
+  const breadcrumbs = [
+    {
+      text: "Classrooms",
+      Icon: HomeRounded,
+      href: "/dashboard/classrooms",
+    },
+    {
+      text: classroom?.name || "",
+      Icon: SchoolRounded,
+    },
+    {
+      text: "Edit",
+      Icon: EditRounded,
+    },
+  ];
+
   return (
-    <Group title="Edit classroom">
+    <Group title="Edit classroom" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onEditClassroom)}>
         <Grid container spacing={2}>
           {classroom && (

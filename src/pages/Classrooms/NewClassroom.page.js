@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useClassrooms } from "../../hooks";
 import { Group } from "../../components/groups";
+import { AddRounded, HomeRounded } from "@mui/icons-material";
 
 const NewClassroomPage = () => {
   const { createClassroom } = useClassrooms();
@@ -36,8 +37,20 @@ const NewClassroomPage = () => {
     toast.error(message);
   };
 
+  const breadcrumbs = [
+    {
+      text: "Classrooms",
+      Icon: HomeRounded,
+      href: "/dashboard/classrooms",
+    },
+    {
+      text: "Create classroom",
+      Icon: AddRounded,
+    },
+  ];
+
   return (
-    <Group title="Create classroom">
+    <Group title="Create classroom" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateClassroom)}>
         <Grid container spacing={2}>
           <Grid item sm={4}>

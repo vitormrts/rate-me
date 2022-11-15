@@ -1,23 +1,31 @@
-import { Button, IconButton } from "../../components/buttons";
+import { IconButton } from "../../components/buttons";
 import { isTeacherRole } from "../../utils";
-import { useAuth, useExams } from "../../hooks";
+import { useAuth, useClassrooms, useExams } from "../../hooks";
 import { Table } from "../../components/tables";
 import {
   ShuffleRounded,
   DeleteRounded,
   RemoveRedEyeRounded,
   PersonRounded,
+  HomeRounded,
+  QuizRounded,
+  SchoolRounded,
 } from "@mui/icons-material";
 import { ConfirmModal } from "../../components/modals";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Empty } from "../../components/empty";
 import { Group } from "../../components/groups";
+import { Button } from "@mui/material";
 
 const ListExamsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { allExams, deleteExam, shuffleExamQuestions, loading } = useExams();
+  const { classroomId } = useParams();
+  const { classroom } = useClassrooms(classroomId);
+  const { allExams, deleteExam, shuffleExamQuestions, loading } = useExams({
+    classroom,
+  });
 
   const isTeacher = isTeacherRole(user?.role) || true;
 
@@ -41,14 +49,26 @@ const ListExamsPage = () => {
     success ? toast.success(message) : toast.error(message);
   };
 
+  const breadcrumbs = [
+    {
+      text: "Classrooms",
+      Icon: HomeRounded,
+      href: "/dashboard/classrooms",
+    },
+    {
+      text: classroom?.name || "",
+      Icon: SchoolRounded,
+    },
+    {
+      text: "Exams",
+      Icon: QuizRounded,
+    },
+  ];
+
   const columns = [
     {
       name: "Name",
       key: "name",
-    },
-    {
-      name: "Classroom",
-      key: "classroom",
     },
     {
       name: "Time Limit (minutes)",
@@ -107,7 +127,7 @@ const ListExamsPage = () => {
               onClick={onClick}
             />
           ),
-          show: isTeacher,
+          show: false,
         },
         {
           onConfirm: (id) => onConfirmExamDelete(id),
@@ -126,18 +146,26 @@ const ListExamsPage = () => {
     },
   ];
 
-  const CreateExamButton = () => {
+  const CreateExamButton = (props) => {
     if (!isTeacher) return;
     return (
       <Button
-        onClick={() => navigate("/dashboard/exams/new")}
-        text="+ Add Exam"
-      />
+        onClick={() => navigate("./new")}
+        variant="contained"
+        fullWidth
+        {...props}
+      >
+        + Add Exam
+      </Button>
     );
   };
 
+  const CreateExamOutlinedButton = () => (
+    <CreateExamButton variant="outlined" />
+  );
+
   return (
-    <Group title="Exams" Button={CreateExamButton}>
+    <Group title="Exams" Button={CreateExamButton} breadcrumbs={breadcrumbs}>
       {!loading && allExams.length > 0 && (
         <Table columns={columns} data={allExams} />
       )}
@@ -145,7 +173,8 @@ const ListExamsPage = () => {
         <Empty
           image="/assets/exams/empty.webp"
           title="Oops! You have no exams created."
-          subTitle="If you wish to proceed, please create a exam."
+          subTitle="But calm down! How about you create your first exam?"
+          Button={CreateExamOutlinedButton}
         />
       )}
     </Group>

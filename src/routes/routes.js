@@ -26,11 +26,19 @@ const Router = () => {
         <Route path="dashboard" element={<DashboardPage />}>
           <Route path="classrooms" element={<ClassroomsPage />} />
           <Route path="classrooms/new" element={<NewClassroomPage />} />
-          <Route path="classrooms/:id/edit" element={<EditClassroom />} />
-          <Route path="classrooms/:id/students" element={<StudentsPage />} />
-
-          <Route path="exams" element={<ExamsPage />} />
-          <Route path="exams/new" element={<NewExamPage />} />
+          <Route
+            path="classrooms/:classroomId/edit"
+            element={<EditClassroom />}
+          />
+          <Route
+            path="classrooms/:classroomId/students"
+            element={<StudentsPage />}
+          />
+          <Route path="classrooms/:classroomId/exams" element={<ExamsPage />} />
+          <Route
+            path="classrooms/:classroomId/exams/new"
+            element={<NewExamPage />}
+          />
           <Route path="exams/:id" element={<ViewExamPage />} />
         </Route>
       </Routes>

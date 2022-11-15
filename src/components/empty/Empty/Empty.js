@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-const Empty = ({ image, title, subTitle }) => (
+const Empty = ({ image, title, subTitle, Button }) => (
   <Box
     sx={{
       display: "flex",
@@ -24,6 +24,11 @@ const Empty = ({ image, title, subTitle }) => (
     <Typography mt={1} variant="p">
       {subTitle}
     </Typography>
+    {Button && (
+      <Box sx={{ maxWidth: "200px", marginTop: "24px", width: "100%" }}>
+        <Button fullWidth />
+      </Box>
+    )}
   </Box>
 );
 
