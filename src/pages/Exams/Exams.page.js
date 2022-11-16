@@ -30,9 +30,10 @@ const ListExamsPage = () => {
   const isTeacher = isTeacherRole(user?.role) || true;
 
   const onExamPerformanceClick = (id) =>
-    navigate(`/dashboard/exams/${id}/performance/`);
+    navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/performance/`);
 
-  const onViewExamClick = (id) => navigate(`/dashboard/exams/${id}`);
+  const onViewExamClick = (id) =>
+    navigate(`/dashboard/classrooms/${classroomId}/exams/${id}`);
 
   const onConfirmExamDelete = async (id) => {
     const { success, message } = await deleteExam(id);

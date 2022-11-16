@@ -39,7 +39,10 @@ const Router = () => {
             path="classrooms/:classroomId/exams/new"
             element={<NewExamPage />}
           />
-          <Route path="exams/:id" element={<ViewExamPage />} />
+          <Route
+            path="classrooms/:classroomId/exams/:examId"
+            element={<ViewExamPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
