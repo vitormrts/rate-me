@@ -21,7 +21,7 @@ const ListClassroomsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const isTeacher = isTeacherRole(user?.role) || true;
+  const isTeacher = isTeacherRole(user?.role);
 
   const classroomsMap = classrooms?.map((classroom) =>
     getFormattedClassroom(classroom)
@@ -154,9 +154,17 @@ const ListClassroomsPage = () => {
       {classrooms && classroomsMap.length === 0 && (
         <Empty
           image="/assets/classroom/empty.jpg"
-          title="Oops! You have no classrooms created."
-          subTitle="But calm down! How about you create your first classroom?"
-          Button={CreateClassroomOutlinedButton}
+          title={
+            isTeacher
+              ? "Oops! You have no classrooms created."
+              : "Oops! You are not in any classroom."
+          }
+          subTitle={
+            isTeacher
+              ? "But calm down! How about you create your first classroom?"
+              : "But calm down! How about you ask your teacher to send you the room invitation?"
+          }
+          Button={isTeacher && CreateClassroomOutlinedButton}
         />
       )}
     </Group>

@@ -29,7 +29,7 @@ const ListExamsPage = () => {
 
   const examsMap = classroom?.exams.map((exam) => getFormattedExam(exam));
 
-  const isTeacher = isTeacherRole(user?.role) || true;
+  const isTeacher = isTeacherRole(user?.role);
 
   const onExamPerformanceClick = (id) =>
     navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/performance/`);
@@ -175,9 +175,17 @@ const ListExamsPage = () => {
       {classroom && examsMap.length === 0 && (
         <Empty
           image="/assets/exams/empty.webp"
-          title="Oops! You have no exams created."
-          subTitle="But calm down! How about you create your first exam?"
-          Button={CreateExamOutlinedButton}
+          title={
+            isTeacher
+              ? "Oops! You have no exams created."
+              : "Oops! This room does not have exams."
+          }
+          subTitle={
+            isTeacher
+              ? "But calm down! How about you create your first exam?"
+              : "How about waiting for your teacher to add an exam?"
+          }
+          Button={isTeacher && CreateExamOutlinedButton}
         />
       )}
     </Group>
