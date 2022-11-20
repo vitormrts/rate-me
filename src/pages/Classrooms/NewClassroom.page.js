@@ -17,6 +17,7 @@ const NewClassroomPage = () => {
   const schema = yup.object().shape({
     name: yup.string().required(inputErrors.empty),
     description: yup.string().required(inputErrors.empty),
+    password: yup.string().required(inputErrors.empty),
   });
 
   const {
@@ -53,7 +54,7 @@ const NewClassroomPage = () => {
     <Group title="Create classroom" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateClassroom)}>
         <Grid container spacing={2}>
-          <Grid item sm={4}>
+          <Grid item sm={6}>
             <TextField
               label="Name"
               variant="standard"
@@ -63,7 +64,18 @@ const NewClassroomPage = () => {
               {...register("name")}
             />
           </Grid>
-          <Grid item sm={8}>
+          <Grid item sm={6}>
+            <TextField
+              label="Password"
+              variant="standard"
+              type="password"
+              error={errors.password}
+              helperText={errors.password?.message}
+              fullWidth
+              {...register("password")}
+            />
+          </Grid>
+          <Grid item sm={12}>
             <TextField
               label="Description"
               variant="standard"

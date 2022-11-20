@@ -9,9 +9,10 @@ const useClassrooms = (classroomId) => {
 
   const createClassroom = async (data) => {
     try {
-      const { name, description } = data;
+      const { name, description, password } = data;
       const newClassroom = {
         description,
+        password,
         exams: [],
         name,
         participants: [
@@ -25,17 +26,57 @@ const useClassrooms = (classroomId) => {
         participantsIds: [user.id],
         teacherId: user.id,
       };
-      console.log(newClassroom);
       await api.post({ collection: "classrooms", data: newClassroom });
       return {
         success: true,
         message: "Classroom created successfully",
       };
     } catch (error) {
-      console.log(error);
       return {
         success: false,
         message: "There was an error create the classroom",
+      };
+    }
+  };
+
+  const enterClassroom = async (data, id) => {
+    try {
+      const { password } = data;
+      const classroom = await getClassroom(id);
+      if (classroom.password === password) {
+        const alreadyParticipant = classroom.participantsIds.find(
+          (participant) => participant === user.id
+        );
+
+        if (alreadyParticipant) {
+          throw new Error("You are already in this room");
+        }
+
+        const classroomWithNewParticipant = {
+          ...classroom,
+          participants: [
+            ...classroom.participants,
+            {
+              email: user.email,
+              fullName: user.fullName,
+              id: user.id,
+              isTeacher: false,
+            },
+          ],
+          participantsIds: [...classroom.participantsIds, user.id],
+        };
+
+        await updateClassroom(classroomWithNewParticipant, id);
+
+        return {
+          success: true,
+        };
+      }
+      throw new Error("Incorrect password");
+    } catch (error) {
+      return {
+        success: false,
+        error,
       };
     }
   };
@@ -81,14 +122,11 @@ const useClassrooms = (classroomId) => {
     return classrooms;
   };
 
-  console.log(user);
-
   const getClassroom = async (id) => {
     const classroom = await api.getById({
       collection: "classrooms",
       id,
     });
-    console.log(classroom);
     return classroom;
   };
 
@@ -115,6 +153,7 @@ const useClassrooms = (classroomId) => {
     classrooms,
     classroom,
     createClassroom,
+    enterClassroom,
     deleteClassroom,
     updateClassroom,
   };

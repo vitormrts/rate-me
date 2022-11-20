@@ -10,6 +10,7 @@ import {
   NewExamPage,
   EditClassroom,
   ViewExamPage,
+  EnterClassroom,
 } from "../pages";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -33,6 +34,10 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/students"
             element={<StudentsPage />}
+          />
+          <Route
+            path="classrooms/:classroomId/invite"
+            element={<EnterClassroom />}
           />
           <Route path="classrooms/:classroomId/exams" element={<ExamsPage />} />
           <Route

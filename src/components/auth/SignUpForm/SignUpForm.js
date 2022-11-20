@@ -87,7 +87,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
                   field.onChange(value);
                 }}
                 checked={role === "teacher"}
-                value="Teacher"
+                value="teacher"
               />
               <Typography>I am a teacher</Typography>
             </Box>
@@ -104,7 +104,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
                   field.onChange(value);
                 }}
                 checked={role === "student"}
-                value="Student"
+                value="student"
               />
               <Typography>I am a student</Typography>
             </Box>

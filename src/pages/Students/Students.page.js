@@ -14,7 +14,8 @@ const ListStudentsPage = () => {
   const students = classroom?.students || [];
 
   const onInviteStudentButtonClick = () => {
-    const { success } = copyToClipboard(classroomId);
+    // Note: implement insert base url
+    const { success } = copyToClipboard(`/classrooms/${classroomId}/invite`);
     success
       ? toast.info("Room URL copied! Send it to your student")
       : toast.error("There was an error copying the room URL");

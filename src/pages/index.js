@@ -1,6 +1,7 @@
 export { default as ClassroomsPage } from "./Classrooms/Classrooms.page";
 export { default as DashboardPage } from "./Dashboard/Dashboard.page";
 export { default as EditClassroom } from "./Classrooms/EditClassroom.page";
+export { default as EnterClassroom } from "./Classrooms/EnterClassroom.page";
 export { default as ExamsPage } from "./Exams/Exams.page";
 export { default as HomePage } from "./Home";
 export { default as LoginPage } from "./Auth/Login.page";

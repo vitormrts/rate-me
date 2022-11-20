@@ -18,6 +18,7 @@ const EditClassroomPage = () => {
   const schema = yup.object().shape({
     name: yup.string().required(inputErrors.empty),
     description: yup.string().required(inputErrors.empty),
+    password: yup.string().required(inputErrors.empty),
   });
 
   const {
@@ -60,7 +61,7 @@ const EditClassroomPage = () => {
         <Grid container spacing={2}>
           {classroom && (
             <>
-              <Grid item sm={4}>
+              <Grid item sm={6}>
                 <TextField
                   label="Name"
                   variant="standard"
@@ -71,7 +72,19 @@ const EditClassroomPage = () => {
                   {...register("name")}
                 />
               </Grid>
-              <Grid item sm={8}>
+              <Grid item sm={6}>
+                <TextField
+                  label="Password"
+                  variant="standard"
+                  type="password"
+                  error={errors.password}
+                  helperText={errors.password?.message}
+                  defaultValue={classroom.password}
+                  fullWidth
+                  {...register("password")}
+                />
+              </Grid>
+              <Grid item sm={12}>
                 <TextField
                   label="Description"
                   variant="standard"
