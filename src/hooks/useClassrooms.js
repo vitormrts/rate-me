@@ -81,6 +81,8 @@ const useClassrooms = (classroomId) => {
     return classrooms;
   };
 
+  console.log(user);
+
   const getClassroom = async (id) => {
     const classroom = await api.getById({
       collection: "classrooms",
@@ -91,19 +93,23 @@ const useClassrooms = (classroomId) => {
   };
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
+
     if (!classrooms) {
       (async () => {
         const classrooms = await getClassrooms();
         setClassrooms(classrooms);
       })();
     }
-    if (classroomId) {
+    if (classroomId && !classroom) {
       (async () => {
         const classroom = await getClassroom(classroomId);
         setClassroom(classroom);
       })();
     }
-  }, [classroomId]);
+  }, [classroomId, user]);
 
   return {
     classrooms,

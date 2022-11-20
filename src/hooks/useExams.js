@@ -26,8 +26,6 @@ const useExams = ({ classroom } = {}) => {
         questions: formattedQuestions,
       };
 
-      console.log(classroom);
-
       await api.put({
         collection: "classrooms",
         id: classroom.id,
@@ -38,7 +36,6 @@ const useExams = ({ classroom } = {}) => {
 
       return { success: true };
     } catch (error) {
-      console.log(error);
       return { success: false, error: "There was an error creating the exam" };
     }
   };

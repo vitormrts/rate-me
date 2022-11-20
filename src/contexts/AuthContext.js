@@ -13,6 +13,7 @@ const AuthContextProvider = ({ children }) => {
         const matchUser = users.find((user) => user.email === email);
         if (matchUser.password === password) {
           setUser(matchUser);
+          localStorage.setItem("user", JSON.stringify(matchUser));
           return { success: true };
         }
         throw Error();
@@ -22,6 +23,11 @@ const AuthContextProvider = ({ children }) => {
     };
     const status = await fetchLogin();
     return status;
+  };
+
+  const logout = () => {
+    setUser(undefined);
+    localStorage.clear();
   };
 
   const signUp = async ({ fullName, email, password, role }) => {
@@ -47,15 +53,18 @@ const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      await login({ email: "vitor.cruz@newfold.comsggas", password: "123" });
-    })();
+    const authenticated = localStorage.getItem("user");
+    if (authenticated) {
+      const parsed = JSON.parse(authenticated);
+      setUser(parsed);
+    }
   }, []);
 
   const memoized = useMemo(
     () => ({
       user,
       login,
+      logout,
       signUp,
     }),
     [login, signUp, user]
