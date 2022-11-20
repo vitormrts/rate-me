@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
 import { api } from "../services";
-import { getFormattedClassroom } from "../utils";
+import useAuth from "./useAuth";
 
 const useClassrooms = (classroomId) => {
+  const { user } = useAuth();
   const [classroom, setClassroom] = useState();
-  const [allClassrooms, setAllClassrooms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [classrooms, setClassrooms] = useState();
 
   const createClassroom = async (data) => {
-    const { name, description } = data;
     try {
+      const { name, description } = data;
       const newClassroom = {
-        name,
-        teacherId: null,
         description,
-        students: [],
         exams: [],
+        name,
+        participants: [
+          {
+            id: user.id,
+            email: user.email,
+            fullName: user.fullName,
+            isTeacher: true,
+          },
+        ],
+        participantsIds: [user.id],
+        teacherId: user.id,
       };
+      console.log(newClassroom);
       await api.post({ collection: "classrooms", data: newClassroom });
       return {
         success: true,
         message: "Classroom created successfully",
       };
     } catch (error) {
+      console.log(error);
       return {
         success: false,
         message: "There was an error create the classroom",
@@ -66,36 +76,41 @@ const useClassrooms = (classroomId) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const classrooms = await api.getAll({ collection: "classrooms" });
-      const classroomsMap = classrooms.map((classroom) =>
-        getFormattedClassroom({ classroom })
-      );
-      setAllClassrooms(classroomsMap);
-      setLoading(false);
-    })();
-  }, []);
+  const getClassrooms = async () => {
+    const classrooms = await api.getClassroomsFromUser(user.id);
+    return classrooms;
+  };
+
+  const getClassroom = async (id) => {
+    const classroom = await api.getById({
+      collection: "classrooms",
+      id,
+    });
+    console.log(classroom);
+    return classroom;
+  };
 
   useEffect(() => {
-    if (!classroomId) return;
-    (async () => {
-      const classroom = await api.getById({
-        collection: "classrooms",
-        id: classroomId,
-      });
-      setClassroom({ id: classroomId, ...classroom });
-      setLoading(false);
-    })();
-  }, []);
+    if (!classrooms) {
+      (async () => {
+        const classrooms = await getClassrooms();
+        setClassrooms(classrooms);
+      })();
+    }
+    if (classroomId) {
+      (async () => {
+        const classroom = await getClassroom(classroomId);
+        setClassroom(classroom);
+      })();
+    }
+  }, [classroomId]);
 
   return {
-    allClassrooms,
+    classrooms,
     classroom,
     createClassroom,
     deleteClassroom,
     updateClassroom,
-    loading,
   };
 };
 

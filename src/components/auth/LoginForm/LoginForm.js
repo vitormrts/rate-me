@@ -1,81 +1,64 @@
-import { Input } from "../../inputs";
-import { Button } from "../../buttons";
-import * as S from "./LoginForm.style";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import * as yup from "yup";
+import content from "../../../content";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { Box, Button, TextField } from "@mui/material";
 
-const LoginForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
-  const initialState = {
-    username: "",
-    password: "",
-  };
+const inputErrors = content.errors.input;
 
-  const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState({});
+const LoginForm = ({ onSubmit, onSuccess, onError }) => {
+  const schema = yup.object().shape({
+    email: yup.string().required(inputErrors.empty),
+    password: yup.string().required(inputErrors.empty),
+  });
 
-  const validate = (formErrors) => {
-    const isValid = Object.keys(formErrors).every((key) => !formErrors[key]);
-    return isValid;
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const checkEmpty = (value) => {
-    if (!value) {
-      return errorMessages.input.empty;
-    }
-  };
-
-  const handleOnClick = () => {
-    const data = { ...formData };
-    const formErrors = {
-      username: checkEmpty(data.username),
-      password: checkEmpty(data.password),
-    };
-    setErrors(formErrors);
-    const isValid = validate(formErrors);
-    if (isValid) {
-      (async () => {
-        const { success } = await onSubmit(data);
-        success ? onSuccess() : onError();
-      })();
-    }
-  };
-
-  const onChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
+  const onLogin = async (data) => {
+    const { success } = await onSubmit(data);
+    success ? onSuccess() : onError();
   };
 
   return (
     <>
-      <S.Form>
-        <Input
-          label="Username"
-          name="username"
-          onChange={onChange}
-          error={errors.username}
-          placeholder="example"
-          type="text"
-          value={formData.username}
-        />
-        <Input
-          label="Password"
-          name="password"
-          onChange={onChange}
-          error={errors.password}
-          placeholder="******************"
-          type="password"
-          value={formData.password}
-        />
-        <S.ForgotPasswordLabel>
-          <strong>Forgot password?</strong>
-        </S.ForgotPasswordLabel>
-        <S.ButtonAdapter>
-          <Button text="Login" onClick={handleOnClick} />
-        </S.ButtonAdapter>
-      </S.Form>
-      <S.AlreadyHaveAccountLabel>
-        Dont have an account?
-        <Link to="/auth/signup">Sign up</Link>
-      </S.AlreadyHaveAccountLabel>
+      <form onSubmit={handleSubmit(onLogin)} style={{ width: "100%" }}>
+        <Box mt={1}>
+          <TextField
+            error={errors.email}
+            fullWidth
+            helperText={errors.email?.message}
+            label="Email"
+            variant="standard"
+            {...register("email")}
+          />
+        </Box>
+        <Box mt={1}>
+          <TextField
+            error={errors.password}
+            fullWidth
+            helperText={errors.password?.message}
+            label="Password"
+            type="password"
+            variant="standard"
+            {...register("password")}
+          />
+        </Box>
+        <Box mt={2}>
+          <Button type="submit" variant="contained" fullWidth>
+            Login
+          </Button>
+        </Box>
+      </form>
+      <Box mt={2}>
+        Dont have an account? <Link to="/auth/signup">Sign up</Link>
+      </Box>
     </>
   );
 };

@@ -10,7 +10,7 @@ import { copyToClipboard } from "../../utils";
 
 const ListStudentsPage = () => {
   const { classroomId } = useParams();
-  const { loading, classroom } = useClassrooms(classroomId);
+  const { classroom } = useClassrooms(classroomId);
   const students = classroom?.students || [];
 
   const onInviteStudentButtonClick = () => {
@@ -68,10 +68,10 @@ const ListStudentsPage = () => {
       Button={InviteStudentButton}
       breadcrumbs={breadcrumbs}
     >
-      {!loading && students.length > 0 && (
+      {classroom && students.length > 0 && (
         <Table columns={columns} data={students} />
       )}
-      {!loading && students.length === 0 && (
+      {classroom && students.length === 0 && (
         <Empty
           image="/assets/classroom/empty.jpg"
           title="Oops! You have no students in this room."

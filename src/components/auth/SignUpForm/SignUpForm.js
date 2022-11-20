@@ -1,140 +1,124 @@
-import { Input, Radio } from "../../inputs";
-import { Button } from "../../buttons";
-import * as S from "./SignUpForm.style";
 import { Link } from "react-router-dom";
+import { Box, Button, Radio, TextField, Typography } from "@mui/material";
+import * as yup from "yup";
+import content from "../../../content";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 
-const SignUpForm = ({ errorMessages, onSubmit, onSuccess, onError }) => {
-  const initialState = {
-    fullName: "",
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "",
-  };
+const inputErrors = content.errors.input;
 
-  const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState({});
+const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
+  const [role, setRole] = useState();
+  const schema = yup.object().shape({
+    fullName: yup.string().required(inputErrors.empty),
+    email: yup
+      .string()
+      .required(inputErrors.empty)
+      .email(inputErrors.invalidEmail),
+    password: yup.string().required(inputErrors.empty),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], inputErrors.passwordsDontMatch)
+      .required(inputErrors.empty),
+    role: yup.string().required(inputErrors.empty),
+  });
 
-  const validate = (formErrors) => {
-    const isValid = Object.keys(formErrors).every((key) => !formErrors[key]);
-    return isValid;
-  };
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const checkEmpty = (value) => {
-    if (!value) {
-      return errorMessages.input.empty;
-    }
-  };
-
-  const checkConfirmPassword = (password, confirmPassword) => {
-    const isEmpty = checkEmpty(confirmPassword);
-    if (isEmpty) return isEmpty;
-    if (password !== confirmPassword) {
-      return errorMessages.input.passwordsDontMatch;
-    }
-  };
-
-  const handleOnClick = () => {
-    const data = { ...formData };
-    const formErrors = {
-      fullName: checkEmpty(data.fullName),
-      username: checkEmpty(data.username),
-      email: checkEmpty(data.email),
-      password: checkEmpty(data.password),
-      confirmPassword: checkConfirmPassword(
-        data.password,
-        data.confirmPassword
-      ),
-      role: checkEmpty(data.role),
-    };
-    setErrors(formErrors);
-    const isValid = validate(formErrors);
-    if (isValid) {
-      (async () => {
-        const { success } = await onSubmit(data);
-        success ? onSuccess() : onError();
-      })();
-    }
-  };
-
-  const onChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
+  const onSignUp = async (data) => {
+    const { success, error } = await onSubmit(data);
+    success ? onSuccess() : onError(error.message);
   };
 
   return (
     <>
-      <S.Form>
-        <Input
-          label="Full Name"
-          name="fullName"
-          onChange={onChange}
-          placeholder="Example"
-          type="text"
-          value={formData.fullName}
+      <form style={{ width: "100%" }} onSubmit={handleSubmit(onSignUp)}>
+        <TextField
           error={errors.fullName}
+          fullWidth
+          helperText={errors.fullName?.message}
+          label="Full name"
+          variant="standard"
+          {...register("fullName")}
         />
-        <Input
-          label="Username"
-          name="username"
-          onChange={onChange}
-          placeholder="example"
-          value={formData.username}
-          type="text"
-          error={errors.username}
-        />
-        <Input
-          label="Email"
-          name="email"
-          onChange={onChange}
-          placeholder="example@example.com"
-          type="email"
-          value={formData.email}
+        <TextField
           error={errors.email}
+          fullWidth
+          helperText={errors.email?.message}
+          label="Email"
+          variant="standard"
+          type="email"
+          {...register("email")}
         />
-        <Input
+        <TextField
+          error={errors.password}
+          fullWidth
+          helperText={errors.password?.message}
           label="Password"
-          name="password"
-          onChange={onChange}
-          placeholder="******************"
+          variant="standard"
           type="password"
-          value={formData.password}
-          error={errors.password || errors.confirmPassword}
+          {...register("password")}
         />
-        <Input
-          label="Confirm password"
-          name="confirmPassword"
-          onChange={onChange}
-          placeholder="******************"
-          type="password"
-          value={formData.confirmPassword}
+        <TextField
           error={errors.confirmPassword}
+          fullWidth
+          helperText={errors.confirmPassword?.message}
+          label="Confirm password"
+          variant="standard"
+          type="password"
+          {...register("confirmPassword")}
         />
-        <Radio
-          checked={formData.role === "teacher"}
+        <Controller
           name="role"
-          onChange={onChange}
-          value="teacher"
-          label="I'm a teacher"
-          error={errors.role}
+          control={control}
+          render={({ field }) => (
+            <Box display="flex" alignItems="center">
+              <Radio
+                onChange={(value) => {
+                  setRole("teacher");
+                  field.onChange(value);
+                }}
+                checked={role === "teacher"}
+                value="Teacher"
+              />
+              <Typography>I am a teacher</Typography>
+            </Box>
+          )}
         />
-        <Radio
-          checked={formData.role === "student"}
+        <Controller
           name="role"
-          onChange={onChange}
-          value="student"
-          label="I'm a student"
-          error={errors.role}
+          control={control}
+          render={({ field }) => (
+            <Box display="flex" alignItems="center">
+              <Radio
+                onChange={(value) => {
+                  setRole("student");
+                  field.onChange(value);
+                }}
+                checked={role === "student"}
+                value="Student"
+              />
+              <Typography>I am a student</Typography>
+            </Box>
+          )}
         />
-        <S.ButtonAdapter>
-          <Button onClick={handleOnClick} text="Sign up" />
-        </S.ButtonAdapter>
-      </S.Form>
-      <S.AlreadyHaveAccountLabel>
-        Already have an account?
-        <Link to="/login">Login</Link>
-      </S.AlreadyHaveAccountLabel>
+        <Box mt={2}>
+          <Button type="submit" variant="contained" fullWidth>
+            Sign up
+          </Button>
+        </Box>
+      </form>
+      <Box mt={2}>
+        Already have an account? <Link to="/auth/login">Login</Link>
+      </Box>
     </>
   );
 };

@@ -1,20 +1,45 @@
 import * as firestore from "firebase/firestore";
-import { db } from "./firebase";
+import { db, collectionsRef } from "./firebase";
+
+const convertSnapshotToData = (snapShot) => {
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+};
+
+const getClassroomsFromUser = async (id) => {
+  const q = firestore.query(
+    collectionsRef.classrooms,
+    firestore.where("participantsIds", "array-contains", id)
+  );
+  const querySnapshot = await firestore.getDocs(q);
+  const data = convertSnapshotToData(querySnapshot);
+  return data;
+};
+
+const getExamsFromClassroom = async (id) => {
+  const q = firestore.query(
+    collectionsRef.classrooms,
+    firestore.where("examsIds", "array-contains", id)
+  );
+  const querySnapshot = await firestore.getDocs(q);
+  const data = convertSnapshotToData(querySnapshot);
+  return data;
+};
 
 const getById = async ({ collection, id }) => {
   const collectionDoc = firestore.doc(db, collection, id);
   const collectionSnap = await firestore.getDoc(collectionDoc);
-  return collectionSnap.data();
+  return { id: collectionSnap.id, ...collectionSnap.data() };
 };
 
 const getAll = async ({ collection }) => {
   const collectionDocs = await firestore.getDocs(
     firestore.collection(db, collection)
   );
-  const data = collectionDocs.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const data = convertSnapshotToData(collectionDocs);
   return data;
 };
 
@@ -37,6 +62,8 @@ const remove = async ({ collection, id }) => {
 };
 
 const api = {
+  getClassroomsFromUser,
+  getExamsFromClassroom,
   getById,
   getAll,
   put,

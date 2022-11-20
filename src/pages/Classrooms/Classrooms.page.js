@@ -9,7 +9,7 @@ import {
 import { toast } from "react-toastify";
 import { ConfirmModal } from "../../components/modals";
 import { IconButton } from "../../components/buttons";
-import { isTeacherRole } from "../../utils";
+import { getFormattedClassroom, isTeacherRole } from "../../utils";
 import { useAuth, useClassrooms } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { Empty } from "../../components/empty";
@@ -17,11 +17,15 @@ import { Group } from "../../components/groups";
 import { Button } from "@mui/material";
 
 const ListClassroomsPage = () => {
-  const { allClassrooms, deleteClassroom, loading } = useClassrooms();
+  const { classrooms, deleteClassroom } = useClassrooms();
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const isTeacher = isTeacherRole(user?.role) || true;
+
+  const classroomsMap = classrooms?.map((classroom) =>
+    getFormattedClassroom(classroom)
+  );
 
   const onEditButtonClick = (id) =>
     navigate(`/dashboard/classrooms/${id}/edit`);
@@ -144,10 +148,10 @@ const ListClassroomsPage = () => {
       Button={CreateClassroomButton}
       breadcrumbs={breadcrumbs}
     >
-      {!loading && allClassrooms.length > 0 && (
-        <Table columns={columns} data={allClassrooms} />
+      {classrooms && classroomsMap.length > 0 && (
+        <Table columns={columns} data={classroomsMap} />
       )}
-      {!loading && allClassrooms.length === 0 && (
+      {classrooms && classroomsMap.length === 0 && (
         <Empty
           image="/assets/classroom/empty.jpg"
           title="Oops! You have no classrooms created."

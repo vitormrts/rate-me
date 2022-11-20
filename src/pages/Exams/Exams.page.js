@@ -1,5 +1,5 @@
 import { IconButton } from "../../components/buttons";
-import { isTeacherRole } from "../../utils";
+import { getFormattedExam, isTeacherRole } from "../../utils";
 import { useAuth, useClassrooms, useExams } from "../../hooks";
 import { Table } from "../../components/tables";
 import {
@@ -23,9 +23,11 @@ const ListExamsPage = () => {
   const { user } = useAuth();
   const { classroomId } = useParams();
   const { classroom } = useClassrooms(classroomId);
-  const { allExams, deleteExam, shuffleExamQuestions, loading } = useExams({
+  const { deleteExam, shuffleExamQuestions } = useExams({
     classroom,
   });
+
+  const examsMap = classroom?.exams.map((exam) => getFormattedExam(exam));
 
   const isTeacher = isTeacherRole(user?.role) || true;
 
@@ -167,10 +169,10 @@ const ListExamsPage = () => {
 
   return (
     <Group title="Exams" Button={CreateExamButton} breadcrumbs={breadcrumbs}>
-      {!loading && allExams.length > 0 && (
-        <Table columns={columns} data={allExams} />
+      {classroom && examsMap.length > 0 && (
+        <Table columns={columns} data={examsMap} />
       )}
-      {!loading && allExams.length === 0 && (
+      {classroom && examsMap.length === 0 && (
         <Empty
           image="/assets/exams/empty.webp"
           title="Oops! You have no exams created."

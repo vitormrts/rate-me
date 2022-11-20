@@ -2,7 +2,7 @@
 import moment from "moment";
 import { StatusTag } from "../components/tags";
 
-const getFormattedExam = ({ exam }) => {
+const getFormattedExam = (exam) => {
   const todayDate = new Date();
   const initialDate = exam.initialDate.toDate();
   const finalDate = exam.finalDate.toDate();

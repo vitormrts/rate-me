@@ -24,8 +24,6 @@ const ViewExamPage = () => {
     );
   });
 
-  console.log(exam);
-
   const breadcrumbs = [
     {
       text: "Classrooms",

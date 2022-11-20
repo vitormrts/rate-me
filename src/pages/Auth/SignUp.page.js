@@ -13,8 +13,8 @@ const SignUpPage = () => {
     navigate("/auth/login");
   };
 
-  const onError = () => {
-    toast.error("An error occurred when create user");
+  const onError = (error) => {
+    toast.error(error);
   };
 
   return (

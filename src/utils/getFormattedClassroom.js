@@ -1,7 +1,9 @@
-const getFormattedClassroom = ({ classroom }) => {
+const getFormattedClassroom = (classroom) => {
   return {
     ...classroom,
-    students: classroom.students.length,
+    students: classroom.participants.filter(
+      (participant) => !participant.isTeacher
+    ).length,
     exams: classroom.exams.length,
   };
 };
