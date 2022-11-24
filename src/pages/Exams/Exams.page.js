@@ -10,6 +10,7 @@ import {
   HomeRounded,
   QuizRounded,
   SchoolRounded,
+  RocketLaunchRounded,
 } from "@mui/icons-material";
 import { ConfirmModal } from "../../components/modals";
 import { toast } from "react-toastify";
@@ -27,15 +28,32 @@ const ListExamsPage = () => {
     classroom,
   });
 
-  const examsMap = classroom?.exams.map((exam) => getFormattedExam(exam));
+  const examsMap = classroom?.exams.map((exam) => getFormattedExam(exam, user));
 
   const isTeacher = isTeacherRole(user?.role);
 
-  const onExamPerformanceClick = (id) =>
-    navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/performance/`);
-
   const onViewExamClick = (id) =>
     navigate(`/dashboard/classrooms/${classroomId}/exams/${id}`);
+
+  const onExamPerformanceClick = (id) =>
+    navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/performance`);
+
+  const onConfirmTakeStartExam = async (id) => {
+    const targetExam = examsMap.find((exam) => exam.id === id);
+    const studentFinished = targetExam?.myStatus?.text === "Finished";
+    const examClosed = targetExam?.status?.text === "Closed";
+
+    if (examClosed) {
+      toast.error("Could not start this exam because it is closed.");
+      return;
+    }
+    if (studentFinished) {
+      toast.error("You have already finished this exam.");
+      return;
+    }
+    navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/take`);
+    toast.success("Exam started. Good luck!");
+  };
 
   const onConfirmExamDelete = async (id) => {
     const { success, message } = await deleteExam(id);
@@ -91,7 +109,11 @@ const ListExamsPage = () => {
     },
     {
       name: "Status",
-      key: "status",
+      key: "StatusComponent",
+    },
+    !isTeacher && {
+      name: "My status",
+      key: "MyStatusComponent",
     },
     {
       name: "Actions",
@@ -113,12 +135,12 @@ const ListExamsPage = () => {
           Component: ({ onClick }) => (
             <IconButton
               key="view"
-              title="View and evaluate students performance"
+              title="View students performance"
               Icon={PersonRounded}
               onClick={onClick}
             />
           ),
-          show: isTeacher,
+          show: true,
         },
         {
           onClick: (id) => onShuffleQuestionsClick(id),
@@ -130,7 +152,7 @@ const ListExamsPage = () => {
               onClick={onClick}
             />
           ),
-          show: false,
+          show: isTeacher,
         },
         {
           onConfirm: (id) => onConfirmExamDelete(id),
@@ -144,6 +166,23 @@ const ListExamsPage = () => {
             </ConfirmModal>
           ),
           show: isTeacher,
+        },
+        {
+          onConfirm: (id) => onConfirmTakeStartExam(id),
+          Component: ({ onConfirm }) => (
+            <ConfirmModal
+              onConfirm={onConfirm}
+              text="Are you sure you want to take start this exam?"
+              description="Once started, you won't be able to stop doing it."
+            >
+              <IconButton
+                key="take-exam"
+                title="Take exam"
+                Icon={RocketLaunchRounded}
+              />
+            </ConfirmModal>
+          ),
+          show: !isTeacher,
         },
       ],
     },

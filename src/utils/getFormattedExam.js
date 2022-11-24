@@ -2,7 +2,7 @@
 import moment from "moment";
 import { StatusTag } from "../components/tags";
 
-const getFormattedExam = (exam) => {
+const getFormattedExam = (exam, user) => {
   const todayDate = new Date();
   const initialDate = exam.initialDate.toDate();
   const finalDate = exam.finalDate.toDate();
@@ -12,23 +12,33 @@ const getFormattedExam = (exam) => {
     color: "blue",
   };
   const finished = moment(todayDate).isAfter(finalDate) && {
-    text: "Finished",
+    text: "Closed",
     color: "red",
   };
   const status = start ||
     finished || {
-    text: "In progress",
+    text: "Open",
     color: "green",
   };
 
+  const finishedExam = exam.performances.find((performance) => performance.studentId === user.id);
+  const myStatus = finishedExam ? { text: "Finished", color: "green" } : { text: "Not finished", color: "blue" };
+
   const StatusComponent = <StatusTag text={status.text} color={status.color} />;
+
+  const MyStatusComponent = <StatusTag text={myStatus.text} color={myStatus.color} />;
+
+
 
   return {
     ...exam,
     initialDate: moment(initialDate).format("MMMM Do YYYY, h:mm"),
     finalDate: moment(finalDate).format("MMMM Do YYYY, h:mm"),
     questions: exam.questions.length,
-    status: StatusComponent,
+    status,
+    StatusComponent: StatusComponent,
+    MyStatusComponent: MyStatusComponent,
+    myStatus,
   };
 };
 

@@ -9,7 +9,14 @@ import {
   TextField,
 } from "@mui/material";
 
-const ViewQuestionCard = ({ statement, type, alternatives = [], answer }) => {
+const ViewQuestionCard = ({
+  statement,
+  type,
+  alternatives = [],
+  answer,
+  correctAnswer,
+  showIfAnswerIsCorrect,
+}) => {
   const isClosedQuestion = type === "closed";
 
   const alternativesMap = alternatives.map((alternative, index) => {
@@ -30,10 +37,16 @@ const ViewQuestionCard = ({ statement, type, alternatives = [], answer }) => {
     );
   });
 
+  const borderColor = answer === correctAnswer ? "green" : "red";
+
   return (
     <Card
       variant="outlined"
-      sx={{ backgroundColor: "#F8F8F8", marginBottom: "32px" }}
+      sx={{
+        backgroundColor: "#F8F8F8",
+        marginBottom: "32px",
+        borderColor: showIfAnswerIsCorrect && borderColor,
+      }}
       fullWidth
     >
       <CardContent sx={{ position: "relative" }}>

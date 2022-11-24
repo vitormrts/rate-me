@@ -11,7 +11,9 @@ import { copyToClipboard } from "../../utils";
 const ListStudentsPage = () => {
   const { classroomId } = useParams();
   const { classroom } = useClassrooms(classroomId);
-  const students = classroom?.students || [];
+  const students =
+    classroom?.participants.filter((participant) => !participant.isTeacher) ||
+    [];
 
   const onInviteStudentButtonClick = () => {
     // Note: implement insert base url
@@ -54,8 +56,8 @@ const ListStudentsPage = () => {
 
   const columns = [
     {
-      name: "Name",
-      key: "name",
+      name: "Full name",
+      key: "fullName",
     },
     {
       name: "Email",

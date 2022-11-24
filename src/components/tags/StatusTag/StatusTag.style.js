@@ -11,7 +11,8 @@ export const Status = styled.span`
     border-radius: 4px;
     text-transform: uppercase;
     text-align: center;
-    font-size: 14px;
+    font-size: 10px;
+    line-height: 14px;
     ${color === "blue" &&
     css`
       background-color: ${theme.colors.primary.main};

@@ -11,6 +11,9 @@ import {
   EditClassroom,
   ViewExamPage,
   EnterClassroom,
+  TakeExamPage,
+  PerformancePage,
+  PostPerformancePage,
 } from "../pages";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -47,6 +50,18 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/exams/:examId"
             element={<ViewExamPage />}
+          />
+          <Route
+            path="classrooms/:classroomId/exams/:examId/take"
+            element={<TakeExamPage />}
+          />
+          <Route
+            path="classrooms/:classroomId/exams/:examId/performance"
+            element={<PerformancePage />}
+          />
+          <Route
+            path="classrooms/:classroomId/exams/:examId/performance/:performanceId"
+            element={<PostPerformancePage />}
           />
         </Route>
       </Routes>
