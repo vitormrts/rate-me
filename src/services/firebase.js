@@ -1,14 +1,15 @@
+/* eslint-disable no-undef */
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { collection, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCzTbHiKI5OC_62ukIPAOszM2Q0nwUMVbQ",
-  authDomain: "usp-rate-me.firebaseapp.com",
-  projectId: "usp-rate-me",
-  storageBucket: "usp-rate-me.appspot.com",
-  messagingSenderId: "135086914702",
-  appId: "1:135086914702:web:d712b1c384d64af3f9dddf",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
