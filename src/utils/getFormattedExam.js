@@ -21,7 +21,7 @@ const getFormattedExam = (exam, user) => {
     color: "green",
   };
 
-  const finishedExam = exam.performances.find((performance) => performance.studentId === user.id);
+  const finishedExam = exam.performances.find((performance) => performance.studentId === user.uid);
   const myStatus = finishedExam ? { text: "Finished", color: "green" } : { text: "Not finished", color: "blue" };
 
   const StatusComponent = <StatusTag text={status.text} color={status.color} />;

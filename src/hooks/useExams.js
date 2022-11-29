@@ -85,7 +85,7 @@ const useExams = ({ classroom } = {}) => {
       const newPerformance = {
         id: uuid(),
         fullName: user.fullName,
-        studentId: user.id,
+        studentId: user.uid,
         hit,
         miss,
         waitingCorrection: openQuestions.length,
@@ -106,7 +106,6 @@ const useExams = ({ classroom } = {}) => {
         success: true,
       };
     } catch (error) {
-      console.log(error);
       return {
         success: false,
       };

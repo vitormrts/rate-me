@@ -43,7 +43,12 @@ const getAll = async ({ collection }) => {
   return data;
 };
 
-const post = async ({ collection, data }) => {
+const post = async ({ collection, data, id }) => {
+  if (id) {
+    await firestore.setDoc(firestore.doc(db, collection, id), data);
+    return;
+  }
+
   const doc = await firestore.addDoc(
     firestore.collection(db, collection),
     data

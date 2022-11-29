@@ -17,14 +17,13 @@ const useClassrooms = (classroomId) => {
         name,
         participants: [
           {
-            id: user.id,
+            id: user.uid,
             email: user.email,
-            fullName: user.fullName,
             isTeacher: true,
           },
         ],
-        participantsIds: [user.id],
-        teacherId: user.id,
+        participantsIds: [user.uid],
+        teacherId: user.uid,
       };
       await api.post({ collection: "classrooms", data: newClassroom });
       return {
@@ -45,7 +44,7 @@ const useClassrooms = (classroomId) => {
       const classroom = await getClassroom(id);
       if (classroom.password === password) {
         const alreadyParticipant = classroom.participantsIds.find(
-          (participant) => participant === user.id
+          (participant) => participant === user.uid
         );
 
         if (alreadyParticipant) {
@@ -59,11 +58,11 @@ const useClassrooms = (classroomId) => {
             {
               email: user.email,
               fullName: user.fullName,
-              id: user.id,
+              id: user.uid,
               isTeacher: false,
             },
           ],
-          participantsIds: [...classroom.participantsIds, user.id],
+          participantsIds: [...classroom.participantsIds, user.uid],
         };
 
         await updateClassroom(classroomWithNewParticipant, id);
@@ -118,16 +117,24 @@ const useClassrooms = (classroomId) => {
   };
 
   const getClassrooms = async () => {
-    const classrooms = await api.getClassroomsFromUser(user.id);
-    return classrooms;
+    try {
+      const classrooms = await api.getClassroomsFromUser(user.uid);
+      return classrooms;
+    } catch (error) {
+      return [];
+    }
   };
 
   const getClassroom = async (id) => {
-    const classroom = await api.getById({
-      collection: "classrooms",
-      id,
-    });
-    return classroom;
+    try {
+      const classroom = await api.getById({
+        collection: "classrooms",
+        id,
+      });
+      return classroom;
+    } catch (error) {
+      return {};
+    }
   };
 
   useEffect(() => {

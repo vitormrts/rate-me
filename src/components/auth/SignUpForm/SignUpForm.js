@@ -11,7 +11,6 @@ const inputErrors = content.errors.input;
 const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
   const [role, setRole] = useState();
   const schema = yup.object().shape({
-    fullName: yup.string().required(inputErrors.empty),
     email: yup
       .string()
       .required(inputErrors.empty)
@@ -41,14 +40,6 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
   return (
     <>
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSignUp)}>
-        <TextField
-          error={errors.fullName}
-          fullWidth
-          helperText={errors.fullName?.message}
-          label="Full name"
-          variant="standard"
-          {...register("fullName")}
-        />
         <TextField
           error={errors.email}
           fullWidth
