@@ -12,24 +12,37 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const onAuth = async (user) => {
+    const userData = await api.getById({
+      collection: "users",
+      id: user.uid,
+    });
+    setUser({ ...user, role: userData.role });
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
+        setLoading(false);
         return;
       }
-      const userData = await api.getById({
-        collection: "users",
-        id: currentUser.uid,
-      });
-      setUser({ ...currentUser, role: userData.role });
+      await onAuth(currentUser);
+      setLoading(false);
     });
   }, []);
 
   const login = async ({ email, password }) => {
     const fetchLogin = async () => {
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await onAuth(user);
+        setLoading(false);
         return { success: true };
       } catch (error) {
         return { success: false, error };
@@ -63,8 +76,9 @@ const AuthContextProvider = ({ children }) => {
       login,
       logout,
       signUp,
+      loading,
     }),
-    [login, signUp, user]
+    [login, signUp, user, loading]
   );
 
   return (

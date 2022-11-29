@@ -16,52 +16,157 @@ import {
   PostPerformancePage,
 } from "../pages";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "../hooks";
+import { isTeacherRole } from "../utils";
+
+const AuthRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return;
+  }
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
+
+const TeacherRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  const isTeacher = isTeacherRole(user?.role);
+
+  if (loading) {
+    return;
+  }
+  if (!user || !isTeacher) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+const StudentRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  const isTeacher = isTeacherRole(user?.role);
+
+  if (loading) {
+    return;
+  }
+  if (!user || isTeacher) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route index element={<HomePage />} />
+        <Route path="*" element={<h1>Error not found</h1>} />
         <Route path="auth">
           <Route path="signup" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
         </Route>
-        <Route path="dashboard" element={<DashboardPage />}>
-          <Route path="classrooms" element={<ClassroomsPage />} />
-          <Route path="classrooms/new" element={<NewClassroomPage />} />
+        <Route
+          path="dashboard"
+          element={
+            <AuthRoute>
+              <DashboardPage />
+            </AuthRoute>
+          }
+        >
+          <Route
+            path="classrooms"
+            element={
+              <AuthRoute>
+                <ClassroomsPage />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="classrooms/new"
+            element={
+              <TeacherRoute>
+                <NewClassroomPage />
+              </TeacherRoute>
+            }
+          />
           <Route
             path="classrooms/:classroomId/edit"
-            element={<EditClassroom />}
+            element={
+              <TeacherRoute>
+                <EditClassroom />
+              </TeacherRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/students"
-            element={<StudentsPage />}
+            element={
+              <TeacherRoute>
+                <StudentsPage />
+              </TeacherRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/invite"
-            element={<EnterClassroom />}
+            element={
+              <StudentRoute>
+                <EnterClassroom />
+              </StudentRoute>
+            }
           />
-          <Route path="classrooms/:classroomId/exams" element={<ExamsPage />} />
+          <Route
+            path="classrooms/:classroomId/exams"
+            element={
+              <AuthRoute>
+                <ExamsPage />
+              </AuthRoute>
+            }
+          />
           <Route
             path="classrooms/:classroomId/exams/new"
-            element={<NewExamPage />}
+            element={
+              <TeacherRoute>
+                <NewExamPage />
+              </TeacherRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/exams/:examId"
-            element={<ViewExamPage />}
+            element={
+              <TeacherRoute>
+                <ViewExamPage />
+              </TeacherRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/exams/:examId/take"
-            element={<TakeExamPage />}
+            element={
+              <StudentRoute>
+                <TakeExamPage />
+              </StudentRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/exams/:examId/performance"
-            element={<PerformancePage />}
+            element={
+              <AuthRoute>
+                <PerformancePage />
+              </AuthRoute>
+            }
           />
           <Route
             path="classrooms/:classroomId/exams/:examId/performance/:performanceId"
-            element={<PostPerformancePage />}
+            element={
+              <TeacherRoute>
+                <PostPerformancePage />
+              </TeacherRoute>
+            }
           />
         </Route>
       </Routes>
