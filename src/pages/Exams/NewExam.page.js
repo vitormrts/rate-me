@@ -68,14 +68,14 @@ const NewExamPage = () => {
 
   const onSubmitClick = () => {
     if (!getValues("questions")) {
-      toast.error("You need create questions.");
+      toast.error("Você precisa criar uma questão");
     }
   };
 
   const onCreateExam = async (data) => {
     const { success, error } = await createExam(data);
     if (success) {
-      toast.success("Exam created successfully");
+      toast.success("Exame criado com sucesso");
       navigate("/dashboard/classrooms/");
       return;
     }
@@ -139,7 +139,7 @@ const NewExamPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -148,18 +148,18 @@ const NewExamPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Create exam",
+      text: "Criar exame",
       Icon: AddRounded,
     },
   ];
 
   return (
-    <Group title="Create exam" breadcrumbs={breadcrumbs}>
+    <Group title="Criar exame" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateExam)}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
-              label="Exam name"
+              label="Nome do exame"
               variant="standard"
               error={errors.name}
               helperText={errors.name?.message}
@@ -169,7 +169,7 @@ const NewExamPage = () => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              label="Time limit (minutes)"
+              label="Tempo limite"
               variant="standard"
               error={errors.timeLimit}
               helperText={errors.timeLimit?.message}
@@ -178,20 +178,20 @@ const NewExamPage = () => {
             />
           </Grid>
           <Grid item xs={6}>
-            <DateComponent name="initialDate" label="Initial Date" />
+            <DateComponent name="initialDate" label="Data inicial" />
           </Grid>
           <Grid item xs={6}>
-            <DateComponent name="finalDate" label="Final Date" />
+            <DateComponent name="finalDate" label="Data final" />
           </Grid>
         </Grid>
         <Divider sx={{ margin: "40px 0" }} />
         {questionsMap}
         <ButtonGroup variant="contained" fullWidth sx={{ gap: "16px" }}>
           <Button variant="outlined" onClick={onAddQuestionClick}>
-            + Add question
+            + Adicionar questão
           </Button>
           <Button type="submit" variant="contained" onClick={onSubmitClick}>
-            Submit
+            Submeter
           </Button>
         </ButtonGroup>
       </form>

@@ -58,7 +58,7 @@ const TakeQuestionCard = ({
     >
       <CardContent sx={{ position: "relative" }}>
         <Box>
-          <FormLabel>Statement</FormLabel>
+          <FormLabel>Pergunta</FormLabel>
           <Typography>{statement}</Typography>
         </Box>
         <Box mt={1}>

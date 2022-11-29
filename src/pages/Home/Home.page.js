@@ -14,16 +14,16 @@ const HomePage = () => {
       <HeroBanner onSignUpClick={onSignUpClick} onLoginClick={onLoginClick} />
       <Feature
         onSignUpClick={onSignUpClick}
-        title="Manage classrooms and apply <strong>scheduled time-limited</strong> exams"
-        description="Create closed questions that have a predefined answer or open questions with a code editor for your students. Ah, don't worry, you can shuffle the questions to prevent cheating."
-        cta="I wan't to rate"
+        title="Controle suas salas de aula e aplique <strong>provas com tempo limite</strong>"
+        description="Crie questões fechadas com uma resposta pré-definida, ou crie questões abertas e corrija você mesmo."
+        cta="Quero avaliar"
         image="/assets/home/teacher.png"
       />
       <Feature
         onSignUpClick={onSignUpClick}
-        title="Take exams and get your <strong>performance</strong>"
-        description="Be aware that your teacher can create closed or open questions, but don't hate them for it. Look at your individual grade and class grades, maybe you're not so bad."
-        cta="(I don't want) to be rated"
+        title="Faça exames e veja a sua <strong>performance</strong>"
+        description="Esteja ciente de que seu professor pode criar perguntas fechadas ou abertas, mas não os odeie por isso. Olhe para sua nota individual e notas de classe, talvez você não seja tão ruim."
+        cta="(Não quero) Ser avaliado"
         image="/assets/home/student.png"
         imagePosition="left"
         backgroundGray

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CorrectQuestionCard from "../../components/cards/QuestionCard/CorrectQuestionCard";
 import ViewQuestionCard from "../../components/cards/QuestionCard/ViewQuestionCard";
 import { Group } from "../../components/groups";
-import { useAuth, useClassrooms, useExams } from "../../hooks";
+import { useClassrooms, useExams } from "../../hooks";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
@@ -15,7 +15,6 @@ const PostPerformanceExamPage = () => {
   const { classroomId, examId, performanceId } = useParams();
   const { classroom } = useClassrooms(classroomId);
   const { correctExam } = useExams();
-  const { user } = useAuth();
 
   const schema = yup.object().shape({
     correction: yup.array().of(
@@ -82,7 +81,7 @@ const PostPerformanceExamPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -91,7 +90,7 @@ const PostPerformanceExamPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Students",
+      text: "Avaliar aluno",
       Icon: PersonRounded,
     },
   ];
@@ -99,14 +98,14 @@ const PostPerformanceExamPage = () => {
   const handleOnSubmit = () => {
     const correction = getValues("correction");
     correctExam({ correction, performance, classroom, examId });
-    toast.success("Exam evaluated successfully");
+    toast.success("Aluno avaliado com sucesso");
     navigate(
       `/dashboard/classrooms/${classroomId}/exams/${examId}/performance`
     );
   };
 
   return (
-    <Group title="Exam performance" breadcrumbs={breadcrumbs}>
+    <Group title="Avaliar exame do aluno" breadcrumbs={breadcrumbs}>
       {answersMap}
       <Button onClick={handleOnSubmit} fullWidth variant="contained">
         Submit

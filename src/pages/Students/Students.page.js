@@ -19,8 +19,8 @@ const ListStudentsPage = () => {
     // Note: implement insert base url
     const { success } = copyToClipboard(`/classrooms/${classroomId}/invite`);
     success
-      ? toast.info("Room URL copied! Send it to your student")
-      : toast.error("There was an error copying the room URL");
+      ? toast.info("Sala de aula copiada. Envie o link para o seu aluno.")
+      : toast.error("Ocorreu um erro ao copiar a sala de aula.");
   };
 
   const InviteStudentButton = (props) => (
@@ -30,7 +30,7 @@ const ListStudentsPage = () => {
       fullWidth
       {...props}
     >
-      + Invite student
+      + Convidar
     </Button>
   );
 
@@ -40,7 +40,7 @@ const ListStudentsPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -49,16 +49,12 @@ const ListStudentsPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Students",
+      text: "Estudantes",
       Icon: PersonRounded,
     },
   ];
 
   const columns = [
-    {
-      name: "Full name",
-      key: "fullName",
-    },
     {
       name: "Email",
       key: "email",
@@ -67,7 +63,7 @@ const ListStudentsPage = () => {
 
   return (
     <Group
-      title="Students"
+      title="Estudantes"
       Button={InviteStudentButton}
       breadcrumbs={breadcrumbs}
     >

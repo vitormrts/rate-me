@@ -44,15 +44,17 @@ const ListExamsPage = () => {
     const examClosed = targetExam?.status?.text === "Closed";
 
     if (examClosed) {
-      toast.error("Could not start this exam because it is closed.");
+      toast.error(
+        "Não foi possível iniciar este exame, pois ele está fechado."
+      );
       return;
     }
     if (studentFinished) {
-      toast.error("You have already finished this exam.");
+      toast.error("Você já finalizou este exame.");
       return;
     }
     navigate(`/dashboard/classrooms/${classroomId}/exams/${id}/take`);
-    toast.success("Exam started. Good luck!");
+    toast.success("Exame iniciado, boa sorte!");
   };
 
   const onConfirmExamDelete = async (id) => {
@@ -72,7 +74,7 @@ const ListExamsPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -81,30 +83,30 @@ const ListExamsPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Exams",
+      text: "Exames",
       Icon: QuizRounded,
     },
   ];
 
   const columns = [
     {
-      name: "Name",
+      name: "Nome",
       key: "name",
     },
     {
-      name: "Time Limit (minutes)",
+      name: "Tempo limite (minutos)",
       key: "timeLimit",
     },
     {
-      name: "Questions",
+      name: "Questões",
       key: "questions",
     },
     {
-      name: "Initial Date",
+      name: "Data inicial",
       key: "initialDate",
     },
     {
-      name: "Final Date",
+      name: "Data final",
       key: "finalDate",
     },
     {
@@ -112,18 +114,18 @@ const ListExamsPage = () => {
       key: "StatusComponent",
     },
     !isTeacher && {
-      name: "My status",
+      name: "Meu status",
       key: "MyStatusComponent",
     },
     {
-      name: "Actions",
+      name: "Ações",
       actions: [
         {
           onClick: (id) => onViewExamClick(id),
           Component: ({ onClick }) => (
             <IconButton
               key="view"
-              title="View exam questions"
+              title="Ver questões"
               Icon={RemoveRedEyeRounded}
               onClick={onClick}
             />
@@ -135,7 +137,7 @@ const ListExamsPage = () => {
           Component: ({ onClick }) => (
             <IconButton
               key="view"
-              title="View students performance"
+              title="Ver performances"
               Icon={PersonRounded}
               onClick={onClick}
             />
@@ -147,7 +149,7 @@ const ListExamsPage = () => {
           Component: ({ onClick }) => (
             <IconButton
               key="shuffle"
-              title="Shuffle exam questions"
+              title="Embaralhar questões"
               Icon={ShuffleRounded}
               onClick={onClick}
             />
@@ -159,10 +161,10 @@ const ListExamsPage = () => {
           Component: ({ onConfirm }) => (
             <ConfirmModal
               onConfirm={onConfirm}
-              text="Are you sure you want to delete this exam?"
-              description="By deleting this exam you will lose all data related to it."
+              text="Você tem certeza que deseja deletar esse exame?"
+              description="Deletando este exame você perderá todos os dados relacionados a ele"
             >
-              <IconButton key="delete" title="Delete" Icon={DeleteRounded} />
+              <IconButton key="delete" title="Deletar" Icon={DeleteRounded} />
             </ConfirmModal>
           ),
           show: isTeacher,
@@ -172,12 +174,12 @@ const ListExamsPage = () => {
           Component: ({ onConfirm }) => (
             <ConfirmModal
               onConfirm={onConfirm}
-              text="Are you sure you want to take start this exam?"
-              description="Once started, you won't be able to stop doing it."
+              text="Você tem certeza que quer iniciar este exame?"
+              description="Uma vez iniciado não será possível cancelar."
             >
               <IconButton
                 key="take-exam"
-                title="Take exam"
+                title="Iniciar exame"
                 Icon={RocketLaunchRounded}
               />
             </ConfirmModal>
@@ -197,7 +199,7 @@ const ListExamsPage = () => {
         fullWidth
         {...props}
       >
-        + Add Exam
+        + Adicionar
       </Button>
     );
   };
@@ -207,7 +209,7 @@ const ListExamsPage = () => {
   );
 
   return (
-    <Group title="Exams" Button={CreateExamButton} breadcrumbs={breadcrumbs}>
+    <Group title="Exames" Button={CreateExamButton} breadcrumbs={breadcrumbs}>
       {classroom && examsMap.length > 0 && (
         <Table columns={columns} data={examsMap} />
       )}
@@ -216,13 +218,13 @@ const ListExamsPage = () => {
           image="/assets/exams/empty.webp"
           title={
             isTeacher
-              ? "Oops! You have no exams created."
-              : "Oops! This room does not have exams."
+              ? "Oops! Você não criou exames nesta sala de aula."
+              : "Oops! Essa sala não possui exames.."
           }
           subTitle={
             isTeacher
-              ? "But calm down! How about you create your first exam?"
-              : "How about waiting for your teacher to add an exam?"
+              ? "Mas calma! Que tal criar seu primeiro exame?"
+              : "Que tal esperar seu professor adicionar um exame?"
           }
           Button={isTeacher && CreateExamOutlinedButton}
         />

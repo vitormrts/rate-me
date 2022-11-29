@@ -52,7 +52,7 @@ const ViewQuestionCard = ({
       <CardContent sx={{ position: "relative" }}>
         <Box>
           <TextField
-            label="Statement"
+            label="Pergunta"
             multiline
             fullWidth
             variant="standard"
@@ -62,7 +62,7 @@ const ViewQuestionCard = ({
         </Box>
         <Box mt={2}>
           <TextField
-            label="Question type"
+            label="Tipo da questão"
             multiline
             fullWidth
             variant="standard"

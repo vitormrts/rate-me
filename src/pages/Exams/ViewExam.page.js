@@ -26,7 +26,7 @@ const ViewExamPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -35,19 +35,19 @@ const ViewExamPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Exams",
+      text: "Exames",
       Icon: QuizRounded,
     },
   ];
 
   return (
-    <Group title="View exam" breadcrumbs={breadcrumbs}>
+    <Group title="Ver exam" breadcrumbs={breadcrumbs}>
       <Grid container spacing={2}>
         {exam && (
           <>
             <Grid item xs={6}>
               <TextField
-                label="Exam name"
+                label="Nome do exame"
                 variant="standard"
                 value={exam.name}
                 disabled
@@ -56,7 +56,7 @@ const ViewExamPage = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Time limit"
+                label="Tempo limite (minutos)"
                 variant="standard"
                 value={exam.timeLimit}
                 disabled
@@ -65,7 +65,7 @@ const ViewExamPage = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Initial date"
+                label="Data inicial"
                 variant="standard"
                 value={exam.initialDate.toDate()}
                 disabled
@@ -74,7 +74,7 @@ const ViewExamPage = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Final date"
+                label="Data final"
                 variant="standard"
                 value={exam.finalDate.toDate()}
                 disabled

@@ -48,7 +48,7 @@ const EnterClassroomPage = () => {
   const onConfirm = async (data) => {
     const { success, error } = await enterClassroom(data, classroomId);
     if (success) {
-      toast.success("Entered the room successfully");
+      toast.success("Você entrou na sala com sucesso");
       navigate("/dashboard/classrooms");
       return;
     }
@@ -69,7 +69,7 @@ const EnterClassroomPage = () => {
       <Fade in={open}>
         <Box sx={style}>
           <Typography variant="h6" component="h2">
-            To enter in this classroom fill the password
+            Para entrar insira a senha da sala de aula
           </Typography>
           <form onSubmit={handleSubmit(onConfirm)}>
             <Box mt={2}>
@@ -77,7 +77,7 @@ const EnterClassroomPage = () => {
                 error={errors.password}
                 fullWidth
                 helperText={errors.password?.message}
-                label="Password"
+                label="Senha"
                 type="password"
                 variant="standard"
                 {...register("password")}
@@ -85,7 +85,7 @@ const EnterClassroomPage = () => {
             </Box>
             <Box mt={2}>
               <Button type="submit" variant="contained" fullWidth>
-                Confirm
+                Confirmar
               </Button>
             </Box>
           </form>

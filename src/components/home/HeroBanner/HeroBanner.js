@@ -17,10 +17,10 @@ const HeroBanner = ({ onSignUpClick, onLoginClick }) => {
           </S.ButtonGroup>
         </S.Header>
         <S.TextContent>
-          <S.Title>Evaluate your technology students</S.Title>
+          <S.Title>Avalie seus alunos</S.Title>
           <S.Subtitle>
-            Evaluate your students through exams. The equation is simple: you
-            rate them, and they hate you.
+            Avalie seus alunos por meio de exames. A equação é simples: você
+            avalie-os, e eles te odeiam.
           </S.Subtitle>
           <S.ButtonAdapter>
             <Button text="Sign up now" onClick={onSignUpClick} />

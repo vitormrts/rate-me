@@ -28,12 +28,12 @@ const useClassrooms = (classroomId) => {
       await api.post({ collection: "classrooms", data: newClassroom });
       return {
         success: true,
-        message: "Classroom created successfully",
+        message: "Sala de aula criada com sucesso",
       };
     } catch (error) {
       return {
         success: false,
-        message: "There was an error create the classroom",
+        message: "Ocorreu um erro ao criar a sala de aula",
       };
     }
   };
@@ -48,7 +48,7 @@ const useClassrooms = (classroomId) => {
         );
 
         if (alreadyParticipant) {
-          throw new Error("You are already in this room");
+          throw new Error("Você já está nesta sala de aula");
         }
 
         const classroomWithNewParticipant = {
@@ -57,7 +57,6 @@ const useClassrooms = (classroomId) => {
             ...classroom.participants,
             {
               email: user.email,
-              fullName: user.fullName,
               id: user.uid,
               isTeacher: false,
             },
@@ -71,7 +70,7 @@ const useClassrooms = (classroomId) => {
           success: true,
         };
       }
-      throw new Error("Incorrect password");
+      throw new Error("Senha incorreta");
     } catch (error) {
       return {
         success: false,
@@ -90,12 +89,12 @@ const useClassrooms = (classroomId) => {
 
       return {
         success: true,
-        message: "Classroom edited successfully",
+        message: "Sala de aula editada com sucesso",
       };
     } catch (error) {
       return {
         success: false,
-        message: "There was an error editing the classroom",
+        message: "Ocorreu um erro ao editar a sala de aula",
       };
     }
   };
@@ -106,12 +105,12 @@ const useClassrooms = (classroomId) => {
 
       return {
         success: true,
-        message: "Classroom successfully deleted",
+        message: "Sala de aula deletada com sucesso",
       };
     } catch (error) {
       return {
         success: false,
-        message: "There was an error deleting the classroom",
+        message: "Ocorreu um erro ao deletar a sala de aula",
       };
     }
   };

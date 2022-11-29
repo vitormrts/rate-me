@@ -41,7 +41,7 @@ const EditClassroomPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -50,20 +50,20 @@ const EditClassroomPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Edit",
+      text: "Editar",
       Icon: EditRounded,
     },
   ];
 
   return (
-    <Group title="Edit classroom" breadcrumbs={breadcrumbs}>
+    <Group title="Editar sala de aula" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onEditClassroom)}>
         <Grid container spacing={2}>
           {classroom && (
             <>
               <Grid item sm={6}>
                 <TextField
-                  label="Name"
+                  label="Nome"
                   variant="standard"
                   error={errors.name}
                   helperText={errors.name?.message}
@@ -74,7 +74,7 @@ const EditClassroomPage = () => {
               </Grid>
               <Grid item sm={6}>
                 <TextField
-                  label="Password"
+                  label="Senha"
                   variant="standard"
                   type="password"
                   error={errors.password}
@@ -86,7 +86,7 @@ const EditClassroomPage = () => {
               </Grid>
               <Grid item sm={12}>
                 <TextField
-                  label="Description"
+                  label="Descrição"
                   variant="standard"
                   error={errors.description}
                   helperText={errors.description?.message}
@@ -98,7 +98,7 @@ const EditClassroomPage = () => {
               </Grid>
               <Grid item sm={4}>
                 <Button type="submit" variant="contained" fullWidth>
-                  Edit
+                  Editar
                 </Button>
               </Grid>
             </>

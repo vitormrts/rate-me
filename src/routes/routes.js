@@ -16,8 +16,14 @@ import {
   PostPerformancePage,
 } from "../pages";
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useAuth } from "../hooks";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
+import { useAuth, useClassrooms } from "../hooks";
 import { isTeacherRole } from "../utils";
 
 const AuthRoute = ({ children }) => {
@@ -29,6 +35,26 @@ const AuthRoute = ({ children }) => {
   if (!user) {
     return <Navigate to="/" replace />;
   }
+  return children;
+};
+
+const OwnerClassroomRoute = ({ children }) => {
+  const { classroomId } = useParams();
+  const { classroom } = useClassrooms(classroomId);
+  const { user, loading } = useAuth();
+
+  const isOwner = classroom?.teacherId === user?.uid;
+
+  const isTeacher = isTeacherRole(user?.role);
+
+  if (loading || !classroom) {
+    return;
+  }
+
+  if (!user || !isTeacher || !isOwner) {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 
@@ -99,25 +125,25 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/edit"
             element={
-              <TeacherRoute>
+              <OwnerClassroomRoute>
                 <EditClassroom />
-              </TeacherRoute>
+              </OwnerClassroomRoute>
             }
           />
           <Route
             path="classrooms/:classroomId/students"
             element={
-              <TeacherRoute>
+              <OwnerClassroomRoute>
                 <StudentsPage />
-              </TeacherRoute>
+              </OwnerClassroomRoute>
             }
           />
           <Route
             path="classrooms/:classroomId/invite"
             element={
-              <StudentRoute>
+              <OwnerClassroomRoute>
                 <EnterClassroom />
-              </StudentRoute>
+              </OwnerClassroomRoute>
             }
           />
           <Route
@@ -139,9 +165,9 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/exams/:examId"
             element={
-              <TeacherRoute>
+              <OwnerClassroomRoute>
                 <ViewExamPage />
-              </TeacherRoute>
+              </OwnerClassroomRoute>
             }
           />
           <Route
@@ -163,9 +189,9 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/exams/:examId/performance/:performanceId"
             element={
-              <TeacherRoute>
+              <OwnerClassroomRoute>
                 <PostPerformancePage />
-              </TeacherRoute>
+              </OwnerClassroomRoute>
             }
           />
         </Route>

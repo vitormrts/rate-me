@@ -41,7 +41,7 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
           sx={{ position: "absolute", right: "16px", zIndex: 2 }}
         />
         <TextField
-          label="Statement"
+          label="Pergunta"
           multiline
           fullWidth
           variant="standard"
@@ -52,7 +52,7 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
         />
         <Box mt={2}>
           <InputLabel error={error?.type} helperText={error?.type?.message}>
-            Question type
+            Tipo da questão
           </InputLabel>
           <FormControl fullWidth>
             <Controller

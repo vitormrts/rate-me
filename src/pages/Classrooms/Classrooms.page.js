@@ -55,7 +55,7 @@ const ListClassroomsPage = () => {
         fullWidth
         {...props}
       >
-        + Add classroom
+        + Adicionar
       </Button>
     );
   };
@@ -66,37 +66,37 @@ const ListClassroomsPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
     },
   ];
 
   const columns = [
     {
-      name: "Name",
+      name: "Nome",
       key: "name",
     },
     {
-      name: "Description",
+      name: "Descrição",
       key: "description",
     },
     {
-      name: "Students",
+      name: "Estudantes",
       key: "students",
     },
     {
-      name: "Exams",
+      name: "Exames",
       key: "exams",
     },
     {
-      name: "Actions",
+      name: "Ações",
       actions: [
         {
           onClick: (id) => onExamsButtonClick(id),
           Component: ({ onClick }) => (
             <IconButton
               key="show-exams"
-              title="View exams"
+              title="Ver exames"
               Icon={QuizRounded}
               onClick={onClick}
             />
@@ -107,7 +107,7 @@ const ListClassroomsPage = () => {
           Component: ({ onClick }) => (
             <IconButton
               key="show-students"
-              title="View students"
+              title="Ver estudantes"
               Icon={PersonRounded}
               onClick={onClick}
             />
@@ -119,7 +119,7 @@ const ListClassroomsPage = () => {
           Component: ({ onClick }) => (
             <IconButton
               key="edit"
-              title="Edit"
+              title="Editar"
               Icon={EditRounded}
               onClick={onClick}
             />
@@ -131,10 +131,10 @@ const ListClassroomsPage = () => {
           Component: ({ onConfirm }) => (
             <ConfirmModal
               onConfirm={onConfirm}
-              text="Are you sure you want to delete this room?"
-              description="By deleting this room you will lose the exams and students related to it."
+              text="Você tem certeza que deseja deletar essa sala de aula?"
+              description="Deletando a sala você perderá os seus alunos e seus exames"
             >
-              <IconButton key="delete" title="Delete" Icon={DeleteRounded} />
+              <IconButton key="delete" title="Deletar" Icon={DeleteRounded} />
             </ConfirmModal>
           ),
           show: isTeacher,
@@ -144,7 +144,7 @@ const ListClassroomsPage = () => {
   ];
   return (
     <Group
-      title="Classrooms"
+      title="Salas de aula"
       Button={CreateClassroomButton}
       breadcrumbs={breadcrumbs}
     >
@@ -156,13 +156,13 @@ const ListClassroomsPage = () => {
           image="/assets/classroom/empty.jpg"
           title={
             isTeacher
-              ? "Oops! You have no classrooms created."
-              : "Oops! You are not in any classroom."
+              ? "Oops! Você não criou nenhuma sala de aula."
+              : "Oops! Você não está em nenhuma sala de aula."
           }
           subTitle={
             isTeacher
-              ? "But calm down! How about you create your first classroom?"
-              : "But calm down! How about you ask your teacher to send you the room invitation?"
+              ? "Mas calma! Que tal criar uma?"
+              : "Mas calma! Que tal pedir ao seu professor para ele te convidar?"
           }
           Button={isTeacher && CreateClassroomOutlinedButton}
         />

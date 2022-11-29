@@ -41,7 +41,7 @@ const useExams = ({ classroom } = {}) => {
 
       return { success: true };
     } catch (error) {
-      return { success: false, error: "There was an error creating the exam" };
+      return { success: false, error: "Ocorreu um exame ao criar o exame" };
     }
   };
 
@@ -57,12 +57,12 @@ const useExams = ({ classroom } = {}) => {
 
       return {
         success: true,
-        message: "Exam successfully deleted",
+        message: "Exame deletado com sucesso",
       };
     } catch (error) {
       return {
         success: false,
-        message: "There was an error deleting the exam",
+        message: "Ocorreu um erro ao deletar o exame",
       };
     }
   };
@@ -84,7 +84,7 @@ const useExams = ({ classroom } = {}) => {
 
       const newPerformance = {
         id: uuid(),
-        fullName: user.fullName,
+        email: user.email,
         studentId: user.uid,
         hit,
         miss,
@@ -156,12 +156,12 @@ const useExams = ({ classroom } = {}) => {
       // await updateExam({ questions: shuffledQuestions }, id);
       return {
         success: true,
-        message: "Successfully shuffled exam questions",
+        message: "Questões do exame embaralhadas com sucesso",
       };
     } catch (error) {
       return {
         success: false,
-        message: "An error occurred while shuffling the questions",
+        message: "Um erro ocorreu ao embaralhar as questões",
       };
     }
   };

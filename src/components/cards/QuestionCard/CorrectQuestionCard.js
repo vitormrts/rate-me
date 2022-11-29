@@ -27,7 +27,7 @@ const CorrectQuestionCard = ({
           onChange={handleOnChange}
         />
         <Box mt={2}>
-          <FormLabel>Statement</FormLabel>
+          <FormLabel>Pergunta</FormLabel>
           <Typography>{statement}</Typography>
         </Box>
         <Box mt={2}>

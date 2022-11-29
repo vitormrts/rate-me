@@ -60,10 +60,10 @@ const ConfirmModal = ({
             <Typography sx={{ mt: 2 }}>{description}</Typography>
             <Box mt={2} display="flex" gap={1}>
               <Button variant="contained" fullWidth onClick={handleOnConfirm}>
-                Confirm
+                Confirmar
               </Button>
               <Button variant="outlined" fullWidth onClick={handleClose}>
-                Cancel
+                Cancelar
               </Button>
             </Box>
           </Box>

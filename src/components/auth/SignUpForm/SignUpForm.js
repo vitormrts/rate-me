@@ -53,7 +53,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
           error={errors.password}
           fullWidth
           helperText={errors.password?.message}
-          label="Password"
+          label="Senha"
           variant="standard"
           type="password"
           {...register("password")}
@@ -62,7 +62,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
           error={errors.confirmPassword}
           fullWidth
           helperText={errors.confirmPassword?.message}
-          label="Confirm password"
+          label="Confirmar senha"
           variant="standard"
           type="password"
           {...register("confirmPassword")}
@@ -80,7 +80,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
                 checked={role === "teacher"}
                 value="teacher"
               />
-              <Typography>I am a teacher</Typography>
+              <Typography>Sou professor</Typography>
             </Box>
           )}
         />
@@ -97,7 +97,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
                 checked={role === "student"}
                 value="student"
               />
-              <Typography>I am a student</Typography>
+              <Typography>Sou estudante</Typography>
             </Box>
           )}
         />
@@ -108,7 +108,7 @@ const SignUpForm = ({ onSubmit, onSuccess, onError }) => {
         </Box>
       </form>
       <Box mt={2}>
-        Already have an account? <Link to="/auth/login">Login</Link>
+        Já possui uma conta? <Link to="/auth/login">Login</Link>
       </Box>
     </>
   );

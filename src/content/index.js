@@ -1,11 +1,11 @@
 const content = {
   errors: {
     input: {
-      empty: "Fill this field",
-      passwordsDontMatch: "Passwords do not match",
-      mustBeNumber: "Just enter numbers",
-      mustBeDate: "Enter a valid date",
-      invalidEmail: "Enter a valid email",
+      empty: "Preencha este campo",
+      passwordsDontMatch: "Senhas não não iguais",
+      mustBeNumber: "Insira apenas números",
+      mustBeDate: "Insira uma data válida",
+      invalidEmail: "Insira um email válido",
     },
   },
 };

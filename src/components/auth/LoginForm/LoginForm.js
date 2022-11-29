@@ -57,7 +57,7 @@ const LoginForm = ({ onSubmit, onSuccess, onError }) => {
         </Box>
       </form>
       <Box mt={2}>
-        Dont have an account? <Link to="/auth/signup">Sign up</Link>
+        Não possui uma conta? <Link to="/auth/signup">Sign up</Link>
       </Box>
     </>
   );

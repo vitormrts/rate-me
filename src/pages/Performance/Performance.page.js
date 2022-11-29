@@ -27,7 +27,7 @@ const PerformanceExamPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -36,37 +36,37 @@ const PerformanceExamPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Students",
+      text: "Performances",
       Icon: PersonRounded,
     },
   ];
 
   const columns = [
     {
-      name: "Full name",
-      key: "fullName",
+      name: "Email",
+      key: "email",
     },
     {
-      name: "Hit",
+      name: "Questões certas",
       key: "hit",
     },
     {
-      name: "Miss",
+      name: "Questões erradas",
       key: "miss",
     },
     {
-      name: "Waiting correction",
+      name: "Questões aguardando correção",
       key: "waitingCorrection",
     },
     {
-      name: "Actions",
+      name: "Ações",
       actions: [
         {
           onClick: (id) => onEvaluateStudentExamClick(id),
           Component: ({ onClick }) => (
             <IconButton
               key="evaluate"
-              title="Evaluate student exam"
+              title="Avaliar exame do aluno"
               Icon={PersonRounded}
               onClick={onClick}
             />
@@ -78,15 +78,15 @@ const PerformanceExamPage = () => {
   ];
 
   return (
-    <Group title="Exam performance" breadcrumbs={breadcrumbs}>
+    <Group title="Performances do exame" breadcrumbs={breadcrumbs}>
       {classroom && performances.length > 0 && (
         <Table columns={columns} data={performances} />
       )}
       {classroom && performances.length === 0 && (
         <Empty
           image="/assets/classroom/empty.jpg"
-          title="No students took the exam"
-          subTitle="How about waiting for someone to finish?"
+          title="Nenhum aluno fez o exame"
+          subTitle="Que tal esperar alguém finalizar?"
         />
       )}
     </Group>

@@ -47,7 +47,7 @@ const TakeExamPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
@@ -56,7 +56,7 @@ const TakeExamPage = () => {
       Icon: SchoolRounded,
     },
     {
-      text: "Exams",
+      text: "Exames",
       Icon: QuizRounded,
     },
   ];
@@ -64,15 +64,15 @@ const TakeExamPage = () => {
   const onSubmitExam = async (data) => {
     const { success } = await takeExam(data, examId);
     if (success) {
-      toast.success("Successfully completed exam");
+      toast.success("Exame submetido com sucesso");
       navigate(`/dashboard/classrooms/${classroomId}/exams`);
       return;
     }
-    toast.error("Please resubmit the exam.");
+    toast.error("Ocorreu um erro ao submeter o exame.");
   };
 
   return (
-    <Group title="Take exam" breadcrumbs={breadcrumbs}>
+    <Group title="Realizar exame" breadcrumbs={breadcrumbs}>
       {exam && (
         <>
           <Typography variant="h4" color="primary">
@@ -83,11 +83,11 @@ const TakeExamPage = () => {
             {questionsMap}
             <ConfirmModal
               onConfirm={handleSubmit(onSubmitExam)}
-              text="When submitting the exam it will not be possible to change your answers."
-              description="Make sure you filled in the questions correctly."
+              text="Ao submeter não será possível editar as respostas"
+              description="Tenha certeza que preencheu as respostas corretamente"
             >
               <Button type="submit" variant="contained" fullWidth>
-                Submit
+                Submeter exame
               </Button>
             </ConfirmModal>
           </div>

@@ -40,23 +40,23 @@ const NewClassroomPage = () => {
 
   const breadcrumbs = [
     {
-      text: "Classrooms",
+      text: "Salas de aula",
       Icon: HomeRounded,
       href: "/dashboard/classrooms",
     },
     {
-      text: "Create classroom",
+      text: "Criar sala de aula",
       Icon: AddRounded,
     },
   ];
 
   return (
-    <Group title="Create classroom" breadcrumbs={breadcrumbs}>
+    <Group title="Criar sala de aula" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateClassroom)}>
         <Grid container spacing={2}>
           <Grid item sm={6}>
             <TextField
-              label="Name"
+              label="Nome"
               variant="standard"
               error={errors.name}
               helperText={errors.name?.message}
@@ -66,7 +66,7 @@ const NewClassroomPage = () => {
           </Grid>
           <Grid item sm={6}>
             <TextField
-              label="Password"
+              label="Senha"
               variant="standard"
               type="password"
               error={errors.password}
@@ -77,7 +77,7 @@ const NewClassroomPage = () => {
           </Grid>
           <Grid item sm={12}>
             <TextField
-              label="Description"
+              label="Descrição"
               variant="standard"
               error={errors.description}
               helperText={errors.description?.message}
@@ -88,7 +88,7 @@ const NewClassroomPage = () => {
           </Grid>
           <Grid item sm={4}>
             <Button type="submit" variant="contained" fullWidth>
-              Submit
+              Adicionar
             </Button>
           </Grid>
         </Grid>

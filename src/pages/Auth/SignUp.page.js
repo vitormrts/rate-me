@@ -9,7 +9,7 @@ const SignUpPage = () => {
   const { signUp } = useAuth();
 
   const onSuccess = () => {
-    toast.success("User registered successfully");
+    toast.success("Usuário registrado com sucesso");
     navigate("/auth/login");
   };
 
@@ -18,7 +18,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <Base title="Sign Up" subtitle="First create your account">
+    <Base title="Sign Up" subtitle="Primeiro, crie sua conta">
       <SignUpForm
         errorMessages={content.errors}
         onSubmit={signUp}

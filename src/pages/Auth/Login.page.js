@@ -9,16 +9,16 @@ const LoginPage = () => {
   const { login } = useAuth();
 
   const onSuccess = () => {
-    toast.success("User logged in successfully");
+    toast.success("Usuário entrou com sucesso");
     navigate("/dashboard/classrooms");
   };
 
   const onError = () => {
-    toast.error("Incorrect username or password");
+    toast.error("Email ou senha incorretos");
   };
 
   return (
-    <Base title="Login" subtitle="Enter your email and password">
+    <Base title="Login" subtitle="Insira o seu email e senha">
       <LoginForm
         errorMessages={content.errors}
         onSubmit={login}
