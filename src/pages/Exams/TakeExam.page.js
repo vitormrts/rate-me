@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "../../components/modals";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { getFormattedTime } from "../../utils";
 
 const TakeExamPage = () => {
   const navigate = useNavigate();
@@ -17,6 +19,32 @@ const TakeExamPage = () => {
   const { takeExam } = useExams({ classroom, examId });
 
   const exam = classroom?.exams.find((exam) => exam.id === examId);
+
+  const [countdown, setCountdown] = useState(undefined);
+  const started = exam?.timeLimit !== undefined;
+
+  const time = getFormattedTime(countdown);
+
+  useEffect(() => {
+    if (countdown === 60) {
+      toast.info(
+        "Ultimo minuto para realizar o exame. Ao chegar no tempo limite, o mesmo sera submetido"
+      );
+    }
+
+    if (countdown === undefined && started) {
+      setCountdown(exam.timeLimit * 60);
+    }
+    if (!started) {
+      return;
+    }
+    if (countdown === 0) {
+      toast.info("Tempo limite atingido. O exame foi submetido.");
+      onSubmitExam(getValues());
+    }
+    const timer = setInterval(() => setCountdown(countdown - 1), 1 * 1000);
+    return () => clearInterval(timer);
+  }, [countdown, started]);
 
   const schema = yup.object().shape({
     answers: yup.array().of(
@@ -27,7 +55,7 @@ const TakeExamPage = () => {
     ),
   });
 
-  const { register, handleSubmit, control, setValue } = useForm({
+  const { register, handleSubmit, control, setValue, getValues } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -78,6 +106,12 @@ const TakeExamPage = () => {
           <Typography variant="h4" color="primary">
             {exam.name}
           </Typography>
+          {countdown && (
+            <Typography variant="p">
+              Tempo para finalizar: {time.minutes}:{time.seconds}
+            </Typography>
+          )}
+
           <Divider sx={{ margin: "40px 0" }} />
           <div>
             {questionsMap}

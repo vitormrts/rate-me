@@ -15,7 +15,6 @@ import {
   PerformancePage,
   PostPerformancePage,
 } from "../pages";
-
 import {
   BrowserRouter,
   Navigate,
@@ -141,9 +140,9 @@ const Router = () => {
           <Route
             path="classrooms/:classroomId/invite"
             element={
-              <OwnerClassroomRoute>
+              <StudentRoute>
                 <EnterClassroom />
-              </OwnerClassroomRoute>
+              </StudentRoute>
             }
           />
           <Route
