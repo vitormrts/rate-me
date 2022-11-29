@@ -1,4 +1,4 @@
-import { Button } from "../../buttons";
+import { Button } from "@mui/material";
 import * as S from "./Feature.style";
 
 const Feature = ({
@@ -17,7 +17,9 @@ const Feature = ({
           <S.Title dangerouslySetInnerHTML={{ __html: title }} />
           <S.Description dangerouslySetInnerHTML={{ __html: description }} />
           <S.ButtonAdapter>
-            <Button text={cta} onClick={onSignUpClick} />
+            <Button variant="contained" onClick={onSignUpClick}>
+              {cta}
+            </Button>
           </S.ButtonAdapter>
         </S.TextContent>
         <S.ImageAdapter>

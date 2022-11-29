@@ -1,7 +1,5 @@
-import { AppBar as AppBarMui, Box, Typography } from "@mui/material";
+import { AppBar as AppBarMui, Box, Button, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import { IconButton } from "../../buttons";
-import { LogoutRounded } from "@mui/icons-material";
 import { useCallback } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -30,11 +28,9 @@ const AppBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Rate Me
           </Typography>
-          <IconButton
-            Icon={LogoutRounded}
-            title="Logout"
-            onClick={onLogoutClick}
-          />
+          <Button variant="text" onClick={onLogoutClick} sx={{ color: "#fff" }}>
+            Logout
+          </Button>
         </Container>
       </AppBarMui>
     </Box>

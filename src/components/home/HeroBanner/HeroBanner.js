@@ -1,4 +1,4 @@
-import { Button, OutlinedButton } from "../../buttons";
+import { Button } from "@mui/material";
 import * as S from "./HeroBanner.style";
 
 const HeroBanner = ({ onSignUpClick, onLoginClick }) => {
@@ -8,8 +8,12 @@ const HeroBanner = ({ onSignUpClick, onLoginClick }) => {
         <S.Header>
           <S.Logo>Rate Me</S.Logo>
           <S.ButtonGroup>
-            <Button text="Sign Up" onClick={onSignUpClick} />
-            <OutlinedButton text="Login" onClick={onLoginClick} />
+            <Button variant="contained" onClick={onSignUpClick}>
+              Sign Up
+            </Button>
+            <Button variant="outlined" onClick={onLoginClick}>
+              Login
+            </Button>
           </S.ButtonGroup>
         </S.Header>
         <S.TextContent>
