@@ -11,7 +11,7 @@ const AppBar = () => {
 
   const onLogoutClick = useCallback(() => {
     logout();
-    toast.success("Successfully logout");
+    toast.success("Saiu com sucesso");
     navigate("/");
   }, [logout]);
 

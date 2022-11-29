@@ -4,6 +4,9 @@ import content from "../../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField } from "@mui/material";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { toast } from "react-toastify";
+import { auth } from "../../../services/firebase";
 
 const inputErrors = content.errors.input;
 
@@ -17,6 +20,7 @@ const LoginForm = ({ onSubmit, onSuccess, onError }) => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -24,6 +28,19 @@ const LoginForm = ({ onSubmit, onSuccess, onError }) => {
   const onLogin = async (data) => {
     const { success } = await onSubmit(data);
     success ? onSuccess() : onError();
+  };
+
+  const onForgotPassword = async () => {
+    const email = getValues("email");
+    console.log(email);
+    if (!email) {
+      toast.error("Insira um email");
+      return;
+    }
+    toast.success(
+      `Um email foi enviado para ${email}. Verifique sua caixa de spam se necessário.`
+    );
+    await sendPasswordResetEmail(auth, email);
   };
 
   return (
@@ -49,6 +66,12 @@ const LoginForm = ({ onSubmit, onSuccess, onError }) => {
             variant="standard"
             {...register("password")}
           />
+        </Box>
+        <Box mt={2}>
+          Esqueceu a senha?
+          <Button variant="text" onClick={onForgotPassword}>
+            Esqueci minha senha
+          </Button>
         </Box>
         <Box mt={2}>
           <Button type="submit" variant="contained" fullWidth>
