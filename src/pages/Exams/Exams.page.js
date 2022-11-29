@@ -3,7 +3,6 @@ import { getFormattedExam, isTeacherRole } from "../../utils";
 import { useAuth, useClassrooms, useExams } from "../../hooks";
 import { Table } from "../../components/tables";
 import {
-  ShuffleRounded,
   DeleteRounded,
   RemoveRedEyeRounded,
   PersonRounded,
@@ -24,7 +23,7 @@ const ListExamsPage = () => {
   const { user } = useAuth();
   const { classroomId } = useParams();
   const { classroom } = useClassrooms(classroomId);
-  const { deleteExam, shuffleExamQuestions } = useExams({
+  const { deleteExam } = useExams({
     classroom,
   });
 
@@ -65,11 +64,6 @@ const ListExamsPage = () => {
       return;
     }
     toast.error(message);
-  };
-
-  const onShuffleQuestionsClick = async (id) => {
-    const { success, message } = await shuffleExamQuestions(id);
-    success ? toast.success(message) : toast.error(message);
   };
 
   const breadcrumbs = [
@@ -143,18 +137,6 @@ const ListExamsPage = () => {
             />
           ),
           show: true,
-        },
-        {
-          onClick: (id) => onShuffleQuestionsClick(id),
-          Component: ({ onClick }) => (
-            <IconButton
-              key="shuffle"
-              title="Embaralhar questões"
-              Icon={ShuffleRounded}
-              onClick={onClick}
-            />
-          ),
-          show: isTeacher,
         },
         {
           onConfirm: (id) => onConfirmExamDelete(id),

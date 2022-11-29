@@ -146,26 +146,6 @@ const useExams = ({ classroom } = {}) => {
     });
   };
 
-  const shuffleExamQuestions = async (id) => {
-    try {
-      const targetExam = await api.getById({ collection: "exams", id });
-      // Note: implement
-      const shuffledQuestions = targetExam.questions.sort(
-        () => Math.random() - 0.5
-      );
-      // await updateExam({ questions: shuffledQuestions }, id);
-      return {
-        success: true,
-        message: "Questões do exame embaralhadas com sucesso",
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: "Um erro ocorreu ao embaralhar as questões",
-      };
-    }
-  };
-
   const getCorrectQuestions = (studentAnswers, examClosedQuestions) => {
     let hit = 0;
     let miss = 0;
@@ -192,7 +172,6 @@ const useExams = ({ classroom } = {}) => {
     correctExam,
     deleteExam,
     takeExam,
-    shuffleExamQuestions,
   };
 };
 
