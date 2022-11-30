@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { DeleteRounded } from "@mui/icons-material";
 import {
   FormControl,
   FormLabel,
@@ -12,11 +11,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { IconButton } from "../../buttons";
 import Alternatives from "./Alternatives";
 import { Controller } from "react-hook-form";
 
-const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
+const QuestionCard = ({ errors = [], register, index, control }) => {
   const [questionType, setQuestionType] = useState("closed");
 
   const isClosedQuestion = questionType === "closed";
@@ -34,12 +32,6 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
       fullWidth
     >
       <CardContent sx={{ position: "relative" }}>
-        <IconButton
-          title="Delete"
-          Icon={DeleteRounded}
-          onClick={onRemove(index)}
-          sx={{ position: "absolute", right: "16px", zIndex: 2 }}
-        />
         <TextField
           label="Pergunta"
           multiline
@@ -69,8 +61,8 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
                     }}
                     variant="standard"
                   >
-                    <MenuItem value="closed">Closed question</MenuItem>
-                    <MenuItem value="open">Open question</MenuItem>
+                    <MenuItem value="closed">Questão fechada</MenuItem>
+                    <MenuItem value="open">Questão aberta</MenuItem>
                   </Select>
                 );
               }}
@@ -80,7 +72,7 @@ const QuestionCard = ({ errors = [], register, index, onRemove, control }) => {
         {isClosedQuestion && (
           <Box mt={2}>
             <FormControl fullWidth>
-              <FormLabel>Options</FormLabel>
+              <FormLabel>Opções</FormLabel>
               <Alternatives
                 alternatives={["1", "2", "3", "4"]}
                 defaultValue="1"

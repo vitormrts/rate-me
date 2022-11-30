@@ -66,6 +66,8 @@ const NewExamPage = () => {
     resolver: yupResolver(schema),
   });
 
+  console.log(getValues("questions"));
+
   const onSubmitClick = () => {
     if (!getValues("questions")) {
       toast.error("Você precisa criar uma questão");
@@ -76,7 +78,7 @@ const NewExamPage = () => {
     const { success, error } = await createExam(data);
     if (success) {
       toast.success("Exame criado com sucesso");
-      navigate("/dashboard/classrooms/");
+      navigate(`/dashboard/classrooms/${classroomId}/exams`);
       return;
     }
     toast.error(error);
@@ -87,13 +89,6 @@ const NewExamPage = () => {
     setQuestionCounter((prevCounter) => prevCounter + 1);
   };
 
-  const onRemoveQuestionClick = (index) => () => {
-    setQuestionsIndexes((prevIndexes) => [
-      ...prevIndexes.filter((item) => item !== index),
-    ]);
-    setQuestionCounter((prevCounter) => prevCounter - 1);
-  };
-
   const questionsMap = questionsIndexes.map((index) => {
     return (
       <QuestionCard
@@ -101,7 +96,6 @@ const NewExamPage = () => {
         errors={errors.questions}
         register={register}
         index={index}
-        onRemove={onRemoveQuestionClick}
         control={control}
       />
     );

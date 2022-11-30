@@ -41,7 +41,7 @@ const Alternatives = ({
           name={fieldName}
           render={({ field }) => (
             <TextField
-              label={`Alternative ${alternative}`}
+              label={`Alternativa ${alternative}`}
               variant="standard"
               error={error}
               helperText={error?.message}
