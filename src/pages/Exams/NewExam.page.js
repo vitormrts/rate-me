@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Divider, Grid, TextField } from "@mui/material";
+import { Box, Button, ButtonGroup, Divider, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -156,34 +156,32 @@ const NewExamPage = () => {
   return (
     <Group title="Criar exame" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateExam)}>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              label="Nome do exame"
-              variant="standard"
-              error={errors.name}
-              helperText={errors.name?.message}
-              fullWidth
-              {...register("name")}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Tempo limite"
-              variant="standard"
-              error={errors.timeLimit}
-              helperText={errors.timeLimit?.message}
-              fullWidth
-              {...register("timeLimit")}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <DateComponent name="initialDate" label="Data inicial" />
-          </Grid>
-          <Grid item xs={6}>
-            <DateComponent name="finalDate" label="Data final" />
-          </Grid>
-        </Grid>
+        <Box mt={2}>
+          <TextField
+            label="Nome do exame"
+            variant="standard"
+            error={errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+            {...register("name")}
+          />
+        </Box>
+        <Box mt={2}>
+          <TextField
+            label="Tempo limite"
+            variant="standard"
+            error={errors.timeLimit}
+            helperText={errors.timeLimit?.message}
+            fullWidth
+            {...register("timeLimit")}
+          />
+        </Box>
+        <Box mt={2}>
+          <DateComponent name="initialDate" label="Data inicial" />
+        </Box>
+        <Box mt={2}>
+          <DateComponent name="finalDate" label="Data final" />
+        </Box>
         <Divider sx={{ margin: "40px 0" }} />
         {questionsMap}
         <ButtonGroup variant="contained" fullWidth sx={{ gap: "16px" }}>

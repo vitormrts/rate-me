@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -53,45 +53,43 @@ const NewClassroomPage = () => {
   return (
     <Group title="Criar sala de aula" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onCreateClassroom)}>
-        <Grid container spacing={2}>
-          <Grid item sm={6}>
-            <TextField
-              label="Nome"
-              variant="standard"
-              error={errors.name}
-              helperText={errors.name?.message}
-              fullWidth
-              {...register("name")}
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <TextField
-              label="Senha"
-              variant="standard"
-              type="password"
-              error={errors.password}
-              helperText={errors.password?.message}
-              fullWidth
-              {...register("password")}
-            />
-          </Grid>
-          <Grid item sm={12}>
-            <TextField
-              label="Descrição"
-              variant="standard"
-              error={errors.description}
-              helperText={errors.description?.message}
-              multiline
-              fullWidth
-              {...register("description")}
-            />
-          </Grid>
-          <Grid item sm={4}>
-            <Button type="submit" variant="contained" fullWidth>
-              Adicionar
-            </Button>
-          </Grid>
-        </Grid>
+        <Box mt={2}>
+          <TextField
+            label="Nome"
+            variant="standard"
+            error={errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+            {...register("name")}
+          />
+        </Box>
+        <Box mt={2}>
+          <TextField
+            label="Senha"
+            variant="standard"
+            type="password"
+            error={errors.password}
+            helperText={errors.password?.message}
+            fullWidth
+            {...register("password")}
+          />
+        </Box>
+        <Box mt={2}>
+          <TextField
+            label="Descrição"
+            variant="standard"
+            error={errors.description}
+            helperText={errors.description?.message}
+            multiline
+            fullWidth
+            {...register("description")}
+          />
+        </Box>
+        <Box mt={2}>
+          <Button type="submit" variant="contained" fullWidth>
+            Adicionar
+          </Button>
+        </Box>
       </form>
     </Group>
   );

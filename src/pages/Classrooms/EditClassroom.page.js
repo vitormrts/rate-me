@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import content from "../../content";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -58,52 +58,50 @@ const EditClassroomPage = () => {
   return (
     <Group title="Editar sala de aula" breadcrumbs={breadcrumbs}>
       <form onSubmit={handleSubmit(onEditClassroom)}>
-        <Grid container spacing={2}>
-          {classroom && (
-            <>
-              <Grid item sm={6}>
-                <TextField
-                  label="Nome"
-                  variant="standard"
-                  error={errors.name}
-                  helperText={errors.name?.message}
-                  defaultValue={classroom.name}
-                  fullWidth
-                  {...register("name")}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <TextField
-                  label="Senha"
-                  variant="standard"
-                  type="password"
-                  error={errors.password}
-                  helperText={errors.password?.message}
-                  defaultValue={classroom.password}
-                  fullWidth
-                  {...register("password")}
-                />
-              </Grid>
-              <Grid item sm={12}>
-                <TextField
-                  label="Descrição"
-                  variant="standard"
-                  error={errors.description}
-                  helperText={errors.description?.message}
-                  defaultValue={classroom.description}
-                  multiline
-                  fullWidth
-                  {...register("description")}
-                />
-              </Grid>
-              <Grid item sm={4}>
-                <Button type="submit" variant="contained" fullWidth>
-                  Editar
-                </Button>
-              </Grid>
-            </>
-          )}
-        </Grid>
+        {classroom && (
+          <>
+            <Box mt={2}>
+              <TextField
+                label="Nome"
+                variant="standard"
+                error={errors.name}
+                helperText={errors.name?.message}
+                defaultValue={classroom.name}
+                fullWidth
+                {...register("name")}
+              />
+            </Box>
+            <Box mt={2}>
+              <TextField
+                label="Senha"
+                variant="standard"
+                type="password"
+                error={errors.password}
+                helperText={errors.password?.message}
+                defaultValue={classroom.password}
+                fullWidth
+                {...register("password")}
+              />
+            </Box>
+            <Box mt={2}>
+              <TextField
+                label="Descrição"
+                variant="standard"
+                error={errors.description}
+                helperText={errors.description?.message}
+                defaultValue={classroom.description}
+                multiline
+                fullWidth
+                {...register("description")}
+              />
+            </Box>
+            <Box mt={2}>
+              <Button type="submit" variant="contained" fullWidth>
+                Editar
+              </Button>
+            </Box>
+          </>
+        )}
       </form>
     </Group>
   );

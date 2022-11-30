@@ -17,7 +17,7 @@ const Table = ({ columns, data }) => {
   const tableData = data.map((row) => (
     <TableRow key={row.id}>
       {columns.map((column) => (
-        <TableCell key={column.key}>
+        <TableCell key={column.key} sx={{ whiteSpace: "nowrap" }}>
           {column.actions &&
             column.actions.map(
               ({ Component, show = true, onClick, onConfirm }) =>

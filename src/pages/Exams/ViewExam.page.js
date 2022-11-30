@@ -1,5 +1,5 @@
 import { HomeRounded, QuizRounded, SchoolRounded } from "@mui/icons-material";
-import { Divider, Grid, TextField } from "@mui/material";
+import { Box, Divider, TextField } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ViewQuestionCard from "../../components/cards/QuestionCard/ViewQuestionCard";
 import { Group } from "../../components/groups";
@@ -42,49 +42,47 @@ const ViewExamPage = () => {
 
   return (
     <Group title="Ver exam" breadcrumbs={breadcrumbs}>
-      <Grid container spacing={2}>
-        {exam && (
-          <>
-            <Grid item xs={6}>
-              <TextField
-                label="Nome do exame"
-                variant="standard"
-                value={exam.name}
-                disabled
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Tempo limite (minutos)"
-                variant="standard"
-                value={exam.timeLimit}
-                disabled
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Data inicial"
-                variant="standard"
-                value={exam.initialDate.toDate()}
-                disabled
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Data final"
-                variant="standard"
-                value={exam.finalDate.toDate()}
-                disabled
-                fullWidth
-              />
-            </Grid>
-            <Divider sx={{ margin: "40px 0" }} />
-          </>
-        )}
-      </Grid>
+      {exam && (
+        <>
+          <Box mt={2}>
+            <TextField
+              label="Nome do exame"
+              variant="standard"
+              value={exam.name}
+              disabled
+              fullWidth
+            />
+          </Box>
+          <Box mt={2}>
+            <TextField
+              label="Tempo limite (minutos)"
+              variant="standard"
+              value={exam.timeLimit}
+              disabled
+              fullWidth
+            />
+          </Box>
+          <Box mt={2}>
+            <TextField
+              label="Data inicial"
+              variant="standard"
+              value={exam.initialDate.toDate()}
+              disabled
+              fullWidth
+            />
+          </Box>
+          <Box mt={2}>
+            <TextField
+              label="Data final"
+              variant="standard"
+              value={exam.finalDate.toDate()}
+              disabled
+              fullWidth
+            />
+          </Box>
+          <Divider sx={{ margin: "40px 0" }} />
+        </>
+      )}
       {questionsMap}
     </Group>
   );

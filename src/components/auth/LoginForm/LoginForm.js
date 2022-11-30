@@ -61,7 +61,7 @@ const LoginForm = ({ onSubmit, onSuccess, onError }) => {
             error={errors.password}
             fullWidth
             helperText={errors.password?.message}
-            label="Password"
+            label="Senha"
             type="password"
             variant="standard"
             {...register("password")}
