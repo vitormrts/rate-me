@@ -17,7 +17,9 @@ const ListStudentsPage = () => {
 
   const onInviteStudentButtonClick = () => {
     // Note: implement insert base url
-    const { success } = copyToClipboard(`https://rate-me-nu.vercel.app/classrooms/${classroomId}/invite`);
+    const { success } = copyToClipboard(
+      `https://rate-me-nu.vercel.app/classrooms/${classroomId}/invite`
+    );
     success
       ? toast.info("Sala de aula copiada. Envie o link para o seu aluno.")
       : toast.error("Ocorreu um erro ao copiar a sala de aula.");
